@@ -97,7 +97,7 @@ def collect_market_intelligence(tickers: list[str]) -> tuple[list[dict], list[di
 
 
 def analyze_with_gemini(session: str, timestamp_et: str, quotes: list[dict], headlines: list[dict]) -> dict:
-    client = genai.Client()
+    client = genai.Client(http_options=types.HttpOptions(api_version="v1beta"))
 
     prompt = f"""
 You are a senior quantitative equity analyst. Analyze the live stock quotes and scraped financial headlines below for the current US market session: {session} ({timestamp_et}).
