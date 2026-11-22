@@ -1,0 +1,90 @@
+{
+  "session": "Overnight / Extended Wire",
+  "updated_et": "2026-11-21 23:53 EST",
+  "market_mood": "Risk-Off Bearish",
+  "overall_sentiment_score": -52,
+  "executive_summary": "US equity markets are experiencing severe tech capitulation, marking the worst weekly pullback for megacap tech since 2020. Semiconductor heavyweights NVDA, AVGO, and MU suffered double-digit daily declines amid rising skepticism over massive AI capital expenditures and macro rotation into defensive non-tech sectors. Despite heavy regular-session liquidation, selective institutional buying (Tepper, Wood) and minor post-market price stabilization suggest an impending tactical relief bounce.",
+  "recommendations": [
+    {
+      "ticker": "NVDA",
+      "company": "NVIDIA Corporation",
+      "action": "Tactical Swing Buy",
+      "sentiment_score": -20,
+      "confidence": 78,
+      "price_snapshot": "$130.01 (+3.6% post-market, -10.9% reg)",
+      "catalyst": "Stock trades at ~15x earnings after deep multi-week drawdown; 13F filings show fresh accumulation from David Tepper and Cathie Wood.",
+      "strategy": "Scale in via partial tranches near $125-$130 range; restrict position size to 3% max pending broader tech market stabilization.",
+      "risk": "Hyperscaler AI capex deceleration and ongoing semiconductor sector rotation."
+    },
+    {
+      "ticker": "AVGO",
+      "company": "Broadcom Inc.",
+      "action": "Watchlist / Hold",
+      "sentiment_score": -30,
+      "confidence": 72,
+      "price_snapshot": "$311.51 (+2.3% post-market, -10.1% reg)",
+      "catalyst": "Sharply oversold ahead of Dec. 9 earnings release despite long-term tailwinds in custom AI ASICs and networking hardware.",
+      "strategy": "Monitor technical support levels around $300 before opening a pre-earnings swing position.",
+      "risk": "Broader AI infrastructure derisking and high institutional supply pressure."
+    },
+    {
+      "ticker": "META",
+      "company": "Meta Platforms, Inc.",
+      "action": "Strong Buy / Accumulate",
+      "sentiment_score": 10,
+      "confidence": 81,
+      "price_snapshot": "$567.50 (+1.2% post-market, -4.8% reg)",
+      "catalyst": "Core digital ad revenue remains resilient (+26% growth), providing cash flow downside buffer despite heavy $145B AI capex spend.",
+      "strategy": "Accumulate on pullbacks near range support; hold for long-term ad-tech monetization efficiency.",
+      "risk": "Free cash flow compression resulting from aggressive AI infrastructure buildouts."
+    },
+    {
+      "ticker": "PLTR",
+      "company": "Palantir Technologies Inc.",
+      "action": "Trim / Avoid",
+      "sentiment_score": -45,
+      "confidence": 75,
+      "price_snapshot": "$145.58 (+1.5% post-market, -5.3% reg)",
+      "catalyst": "Stock down 25% over the past month compounded by SEC filings showing CEO Alex Karp plans to sell $100M in shares.",
+      "strategy": "Trim exposure into post-market relief rallies to lock in gains and reduce high-multiple growth risk.",
+      "risk": "Valuation multiple compression and potential federal/defense budget delays."
+    }
+  ],
+  "top_headlines": [
+    {
+      "source": "CNBC Top News",
+      "ticker_tag": "MACRO",
+      "sentiment": "Bearish",
+      "title": "Anthropic\u2019s record IPO collides with tech\u2019s worst week on Wall Street since 2020",
+      "url": "https://www.cnbc.com/2026/11/21/anthropic-ipo-tech-selloff.html"
+    },
+    {
+      "source": "Yahoo Finance (NVDA)",
+      "ticker_tag": "NVDA",
+      "sentiment": "Bullish",
+      "title": "Billionaire David Tepper Just Made a Massive AI Chip Rotation \u2014 Will It Pay Off?",
+      "url": "https://www.fool.com/investing/2026/11/21/billionaire-david-tepper-just-made-a-massive-ai-chip-rotation-will-it-pay-off/?.tsrc=rss"
+    },
+    {
+      "source": "Yahoo Finance (AVGO)",
+      "ticker_tag": "NVDA",
+      "sentiment": "Bullish",
+      "title": "Nvidia Stock Has Crashed 48% and Now Trades at 15 Times Earnings, Its Cheapest in More Than a Decade",
+      "url": "https247wallst.com/investing/2026/11/21/nvidia-stock-has-crashed-48-and-now-trades-at-15-times-earnings-its-cheapest-in-more-than-a-decade-and-cheaper-than-microsoft-and-broadcom/?.tsrc=rss"
+    },
+    {
+      "source": "Yahoo Finance (PLTR)",
+      "ticker_tag": "PLTR",
+      "sentiment": "Bearish",
+      "title": "Alex Karp Wants to Sell $100 Million of Palantir Stock as It Slides",
+      "url": "https://247wallst.com/investing/2026/11/21/alex-karp-wants-to-sell-100-million-of-palantir-stock-as-it-slides/?.tsrc=rss"
+    },
+    {
+      "source": "Yahoo Finance (META)",
+      "ticker_tag": "META",
+      "sentiment": "Bullish",
+      "title": "If the AI Trade Blows Up, Meta\u2019s Saving Grace Is That Its Social Media Business Still 'Generates a Ton of Cash'",
+      "url": "https://www.tikr.com/blog/if-the-ai-trade-blows-up-metas-saving-grace-is-that-its-social-media-business-still-generates-a-ton-of-cash?ref=yahoofinance&tlnk=yf-261121-c9qw4982&.tsrc=rss"
+    }
+  ]
+}
