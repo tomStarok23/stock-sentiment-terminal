@@ -1,5 +1,6 @@
 import html
 import json
+import math
 import os
 import xml.etree.ElementTree as ET
 from datetime import datetime
@@ -11,8 +12,7 @@ from bs4 import BeautifulSoup
 from google import genai
 from google.genai import types
 
-# 1. Your core stocks & ETFs (always scanned regardless of daily volume)
-# Add or remove any US stock, global ETF (e.g., VUAA.L), or local ticker (e.g., 2330.TW)
+# 1. Core stocks & ETFs (always scanned regardless of daily volume)
 CORE_WATCHLIST = [
     "NVDA", "AVGO", "MU", "INTC", "GOOGL",
     "META", "AAPL", "AMZN", "TSLA", "PLTR", "VUAA.L"
@@ -25,9 +25,22 @@ MARKET_RSS_FEEDS = [
     ("MarketWatch Top Stories", "https://feeds.content.dowjones.io/public/rss/mw_topstories"),
 ]
 
+# 3. Free-tier supported models tried in order
+GEMINI_MODELS = [
+    "gemini-3.8-flash",
+    "gemini-3.5-flash-lite",
+    "gemini-3.6-flash",
+]
+
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/128.0.0.0 Safari/537.36"
 }
+
+
+def clean_num(val):
+    if isinstance(val, float) and (math.isnan(val) or math.isinf(val)):
+        return None
+    return val
 
 
 def detect_session() -> tuple[str, str]:
@@ -58,7 +71,7 @@ def fetch_rss_items(url: str, source_name: str, limit: int = 6) -> list[dict]:
             if title:
                 items.append({"source": source_name, "title": title, "summary": desc, "url": link})
     except Exception as exc:
-        print(f"[WARN] RSS fetch skipped for {source_name}: {exc}")
+        print(f"[WARN] RSS fetch skipped for {source_name}: {exc}", flush=True)
     return items
 
 
@@ -78,20 +91,20 @@ def discover_market_movers(limit_per_screen: int = 6) -> list[dict]:
                 if not sym or "^" in sym or "=" in sym:
                     continue
                 if sym not in discovered:
-                    chg = q.get("regularMarketChangePercent")
+                    chg = clean_num(q.get("regularMarketChangePercent"))
                     discovered[sym] = {
                         "ticker": sym,
                         "name": q.get("shortName") or q.get("longName") or sym,
                         "sector": q.get("sector") or "Broader Market",
                         "source_group": label,
-                        "regular_price": q.get("regularMarketPrice"),
-                        "pre_market_price": q.get("preMarketPrice"),
-                        "post_market_price": q.get("postMarketPrice"),
-                        "prev_close": q.get("regularMarketPreviousClose"),
+                        "regular_price": clean_num(q.get("regularMarketPrice")),
+                        "pre_market_price": clean_num(q.get("preMarketPrice")),
+                        "post_market_price": clean_num(q.get("postMarketPrice")),
+                        "prev_close": clean_num(q.get("regularMarketPreviousClose")),
                         "active_change_pct": round(float(chg), 2) if chg is not None else None,
                     }
         except Exception as exc:
-            print(f"[WARN] Screener '{screen_key}' skipped: {exc}")
+            print(f"[WARN] Screener '{screen_key}' skipped: {exc}", flush=True)
 
     return list(discovered.values())
 
@@ -101,20 +114,18 @@ def collect_market_intelligence(core_tickers: list[str]) -> tuple[list[dict], li
     headlines = []
     seen_tickers = set()
 
-    # 1. Fetch broad macro & cross-sector news
     for source_name, feed_url in MARKET_RSS_FEEDS:
         headlines.extend(fetch_rss_items(feed_url, source_name, limit=6))
 
-    # 2. Fetch detailed Pre/Open/Post quotes for Core Watchlist
     for ticker in core_tickers:
         seen_tickers.add(ticker.upper())
         try:
             tk = yf.Ticker(ticker)
             info = tk.info or {}
-            prev_close = info.get("previousClose") or info.get("regularMarketPreviousClose")
-            reg_price = info.get("regularMarketPrice") or info.get("currentPrice")
-            pre_price = info.get("preMarketPrice")
-            post_price = info.get("postMarketPrice")
+            prev_close = clean_num(info.get("previousClose") or info.get("regularMarketPreviousClose"))
+            reg_price = clean_num(info.get("regularMarketPrice") or info.get("currentPrice"))
+            pre_price = clean_num(info.get("preMarketPrice"))
+            post_price = clean_num(info.get("postMarketPrice"))
 
             active_price = pre_price or post_price or reg_price
             pct_change = None
@@ -133,12 +144,11 @@ def collect_market_intelligence(core_tickers: list[str]) -> tuple[list[dict], li
                 "active_change_pct": pct_change,
             })
         except Exception as exc:
-            print(f"[WARN] Price fetch failed for {ticker}: {exc}")
+            print(f"[WARN] Price fetch failed for {ticker}: {exc}", flush=True)
 
         yahoo_rss = f"https://feeds.finance.yahoo.com/rss/2.0/headline?s={ticker}&region=US&lang=en-US"
         headlines.extend(fetch_rss_items(yahoo_rss, f"Yahoo Finance ({ticker})", limit=4))
 
-    # 3. Auto-discover top market movers across ALL sectors and pull their headlines
     movers = discover_market_movers(limit_per_screen=6)
     extra_added = 0
     for mover in movers:
@@ -202,19 +212,28 @@ SCRAPED HEADLINES ({len(headlines)} items):
 {json.dumps(headlines[:85], indent=2)}
 """
 
-    response = client.models.generate_content(
-        model="gemini-3.6-flash",
-        contents=prompt,
-        config=types.GenerateContentConfig(
-            response_mime_type="application/json",
-            temperature=0.2,
-        ),
-    )
+    last_err = None
+    for model_name in GEMINI_MODELS:
+        try:
+            print(f"Requesting analysis from {model_name}...", flush=True)
+            response = client.models.generate_content(
+                model=model_name,
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    response_mime_type="application/json",
+                ),
+            )
+            raw_text = (response.text or "").strip()
+            if not raw_text:
+                raise ValueError(f"Empty response returned by {model_name}")
+            if raw_text.startswith("```"):
+                raw_text = raw_text.split("\n", 1)[1].rsplit("```", 1)[0].strip()
+            return json.loads(raw_text)
+        except Exception as exc:
+            print(f"[WARN] Model {model_name} failed: {exc}", flush=True)
+            last_err = exc
 
-    raw_text = (response.text or "").strip()
-    if raw_text.startswith("```"):
-        raw_text = raw_text.split("\n", 1)[1].rsplit("```", 1)[0].strip()
-    return json.loads(raw_text)
+    raise RuntimeError(f"All Gemini models failed. Last error: {last_err}")
 
 
 def badge_color(action: str) -> str:
@@ -326,7 +345,7 @@ def render_html(session: str, timestamp_et: str, data: dict) -> str:
     <div class="grid">{recs_html}</div>
     <h2>Scraped Wire Headlines</h2>
     <ul class="wire">{news_html}</ul>
-    <footer>Generated automatically via GitHub Actions &amp; Gemini 3.6 Flash. For informational research only, not financial advice.</footer>
+    <footer>Generated automatically via GitHub Actions &amp; Gemini AI. For informational research only, not financial advice.</footer>
   </div>
 </body>
 </html>"""
@@ -334,9 +353,9 @@ def render_html(session: str, timestamp_et: str, data: dict) -> str:
 
 def main() -> None:
     session, timestamp_et = detect_session()
-    print(f"Running {session} scan at {timestamp_et}...")
+    print(f"Running {session} scan at {timestamp_et}...", flush=True)
     quotes, headlines = collect_market_intelligence(CORE_WATCHLIST)
-    print(f"Collected {len(quotes)} quotes (watchlist + market movers) and {len(headlines)} headlines.")
+    print(f"Collected {len(quotes)} quotes (watchlist + market movers) and {len(headlines)} headlines.", flush=True)
     analysis = analyze_with_gemini(session, timestamp_et, quotes, headlines)
 
     os.makedirs("docs", exist_ok=True)
@@ -354,7 +373,7 @@ def main() -> None:
             for r in analysis.get("recommendations", []):
                 sf.write(f"- **{r.get('ticker')}** [{r.get('source_group')}] — `{r.get('action')}` (Sentiment {r.get('sentiment_score')}/100): {r.get('catalyst')}\n")
 
-    print("Dashboard successfully written to docs/index.html")
+    print("Dashboard successfully written to docs/index.html", flush=True)
 
 
 if __name__ == "__main__":
