@@ -1,9 +1,9 @@
 {
   "session": "Overnight / Extended Wire",
-  "updated_et": "2026-11-23 20:54 EST",
+  "updated_et": "2026-11-24 00:20 EST",
   "market_mood": "Bullish",
   "overall_sentiment_score": 82,
-  "executive_summary": "The broader US market experienced a historic tech-led surge following Nvidia's unanimous reinstatement of Jensen Huang as CEO, igniting a massive relief rally across artificial intelligence hardware, software, and semiconductor supply chains. The Nasdaq and S&P 500 recorded their strongest single-session gains in over a year, lifting both megacap tech core watchlist names and oversold high-beta market movers. While macro sentiment is overwhelmingly risk-on, investors should remain attentive to emerging Congressional scrutiny over tech governance and selective capital raises in biotechs like Kymera.",
+  "executive_summary": "US equity futures and post-market trading are experiencing a violent relief rally led by semiconductors and AI infrastructure following the dramatic reinstatement of Jensen Huang as CEO of NVIDIA. The market has posted its strongest single-day gain since April 2025, completely reversing the tech correction. However, emerging macro risks\u2014specifically naval mine strikes on oil tankers in the Strait of Hormuz\u2014require tactical agility despite broad-based tech euphoria.",
   "recommendations": [
     {
       "ticker": "NVDA",
@@ -13,10 +13,10 @@
       "action": "Strong Buy / Accumulate",
       "sentiment_score": 95,
       "confidence": 92,
-      "price_snapshot": "$165.05 (+32.9% post: $166.79)",
-      "catalyst": "Board unanimously reinstates Jensen Huang as CEO following White House assurances, resolving leadership uncertainty.",
-      "strategy": "Accumulate on shallow pullbacks near $160-$162; size up core position given restored institutional confidence in AI roadmaps.",
-      "risk": "Bipartisan Congressional pushback regarding national security clearance and supply chain oversight."
+      "price_snapshot": "$166.79 (+32.9% post-market)",
+      "catalyst": "Unanimous reinstatement of founder Jensen Huang as CEO following White House national security assurances.",
+      "strategy": "Scale into core positions on minor intraday pullbacks; utilize trailing stop-losses given upcoming congressional testimony on Dec 1.",
+      "risk": "Geopolitical and regulatory scrutiny around AI export controls and supply chain security."
     },
     {
       "ticker": "MU",
@@ -26,62 +26,75 @@
       "action": "Strong Buy / Accumulate",
       "sentiment_score": 88,
       "confidence": 89,
-      "price_snapshot": "$707.70 (+18.9% post: $706.99)",
-      "catalyst": "Rebound in AI spending outlook and tight high-bandwidth memory (HBM) DRAM supply through 2028 confirmed by Wall Street.",
-      "strategy": "Initiate core accumulation; HBM pricing power provides multi-quarter earnings tailwind.",
-      "risk": "Cyclical downturn in broader consumer memory markets."
+      "price_snapshot": "$706.99 (+18.9% post-market)",
+      "catalyst": "AI memory demand relief; Citi reiterates tight DRAM/HBM supply dynamics through 2028.",
+      "strategy": "Accumulate as memory pricing dynamics tighten and AI server deployments accelerate.",
+      "risk": "Potential oversupply cyclicality if hyperscaler capex moderates late 2027."
     },
     {
       "ticker": "KYMR",
       "company": "Kymera Therapeutics, Inc.",
-      "sector": "Broader Market",
+      "sector": "Healthcare",
       "source_group": "Market Mover",
       "action": "Tactical Swing Buy",
-      "sentiment_score": 75,
+      "sentiment_score": 92,
+      "confidence": 85,
+      "price_snapshot": "$154.49 (+30.4% post-market)",
+      "catalyst": "Oral degrader candidate KT-621 met all endpoints in Phase 2b BROADEN2 eczema trial; upsized $1.75B offering priced.",
+      "strategy": "Tactical buy on volume momentum, watching for post-offering pricing consolidation.",
+      "risk": "Dilution from the upsized equity offering and binary clinical pipeline risks."
+    },
+    {
+      "ticker": "ALAB",
+      "company": "Astera Labs, Inc.",
+      "sector": "Technology",
+      "source_group": "Market Mover",
+      "action": "Tactical Swing Buy",
+      "sentiment_score": 85,
+      "confidence": 81,
+      "price_snapshot": "$224.04 (+23.2% post-market)",
+      "catalyst": "Rebound from deep sell-off as data center connectivity demand and institutional buying (Atreides Management) resurface.",
+      "strategy": "Initiate tactical swing position aiming for mean reversion to previous high-water mark.",
+      "risk": "High valuation elasticity during macro market downturns."
+    },
+    {
+      "ticker": "CRDO",
+      "company": "Credo Technology Group Holding",
+      "sector": "Technology",
+      "source_group": "Market Mover",
+      "action": "Tactical Swing Buy",
+      "sentiment_score": 84,
       "confidence": 78,
-      "price_snapshot": "$150.37 (+30.4% post: $154.49)",
-      "catalyst": "Positive 16-week Phase 2b BROADEN2 trial data for oral KT-621 rivaling Dupixent efficacy; follow-on public offering launched.",
-      "strategy": "Wait for secondary offering price digest, then enter swing positions near $145-$150 zone.",
-      "risk": "Dilution from announced public offering and clinical trial safety risks in Phase 3."
+      "price_snapshot": "$123.50 (+22.6% post-market)",
+      "catalyst": "High-speed AI connectivity demand acceleration; Stifel reasserts bullish outlook with $250 price target.",
+      "strategy": "Buy on breakout above recent consolidation range with tight stop below pre-rally lows.",
+      "risk": "Concentration risk in hyperscale data center customer orders."
     },
     {
       "ticker": "PLTR",
       "company": "Palantir Technologies Inc.",
       "sector": "Technology",
       "source_group": "Core Watchlist",
-      "action": "Strong Buy / Accumulate",
-      "sentiment_score": 85,
-      "confidence": 86,
-      "price_snapshot": "$159.36 (+11.5% post: $159.99)",
-      "catalyst": "Enterprise AI software sector rally led by 158% Rule-of-40 performance and strong 2026 guidance.",
-      "strategy": "Dollar-cost average into positions; target long-term enterprise AI adoption expansion.",
-      "risk": "Elevated valuation multiples and insider share sales."
-    },
-    {
-      "ticker": "ALAB",
-      "company": "Astera Labs, Inc.",
-      "sector": "Broader Market",
-      "source_group": "Market Mover",
       "action": "Tactical Swing Buy",
       "sentiment_score": 80,
-      "confidence": 82,
-      "price_snapshot": "$222.12 (+23.2% post: $224.04)",
-      "catalyst": "Technical turnaround from oversold 60% drawdown as high-speed data center connectivity demand re-accelerates.",
-      "strategy": "Swing buy on breakout confirmation above $220 with tight stop-loss at $205.",
-      "risk": "High volatility due to customer concentration in tier-1 hyper-scalers."
+      "confidence": 83,
+      "price_snapshot": "$159.99 (+11.5% post-market)",
+      "catalyst": "Enterprise AI software demand surge alongside 2026 revenue guidance of $8.53B and strong Rule of 40 metric.",
+      "strategy": "Maintain weight; add on pullbacks near key moving averages.",
+      "risk": "High price-to-sales multiple leaves little room for execution missteps."
     },
     {
-      "ticker": "CRDO",
-      "company": "Credo Technology Group Holding",
-      "sector": "Broader Market",
+      "ticker": "AXTI",
+      "company": "AXT Inc",
+      "sector": "Technology",
       "source_group": "Market Mover",
       "action": "Tactical Swing Buy",
-      "sentiment_score": 78,
-      "confidence": 80,
-      "price_snapshot": "$122.46 (+22.6% post: $123.50)",
-      "catalyst": "Analyst upgrades highlighting oversold momentum, operational acceleration, and high sensitivity to AI rack connectivity demand.",
-      "strategy": "Scale into tactical swing positions targeting upside toward $140 level.",
-      "risk": "Execution risks in meeting aggressive second-half revenue expectations."
+      "sentiment_score": 79,
+      "confidence": 75,
+      "price_snapshot": "$38.42 (+24.4% post-market)",
+      "catalyst": "InP wafer substrate backlog tops $500M as AI optical interconnect demand surges.",
+      "strategy": "Swing buy for short-term upside, keeping position size controlled.",
+      "risk": "Supply chain and trade tension risks associated with US-China semiconductor substrate manufacturing."
     },
     {
       "ticker": "TSLA",
@@ -89,51 +102,38 @@
       "sector": "Consumer Cyclical",
       "source_group": "Core Watchlist",
       "action": "Tactical Swing Buy",
-      "sentiment_score": 82,
-      "confidence": 81,
-      "price_snapshot": "$385.46 (+12.2% post: $388.15)",
-      "catalyst": "Imminent wide release of Full Self-Driving v15 with Tesla Reality View interface alongside broader AI infrastructure bounce.",
-      "strategy": "Buy tactical dips above $375 key support; capture momentum ahead of FSD v15 rollout.",
-      "risk": "Regulatory scrutiny on autonomous software rollout and EV margin pressure."
+      "sentiment_score": 78,
+      "confidence": 80,
+      "price_snapshot": "$388.15 (+12.2% post-market)",
+      "catalyst": "Broader AI compute and humanoid robotics sentiment recovery; speculation regarding expanded chip supply.",
+      "strategy": "Trade the momentum channel towards psychological resistance level at $400.",
+      "risk": "EV market margin pressures and regulatory delays in autonomous driving."
     },
     {
-      "ticker": "SNDK",
-      "company": "Sandisk Corporation",
-      "sector": "Broader Market",
-      "source_group": "Market Mover",
-      "action": "Tactical Swing Buy",
-      "sentiment_score": 74,
-      "confidence": 76,
-      "price_snapshot": "$87.71 (+10.7% post: $88.73)",
-      "catalyst": "Citi reiterates overdone selloff in NAND/DRAM memory; tight supply dynamics expected to persist.",
-      "strategy": "Initiate initial position targeting retest of recent resistance at $95.",
-      "risk": "NAND pricing vulnerability and supply chain cost inflation."
+      "ticker": "GOOGL",
+      "company": "Alphabet Inc.",
+      "sector": "Communication Services",
+      "source_group": "Core Watchlist",
+      "action": "Strong Buy / Accumulate",
+      "sentiment_score": 82,
+      "confidence": 88,
+      "price_snapshot": "$284.75 (+7.3% post-market)",
+      "catalyst": "Gemini 4 Neon API momentum building rapidly among developers ahead of competitors.",
+      "strategy": "Accumulate as a core lower-beta AI winner offering favorable risk-reward relative to high-multiple peers.",
+      "risk": "Antitrust remedies and search market margin pressure during AI transition."
     },
     {
       "ticker": "IREN",
       "company": "IREN LIMITED",
-      "sector": "Broader Market",
+      "sector": "Technology",
       "source_group": "Market Mover",
       "action": "Trim / Avoid",
-      "sentiment_score": -15,
-      "confidence": 75,
-      "price_snapshot": "$14.64 (+23.9% post: $15.00)",
-      "catalyst": "Relief bounce offset by reports of server suppliers demanding up to 45% price increases on contracted AI deals and high debt load.",
-      "strategy": "Use relief rally to trim speculative holdings and lock in profits.",
-      "risk": "Neocloud default concerns and severe margin compression from hardware cost spikes."
-    },
-    {
-      "ticker": "INTC",
-      "company": "Intel Corporation",
-      "sector": "Technology",
-      "source_group": "Core Watchlist",
-      "action": "Watchlist / Hold",
-      "sentiment_score": 50,
+      "sentiment_score": -25,
       "confidence": 70,
-      "price_snapshot": "$59.66 (+15.0% post: $58.95)",
-      "catalyst": "Participating in major enterprise AI partnerships (Microsoft Azure EMIB) and sector relief surge.",
-      "strategy": "Hold existing positions; wait for sustained foundry yield validation before allocating new capital.",
-      "risk": "Market share loss in server CPUs and capital-intensive foundry execution."
+      "price_snapshot": "$15.00 (+23.9% post-market)",
+      "catalyst": "Short-term dead-cat bounce despite major structural risks from OEM server price hikes (+45%) and high debt financing costs.",
+      "strategy": "Use the Nvidia-led relief surge to trim speculative neocloud exposures into strength.",
+      "risk": "Potential debt defaults or margin compression among high-leverage neocloud infrastructure providers."
     }
   ],
   "top_headlines": [
@@ -149,28 +149,35 @@
       "ticker_tag": "MACRO",
       "sentiment": "Bullish",
       "title": "U.S. stocks see best day in more than a year, as return of Jensen Huang revives AI enthusiasm",
-      "url": "https://www.marketwatch.com/story/u-s-stocks-see-best-day-in-more-than-a-year-as-return-of-jensen-huang-revives-ai-enthusiasm-c3b9d274"
+      "url": "https://www.marketwatch.com/story/u-s-stocks-see-best-day-in-more-than-a-year-as-return-of-jensen-huang-revives-ai-enthusiasm-c3b9d274?mod=mw_rss_topstories"
+    },
+    {
+      "source": "CNBC Top News",
+      "ticker_tag": "MACRO",
+      "sentiment": "Bearish",
+      "title": "Iran says three tankers hit mines in Hormuz despite U.S. escort, as Treasury widens sanctions",
+      "url": "https://www.cnbc.com/2026/11/24/iran-trump-hormuz-crude-.html"
     },
     {
       "source": "Yahoo Finance (MU)",
       "ticker_tag": "MU",
       "sentiment": "Bullish",
       "title": "Micron Stock Jumps 19%. Why the Rally Has Legs.",
-      "url": "https://finance.yahoo.com/m/3f1f89c7-5433-3bc0-990f-eab9250e8983/micron-stock-jumps-19%25.-why.html"
+      "url": "https://finance.yahoo.com/m/3f1f89c7-5433-3bc0-990f-eab9250e8983/micron-stock-jumps-19%25.-why.html?.tsrc=rss"
     },
     {
       "source": "Yahoo Finance (KYMR)",
       "ticker_tag": "KYMR",
       "sentiment": "Bullish",
-      "title": "Kymera Surges 30%-Plus As It Takes On $18 Billion Blockbuster Dupixent",
-      "url": "https://finance.yahoo.com/m/84f792e3-a784-3351-95fc-6f6dc1ec2cef/kymera-surges-30%25-plus-as-it.html"
+      "title": "Kymera Therapeutics Stock Gets A Lift From Eczema Trial Success",
+      "url": "https://finance.yahoo.com/healthcare/articles/kymera-therapeutics-stock-gets-lift-042552072.html?.tsrc=rss"
     },
     {
       "source": "Yahoo Finance (IREN)",
       "ticker_tag": "IREN",
       "sentiment": "Bearish",
       "title": "Dell Wants Up to 45% More on Signed AI Deals. IREN Has a Big Problem",
-      "url": "https://www.tikr.com/blog/dell-wants-up-to-45-more-on-signed-ai-deals-iren-has-a-big-problem"
+      "url": "https://www.tikr.com/blog/dell-wants-up-to-45-more-on-signed-ai-deals-iren-has-a-big-problem?ref=yahoofinance&tlnk=yf-261123-6945q259&.tsrc=rss"
     }
   ]
 }
