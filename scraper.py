@@ -1,18 +1,22 @@
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import html
 import json
 import math
 import os
+import socket
 import xml.etree.ElementTree as ET
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
 import requests
-import yfinance as yf
 from bs4 import BeautifulSoup
 from google import genai
 from google.genai import types
 
-# 1. Core stocks & ETFs (always scanned regardless of daily volume)
+# Hard 10-second network timeout so no library can ever hang a GitHub Actions runner
+socket.setdefaulttimeout(10)
+
+# 1. Core stocks & ETFs (always scanned)
 CORE_WATCHLIST = [
     "NVDA", "AVGO", "MU", "INTC", "GOOGL",
     "META", "AAPL", "AMZN", "TSLA", "PLTR", "VUAA.L"
@@ -25,11 +29,11 @@ MARKET_RSS_FEEDS = [
     ("MarketWatch Top Stories", "https://feeds.content.dowjones.io/public/rss/mw_topstories"),
 ]
 
-# 3. Free-tier supported models tried in order
+# 3. Valid public Google AI Studio model IDs
 GEMINI_MODELS = [
-    "gemini-3.8-flash",
-    "gemini-3.5-flash-lite",
-    "gemini-3.6-flash",
+    "gemini-2.5-flash",
+    "gemini-2.5-flash-lite",
+    "gemini-2.0-flash",
 ]
 
 HEADERS = {
@@ -57,25 +61,63 @@ def detect_session() -> tuple[str, str]:
     return session, now_et.strftime("%Y-%m-%d %H:%M %Z")
 
 
-def fetch_rss_items(url: str, source_name: str, limit: int = 6) -> list[dict]:
+def fetch_rss_items(url: str, source_name: str, limit: int = 5) -> list[dict]:
     items = []
     try:
-        resp = requests.get(url, headers=HEADERS, timeout=12)
+        resp = requests.get(url, headers=HEADERS, timeout=8)
         resp.raise_for_status()
         root = ET.fromstring(resp.content)
         for item in root.findall(".//item")[:limit]:
             title = (item.findtext("title") or "").strip()
             link = (item.findtext("link") or "").strip()
             desc_raw = item.findtext("description") or ""
-            desc = BeautifulSoup(desc_raw, "html.parser").get_text(" ", strip=True)[:240]
+            desc = BeautifulSoup(desc_raw, "html.parser").get_text(" ", strip=True)[:180]
             if title:
                 items.append({"source": source_name, "title": title, "summary": desc, "url": link})
     except Exception as exc:
-        print(f"[WARN] RSS fetch skipped for {source_name}: {exc}", flush=True)
+        print(f"[WARN] RSS skipped for {source_name}: {exc}", flush=True)
     return items
 
 
-def discover_market_movers(limit_per_screen: int = 6) -> list[dict]:
+def fetch_ticker_quote(ticker: str) -> dict | None:
+    """Fetches Pre/Open/Post-Market prices directly from Yahoo Finance chart JSON."""
+    for host in ("query1.finance.yahoo.com", "query2.finance.yahoo.com"):
+        url = f"https://{host}/v8/finance/chart/{ticker}?range=5d&interval=1d&includePrePost=true"
+        try:
+            resp = requests.get(url, headers=HEADERS, timeout=8)
+            resp.raise_for_status()
+            result = (resp.json().get("chart", {}).get("result") or [None])[0]
+            if not result:
+                continue
+            meta = result.get("meta", {})
+            prev_close = clean_num(meta.get("previousClose") or meta.get("chartPreviousClose"))
+            reg_price = clean_num(meta.get("regularMarketPrice"))
+            pre_price = clean_num(meta.get("preMarketPrice"))
+            post_price = clean_num(meta.get("postMarketPrice"))
+
+            active_price = pre_price or post_price or reg_price
+            pct_change = None
+            if active_price and prev_close:
+                pct_change = round(((active_price - prev_close) / prev_close) * 100, 2)
+
+            return {
+                "ticker": ticker,
+                "name": meta.get("shortName") or meta.get("longName") or ticker,
+                "sector": meta.get("instrumentType") or "Core Watchlist",
+                "source_group": "Core Watchlist",
+                "regular_price": reg_price,
+                "pre_market_price": pre_price,
+                "post_market_price": post_price,
+                "prev_close": prev_close,
+                "active_change_pct": pct_change,
+            }
+        except Exception:
+            continue
+    print(f"[WARN] Quote fetch skipped for {ticker}", flush=True)
+    return None
+
+
+def discover_market_movers(limit_per_screen: int = 5) -> list[dict]:
     """Auto-discovers top gainers and most active stocks across all sectors."""
     discovered: dict[str, dict] = {}
     screens = [
@@ -84,9 +126,13 @@ def discover_market_movers(limit_per_screen: int = 6) -> list[dict]:
     ]
 
     for label, screen_key in screens:
+        url = f"https://query1.finance.yahoo.com/v1/finance/screener/predefined/saved?formatted=false&scrIds={screen_key}&count={limit_per_screen}"
         try:
-            res = yf.screen(screen_key, count=limit_per_screen)
-            for q in res.get("quotes", []):
+            resp = requests.get(url, headers=HEADERS, timeout=8)
+            resp.raise_for_status()
+            results = resp.json().get("finance", {}).get("result") or []
+            quotes = results[0].get("quotes", []) if results else []
+            for q in quotes:
                 sym = (q.get("symbol") or "").strip()
                 if not sym or "^" in sym or "=" in sym:
                     continue
@@ -112,73 +158,80 @@ def discover_market_movers(limit_per_screen: int = 6) -> list[dict]:
 def collect_market_intelligence(core_tickers: list[str]) -> tuple[list[dict], list[dict]]:
     quotes = []
     headlines = []
-    seen_tickers = set()
+    seen_tickers = {t.upper() for t in core_tickers}
 
-    for source_name, feed_url in MARKET_RSS_FEEDS:
-        headlines.extend(fetch_rss_items(feed_url, source_name, limit=6))
+    # Fetch all core quotes and RSS feeds in parallel (~3 seconds total)
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        quote_futures = {pool.submit(fetch_ticker_quote, t): t for t in core_tickers}
+        rss_futures = [
+            pool.submit(fetch_rss_items, url, name, 5)
+            for name, url in MARKET_RSS_FEEDS
+        ]
+        for t in core_tickers:
+            rss_url = f"https://feeds.finance.yahoo.com/rss/2.0/headline?s={t}&region=US&lang=en-US"
+            rss_futures.append(pool.submit(fetch_rss_items, rss_url, f"Yahoo Finance ({t})", 3))
 
-    for ticker in core_tickers:
-        seen_tickers.add(ticker.upper())
-        try:
-            tk = yf.Ticker(ticker)
-            info = tk.info or {}
-            prev_close = clean_num(info.get("previousClose") or info.get("regularMarketPreviousClose"))
-            reg_price = clean_num(info.get("regularMarketPrice") or info.get("currentPrice"))
-            pre_price = clean_num(info.get("preMarketPrice"))
-            post_price = clean_num(info.get("postMarketPrice"))
+        for fut in as_completed(quote_futures):
+            q = fut.result()
+            if q:
+                quotes.append(q)
 
-            active_price = pre_price or post_price or reg_price
-            pct_change = None
-            if active_price and prev_close:
-                pct_change = round(((active_price - prev_close) / prev_close) * 100, 2)
+        for fut in as_completed(rss_futures):
+            headlines.extend(fut.result())
 
-            quotes.append({
-                "ticker": ticker,
-                "name": info.get("shortName", ticker),
-                "sector": info.get("sector") or info.get("category") or "Core Watchlist",
-                "source_group": "Core Watchlist",
-                "regular_price": reg_price,
-                "pre_market_price": pre_price,
-                "post_market_price": post_price,
-                "prev_close": prev_close,
-                "active_change_pct": pct_change,
-            })
-        except Exception as exc:
-            print(f"[WARN] Price fetch failed for {ticker}: {exc}", flush=True)
-
-        yahoo_rss = f"https://feeds.finance.yahoo.com/rss/2.0/headline?s={ticker}&region=US&lang=en-US"
-        headlines.extend(fetch_rss_items(yahoo_rss, f"Yahoo Finance ({ticker})", limit=4))
-
-    movers = discover_market_movers(limit_per_screen=6)
-    extra_added = 0
+    # Discover top movers across all sectors and fetch their headlines in parallel
+    movers = discover_market_movers(limit_per_screen=5)
+    extra_movers = []
     for mover in movers:
         sym = mover["ticker"].upper()
-        if sym in seen_tickers:
-            continue
-        seen_tickers.add(sym)
-        quotes.append(mover)
-        yahoo_rss = f"https://feeds.finance.yahoo.com/rss/2.0/headline?s={sym}&region=US&lang=en-US"
-        headlines.extend(fetch_rss_items(yahoo_rss, f"Yahoo Finance ({sym})", limit=4))
-        extra_added += 1
-        if extra_added >= 10:
+        if sym not in seen_tickers:
+            seen_tickers.add(sym)
+            quotes.append(mover)
+            extra_movers.append(sym)
+        if len(extra_movers) >= 8:
             break
+
+    if extra_movers:
+        with ThreadPoolExecutor(max_workers=6) as pool:
+            mover_rss = [
+                pool.submit(
+                    fetch_rss_items,
+                    f"https://feeds.finance.yahoo.com/rss/2.0/headline?s={sym}&region=US&lang=en-US",
+                    f"Yahoo Finance ({sym})",
+                    2,
+                )
+                for sym in extra_movers
+            ]
+            for fut in as_completed(mover_rss):
+                headlines.extend(fut.result())
 
     return quotes, headlines
 
 
 def analyze_with_gemini(session: str, timestamp_et: str, quotes: list[dict], headlines: list[dict]) -> dict:
-    client = genai.Client(http_options=types.HttpOptions(api_version="v1beta"))
+    api_key = (os.getenv("GEMINI_API_KEY") or "").strip()
+    if not api_key:
+        raise ValueError("GEMINI_API_KEY secret is empty or missing in GitHub repository settings.")
+
+    client = genai.Client(
+        api_key=api_key,
+        http_options=types.HttpOptions(api_version="v1beta"),
+    )
+
+    compact_headlines = [
+        {"source": h["source"], "title": h["title"], "url": h["url"]}
+        for h in headlines[:45]
+    ]
 
     prompt = f"""
-You are a senior quantitative equity analyst. Analyze the live stock quotes (covering both the user's Core Watchlist and Auto-Discovered Market Movers across all sectors) and scraped financial headlines below for the current US market session: {session} ({timestamp_et}).
+You are a senior quantitative equity analyst. Analyze these live stock quotes and headlines for US market session: {session} ({timestamp_et}).
+Rank 8 to 10 actionable setups across BOTH Core Watchlist and Market Movers.
 
-Evaluate sentiment across pre-market, intraday, and post-market catalysts, filter out clickbait noise, and rank the 8 to 12 most actionable investment setups across BOTH the Core Watchlist and Auto-Discovered Market Movers.
-
-Return ONLY valid JSON matching this exact schema:
+Return ONLY valid JSON matching this schema:
 {{
   "market_mood": "Bullish | Cautiously Bullish | Neutral / Mixed | Risk-Off Bearish",
-  "overall_sentiment_score": <integer from -100 to 100>,
-  "executive_summary": "<2-3 sentence synthesis of macro and cross-sector drivers right now>",
+  "overall_sentiment_score": <integer -100 to 100>,
+  "executive_summary": "<2-3 sentence synthesis of macro and sector drivers>",
   "recommendations": [
     {{
       "ticker": "<TICKER>",
@@ -186,11 +239,11 @@ Return ONLY valid JSON matching this exact schema:
       "sector": "<Sector>",
       "source_group": "Core Watchlist | Market Mover",
       "action": "Strong Buy / Accumulate | Tactical Swing Buy | Watchlist / Hold | Trim / Avoid",
-      "sentiment_score": <integer from -100 to 100>,
-      "confidence": <integer from 1 to 100>,
-      "price_snapshot": "<e.g. $142.50 (+2.4% pre-market)>",
-      "catalyst": "<Specific catalyst from scraped data>",
-      "strategy": "<Concrete entry/position sizing note>",
+      "sentiment_score": <integer -100 to 100>,
+      "confidence": <integer 1 to 100>,
+      "price_snapshot": "<e.g. $142.50 (+2.4%)>",
+      "catalyst": "<Specific catalyst from headlines>",
+      "strategy": "<Concrete entry/position note>",
       "risk": "<Primary downside risk>"
     }}
   ],
@@ -205,35 +258,87 @@ Return ONLY valid JSON matching this exact schema:
   ]
 }}
 
-LIVE QUOTES ({len(quotes)} tickers):
-{json.dumps(quotes, indent=2)}
+QUOTES:
+{json.dumps(quotes)}
 
-SCRAPED HEADLINES ({len(headlines)} items):
-{json.dumps(headlines[:85], indent=2)}
+HEADLINES:
+{json.dumps(compact_headlines)}
 """
 
     last_err = None
     for model_name in GEMINI_MODELS:
         try:
             print(f"Requesting analysis from {model_name}...", flush=True)
-            response = client.models.generate_content(
-                model=model_name,
-                contents=prompt,
-                config=types.GenerateContentConfig(
-                    response_mime_type="application/json",
-                ),
-            )
+            with ThreadPoolExecutor(max_workers=1) as pool:
+                future = pool.submit(
+                    client.models.generate_content,
+                    model=model_name,
+                    contents=prompt,
+                    config=types.GenerateContentConfig(
+                        response_mime_type="application/json",
+                        temperature=0.2,
+                    ),
+                )
+                response = future.result(timeout=30)
+
             raw_text = (response.text or "").strip()
             if not raw_text:
-                raise ValueError(f"Empty response returned by {model_name}")
+                raise ValueError(f"Empty response from {model_name}")
             if raw_text.startswith("```"):
                 raw_text = raw_text.split("\n", 1)[1].rsplit("```", 1)[0].strip()
-            return json.loads(raw_text)
+            parsed = json.loads(raw_text)
+            parsed["model_used"] = model_name
+            return parsed
         except Exception as exc:
             print(f"[WARN] Model {model_name} failed: {exc}", flush=True)
             last_err = exc
 
-    raise RuntimeError(f"All Gemini models failed. Last error: {last_err}")
+    raise RuntimeError(str(last_err))
+
+
+def build_fallback_analysis(error_msg: str, quotes: list[dict], headlines: list[dict]) -> dict:
+    """Publishes raw scraped quotes & headlines with diagnostic info if Gemini API errors."""
+    recs = []
+    for q in quotes[:12]:
+        price = q.get("pre_market_price") or q.get("post_market_price") or q.get("regular_price")
+        chg = q.get("active_change_pct")
+        snap = f"${price:.2f}" if isinstance(price, (int, float)) else "N/A"
+        if isinstance(chg, (int, float)):
+            snap += f" ({chg:+.2f}%)"
+        recs.append({
+            "ticker": q.get("ticker", ""),
+            "company": q.get("name", ""),
+            "sector": q.get("sector", "Market"),
+            "source_group": q.get("source_group", "Watchlist"),
+            "action": "Watchlist / Hold",
+            "sentiment_score": 0,
+            "confidence": 0,
+            "price_snapshot": snap,
+            "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
+            "strategy": "Check API status banner above.",
+            "risk": "AI scoring skipped on this run.",
+        })
+
+    top_news = [
+        {
+            "source": h.get("source", ""),
+            "ticker_tag": "WIRE",
+            "sentiment": "Neutral",
+            "title": h.get("title", ""),
+            "url": h.get("url", "#"),
+        }
+        for h in headlines[:18]
+    ]
+
+    return {
+        "api_error": error_msg,
+        "model_used": "Fallback (Raw Feed)",
+        "market_mood": "Feed Active (AI Pending)",
+        "overall_sentiment_score": 0,
+        "executive_summary": "Live stock quotes and RSS headlines were scraped successfully, but Gemini AI returned an error (see red diagnostic box above).",
+        "recommendations": recs,
+        "top_headlines": top_news,
+    }
 
 
 def badge_color(action: str) -> str:
@@ -248,6 +353,14 @@ def badge_color(action: str) -> str:
 
 
 def render_html(session: str, timestamp_et: str, data: dict) -> str:
+    error_banner = ""
+    if data.get("api_error"):
+        error_banner = f"""
+        <div class="err-banner">
+          <strong>Gemini API Diagnostic:</strong> {html.escape(data['api_error'])}
+        </div>
+        """
+
     recs_html = ""
     for rec in data.get("recommendations", []):
         color = badge_color(rec.get("action", ""))
@@ -292,6 +405,8 @@ def render_html(session: str, timestamp_et: str, data: dict) -> str:
         </li>
         """
 
+    model_label = html.escape(data.get("model_used", "Gemini AI"))
+
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -304,6 +419,7 @@ def render_html(session: str, timestamp_et: str, data: dict) -> str:
     header {{ display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; border-bottom:1px solid #1e293b; padding-bottom:16px; margin-bottom:20px; }}
     h1 {{ margin:0; font-size:1.5rem; color:#f8fafc; }}
     .meta {{ color:#94a3b8; font-size:0.9rem; margin-top:4px; }}
+    .err-banner {{ background:#450a0a; border:1px solid #ef4444; color:#fecaca; padding:14px 16px; border-radius:8px; margin-bottom:18px; font-size:0.88rem; word-break:break-word; }}
     .banner {{ background:#111827; border:1px solid #1e293b; border-left:4px solid #3b82f6; padding:16px; border-radius:8px; margin-bottom:24px; }}
     .grid {{ display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:16px; margin-bottom:28px; }}
     .card {{ background:#111827; border:1px solid #1e293b; border-radius:10px; padding:16px; }}
@@ -338,6 +454,7 @@ def render_html(session: str, timestamp_et: str, data: dict) -> str:
         <strong>Mood:</strong> {html.escape(data.get('market_mood', 'Neutral'))} ({data.get('overall_sentiment_score', 0):+d}/100)
       </div>
     </header>
+    {error_banner}
     <div class="banner">
       <strong>Executive Synthesis:</strong> {html.escape(data.get('executive_summary', ''))}
     </div>
@@ -345,7 +462,7 @@ def render_html(session: str, timestamp_et: str, data: dict) -> str:
     <div class="grid">{recs_html}</div>
     <h2>Scraped Wire Headlines</h2>
     <ul class="wire">{news_html}</ul>
-    <footer>Generated automatically via GitHub Actions &amp; Gemini AI. For informational research only, not financial advice.</footer>
+    <footer>Generated automatically via GitHub Actions &amp; {model_label}. For informational research only, not financial advice.</footer>
   </div>
 </body>
 </html>"""
@@ -355,8 +472,13 @@ def main() -> None:
     session, timestamp_et = detect_session()
     print(f"Running {session} scan at {timestamp_et}...", flush=True)
     quotes, headlines = collect_market_intelligence(CORE_WATCHLIST)
-    print(f"Collected {len(quotes)} quotes (watchlist + market movers) and {len(headlines)} headlines.", flush=True)
-    analysis = analyze_with_gemini(session, timestamp_et, quotes, headlines)
+    print(f"Collected {len(quotes)} quotes and {len(headlines)} headlines.", flush=True)
+
+    try:
+        analysis = analyze_with_gemini(session, timestamp_et, quotes, headlines)
+    except Exception as exc:
+        print(f"[ERROR] Gemini analysis failed: {exc}", flush=True)
+        analysis = build_fallback_analysis(str(exc), quotes, headlines)
 
     os.makedirs("docs", exist_ok=True)
     with open("docs/index.html", "w", encoding="utf-8") as f:
@@ -368,6 +490,8 @@ def main() -> None:
     if summary_path:
         with open(summary_path, "a", encoding="utf-8") as sf:
             sf.write(f"## {session} ({timestamp_et})\n\n")
+            if analysis.get("api_error"):
+                sf.write(f"> **Gemini API Diagnostic:** `{analysis['api_error']}`\n\n")
             sf.write(f"**Market Mood:** {analysis.get('market_mood')} ({analysis.get('overall_sentiment_score')}/100)\n\n")
             sf.write(f"{analysis.get('executive_summary')}\n\n")
             for r in analysis.get("recommendations", []):
