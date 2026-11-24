@@ -1,143 +1,178 @@
 {
   "session": "Overnight / Extended Wire",
-  "updated_et": "2026-11-24 01:21 EST",
+  "updated_et": "2026-11-24 01:34 EST",
   "market_mood": "Bullish",
   "overall_sentiment_score": 85,
-  "executive_summary": "The market experienced a powerful relief and momentum rally, posting its best session since April 2025 following the surprise reinstatement of Jensen Huang as CEO of Nvidia. This dramatic reversal completely neutralized recent artificial intelligence spending fears, igniting massive double-digit gains across major semiconductor, cloud infrastructure, and software equities.",
+  "executive_summary": "The market is experiencing a significant AI-driven relief rally, largely catalyzed by Jensen Huang's return to Nvidia, which has ignited enthusiasm across the semiconductor and AI software sectors. U.S. stocks saw their best day in over a year, with key AI beneficiaries showing strong momentum, despite some overnight profit-taking in a few names. This suggests a rotation into pure-play AI and chip stocks, while some broader tech names face headwinds.",
   "recommendations": [
     {
       "ticker": "NVDA",
       "company": "NVIDIA Corporation",
-      "sector": "Technology",
-      "source_group": "Core Watchlist",
-      "action": "Strong Buy / Accumulate",
-      "sentiment_score": 95,
-      "confidence": 95,
-      "price_snapshot": "$165.05 (+32.87%)",
-      "catalyst": "Jensen Huang officially reinstated as CEO following White House and board alignment, instantly restoring faith in the AI hardware trade.",
-      "strategy": "Scale in on minor intraday pullbacks; maintain trailing stops to protect short-term parabolic gains.",
-      "risk": "Governance oversight questions and elevated valuation scrutiny following rapid volatility."
-    },
-    {
-      "ticker": "MU",
-      "company": "Micron Technology, Inc.",
-      "sector": "Technology",
+      "sector": "Technology (Semiconductors/AI)",
       "source_group": "Core Watchlist",
       "action": "Strong Buy / Accumulate",
       "sentiment_score": 90,
-      "confidence": 90,
-      "price_snapshot": "$707.70 (+18.92%)",
-      "catalyst": "Rallied strongly on heavy volume as Nvidia's leadership reversal entirely dispelled near-term memory demand and AI spending fears.",
-      "strategy": "Accumulate on consolidation above the $680 level targeting a continuation toward prior highs.",
-      "risk": "High sensitivity to broader technology sector corrections and cyclical memory pricing expectations."
-    },
-    {
-      "ticker": "PLTR",
-      "company": "Palantir Technologies Inc.",
-      "sector": "Technology",
-      "source_group": "Core Watchlist",
-      "action": "Tactical Swing Buy",
-      "sentiment_score": 82,
-      "confidence": 85,
-      "price_snapshot": "$159.36 (+11.51%)",
-      "catalyst": "Spearheaded a broad software and enterprise AI rebound, riding the coattails of the overarching Jensen-led tech euphoria.",
-      "strategy": "Take tactical long positions with disciplined profit targets while monitoring upcoming executive share sale schedules.",
-      "risk": "Stretched valuation multiples and high expectations embedded in Rule of 40 growth metrics."
-    },
-    {
-      "ticker": "TSLA",
-      "company": "Tesla, Inc.",
-      "sector": "Consumer Cyclical",
-      "source_group": "Core Watchlist",
-      "action": "Tactical Swing Buy",
-      "sentiment_score": 80,
-      "confidence": 80,
-      "price_snapshot": "$385.46 (+12.24%)",
-      "catalyst": "Surged alongside Musk-linked assets and broader market enthusiasm, backed by structural tailwinds in European EV registrations.",
-      "strategy": "Enter on intraday weakness, scaling position size to manage high-beta volatility.",
-      "risk": "Macro headwinds affecting automotive pricing and intense global competition in the electric vehicle sector."
-    },
-    {
-      "ticker": "KYMR",
-      "company": "Kymera Therapeutics, Inc.",
-      "sector": "Broader Market",
-      "source_group": "Market Mover",
-      "action": "Strong Buy / Accumulate",
-      "sentiment_score": 92,
-      "confidence": 88,
-      "price_snapshot": "$150.37 (+30.41%)",
-      "catalyst": "Met all primary and secondary endpoints in the BROADEN2 Phase 2b atopic dermatitis trial for KT-621, alongside an upsized $1.75B offering.",
-      "strategy": "Build positions using strict risk limits following the massive clinical catalyst and capital raise.",
-      "risk": "Biotech clinical development risk and potential dilution impacts from capital raises."
-    },
-    {
-      "ticker": "CRDO",
-      "company": "Credo Technology Group Holding",
-      "sector": "Broader Market",
-      "source_group": "Market Mover",
-      "action": "Tactical Swing Buy",
-      "sentiment_score": 88,
-      "confidence": 84,
-      "price_snapshot": "$122.46 (+22.63%)",
-      "catalyst": "Outperformed in the AI connectivity infrastructure space, backed by Stifel's aggressive $250 price target reiteration.",
-      "strategy": "Buy on pullbacks with an eye toward multi-month technical recovery targets.",
-      "risk": "Exposed to supply chain constraints and sudden shifts in hyperscaler capital expenditure budgets."
-    },
-    {
-      "ticker": "ALAB",
-      "company": "Astera Labs, Inc.",
-      "sector": "Broader Market",
-      "source_group": "Market Mover",
-      "action": "Tactical Swing Buy",
-      "sentiment_score": 85,
-      "confidence": 82,
-      "price_snapshot": "$222.12 (+23.16%)",
-      "catalyst": "Rebounding sharply from deep oversold territory as institutional accumulation returns to AI-enabling semiconductor connectivity stocks.",
-      "strategy": "Initiate swing positions on momentum continuation above current moving averages.",
-      "risk": "High historical volatility and sensitivity to broader semiconductor inventory adjustments."
+      "confidence": 95,
+      "price_snapshot": "$165.05 (+5.71%)",
+      "catalyst": "Jensen Huang's return as CEO, renewed AI enthusiasm, widespread analyst upgrades.",
+      "strategy": "Initiate or add to long position, targeting continued AI sector leadership and momentum.",
+      "risk": "Potential for profit-taking after a sharp rally; overbought conditions."
     },
     {
       "ticker": "INTC",
       "company": "Intel Corporation",
-      "sector": "Technology",
+      "sector": "Technology (Semiconductors)",
+      "source_group": "Core Watchlist",
+      "action": "Accumulate",
+      "sentiment_score": 75,
+      "confidence": 85,
+      "price_snapshot": "$59.66 (+7.55%)",
+      "catalyst": "Strong AI sector tailwinds, upcoming investor conferences providing potential catalysts.",
+      "strategy": "Build a long position, riding the broader chip/AI rally, anticipating positive news from conferences.",
+      "risk": "Intense competition from other chipmakers; execution risk on AI strategy."
+    },
+    {
+      "ticker": "PLTR",
+      "company": "Palantir Technologies Inc.",
+      "sector": "Technology (Software/AI)",
+      "source_group": "Core Watchlist",
+      "action": "Tactical Swing Buy",
+      "sentiment_score": 85,
+      "confidence": 85,
+      "price_snapshot": "$159.36 (-0.64%)",
+      "catalyst": "AI software rebound, 'Jensen Rally' spillover, strong financial metrics (Rule of 40).",
+      "strategy": "Look for entry on this minor overnight pullback, targeting continued momentum in AI software.",
+      "risk": "High volatility inherent in growth stocks; elevated valuation."
+    },
+    {
+      "ticker": "MU",
+      "company": "Micron Technology, Inc.",
+      "sector": "Technology (Semiconductors/Memory)",
+      "source_group": "Core Watchlist",
+      "action": "Accumulate",
+      "sentiment_score": 80,
+      "confidence": 85,
+      "price_snapshot": "$707.70 (-1.57%)",
+      "catalyst": "Nvidia CEO change calming AI spending fears, direct beneficiary of AI ecosystem growth and demand for memory.",
+      "strategy": "Build position on current dip, expecting continued strength from AI-driven demand for high-bandwidth memory.",
+      "risk": "Cyclical nature of the memory market; broader tech sector slowdown."
+    },
+    {
+      "ticker": "SNDK",
+      "company": "Sandisk Corporation",
+      "sector": "Technology (Data Storage)",
+      "source_group": "Market Mover",
+      "action": "Tactical Swing Buy",
+      "sentiment_score": 70,
+      "confidence": 75,
+      "price_snapshot": "$87.71 (+10.69%)",
+      "catalyst": "Strong positive momentum, potential indirect beneficiary of massive AI data storage needs.",
+      "strategy": "Consider a short-term long position, riding momentum, with a tight stop-loss.",
+      "risk": "Lack of direct, explicit AI catalyst; potential for quick reversal after a sharp move."
+    },
+    {
+      "ticker": "ALAB",
+      "company": "Astera Labs, Inc.",
+      "sector": "Semiconductors (Data Center Connectivity)",
+      "source_group": "Market Mover: Day Gainer",
+      "action": "Watchlist / Hold",
+      "sentiment_score": 65,
+      "confidence": 70,
+      "price_snapshot": "$222.12 (+23.16%)",
+      "catalyst": "Strong day-gainer momentum, likely AI-related tailwinds in data center infrastructure.",
+      "strategy": "Observe price action for consolidation; look for confirmation of sustained AI-driven demand before committing.",
+      "risk": "High volatility typical of recent IPOs and strong movers; lack of specific news in headlines."
+    },
+    {
+      "ticker": "KYMR",
+      "company": "Kymera Therapeutics, Inc.",
+      "sector": "Biotechnology",
+      "source_group": "Market Mover: Day Gainer",
+      "action": "Watchlist / Hold",
+      "sentiment_score": 60,
+      "confidence": 65,
+      "price_snapshot": "$150.37 (+30.41%)",
+      "catalyst": "Strong day-gainer momentum, likely company-specific news not captured in provided headlines.",
+      "strategy": "Monitor for consolidation or further news; too high to chase without more fundamental information.",
+      "risk": "Lack of clear catalyst in headlines; potential for significant profit-taking after a large move."
+    },
+    {
+      "ticker": "AVGO",
+      "company": "Broadcom Inc.",
+      "sector": "Technology (Semiconductors)",
       "source_group": "Core Watchlist",
       "action": "Watchlist / Hold",
-      "sentiment_score": 72,
-      "confidence": 75,
-      "price_snapshot": "$59.66 (+14.96%)",
-      "catalyst": "Lifted significantly by the sector-wide chip rally and upcoming participation in investor conferences.",
-      "strategy": "Hold existing core allocations; wait for clearer turnaround execution in foundry operations before adding fresh capital.",
-      "risk": "Ongoing competitive pressures in both client and data center computing segments."
+      "sentiment_score": 40,
+      "confidence": 60,
+      "price_snapshot": "$313.55 (-5.95%)",
+      "catalyst": "Potential profit-taking or rotation out of some chip names into others (e.g., NVDA). Still a key AI infrastructure player.",
+      "strategy": "Monitor for stabilization and signs of reversal; potential for dip buying if the long-term AI thesis remains strong.",
+      "risk": "Continued rotation out of the stock; broader tech sector weakness impacting valuations."
+    },
+    {
+      "ticker": "META",
+      "company": "Meta Platforms, Inc.",
+      "sector": "Technology (Social Media/Ad Tech)",
+      "source_group": "Core Watchlist",
+      "action": "Trim / Avoid",
+      "sentiment_score": -30,
+      "confidence": 70,
+      "price_snapshot": "$597.60 (-4.6%)",
+      "catalyst": "Potential overhang from warrants/resale tied to OpenAI, suggesting dilution concerns or market skepticism.",
+      "strategy": "Reduce exposure or avoid new positions until clarity on warrant impact and price stabilization.",
+      "risk": "Further selling pressure; negative sentiment from warrant news or broader tech rotation."
     }
   ],
   "top_headlines": [
     {
-      "source": "CNBC Top News",
-      "ticker_tag": "NVDA",
-      "sentiment": "Bullish",
-      "title": "Trump sealed deal for Nvidia to rehire Jensen Huang as CEO",
-      "url": "https://www.cnbc.com/2026/11/23/trump-nvidia-jensen-huang.html"
-    },
-    {
       "source": "MarketWatch Top Stories",
-      "ticker_tag": "NVDA",
+      "ticker_tag": "MACRO",
       "sentiment": "Bullish",
       "title": "U.S. stocks see best day in more than a year, as return of Jensen Huang revives AI enthusiasm",
       "url": "https://www.marketwatch.com/story/u-s-stocks-see-best-day-in-more-than-a-year-as-return-of-jensen-huang-revives-ai-enthusiasm-c3b9d274?mod=mw_rss_topstories"
     },
     {
-      "source": "Yahoo Finance (KYMR)",
-      "ticker_tag": "KYMR",
+      "source": "MarketWatch Top Stories",
+      "ticker_tag": "NVDA",
       "sentiment": "Bullish",
-      "title": "Kymera Therapeutics Stock Gets A Lift From Eczema Trial Success",
-      "url": "https://finance.yahoo.com/healthcare/articles/kymera-therapeutics-stock-gets-lift-042552072.html"
+      "title": "Nvidia\u2019s stock is surging again. What to know before chasing the AI rally.",
+      "url": "https://www.marketwatch.com/story/nvidias-stock-is-surging-again-what-to-know-before-chasing-the-ai-rally-226688d7?mod=mw_rss_topstories"
     },
     {
-      "source": "CNBC Top News",
-      "ticker_tag": "MACRO",
+      "source": "Yahoo Finance (AVGO)",
+      "ticker_tag": "MU, NVDA, AVGO",
+      "sentiment": "Bullish",
+      "title": "Jensen Huang\u2019s Return Just Added About $500 Billion to Micron, Dell, TSMC and the AI Stocks That Depend on Nvidia",
+      "url": "https://247wallst.com/investing/2026/11/23/jensen-huangs-return-just-added-about-500-billion-to-micron-dell-tsmc-and-the-ai-stocks-that-depend-on-nvidia/?.tsrc=rss"
+    },
+    {
+      "source": "Yahoo Finance (PLTR)",
+      "ticker_tag": "PLTR",
+      "sentiment": "Bullish",
+      "title": "Palantir Rips 10% to Lead Software Stocks. Cloudflare and ServiceNow Also Join \u2018Jensen Rally\u2019",
+      "url": "https://247wallst.com/videos/palantir-rips-10-to-lead-software-stocks-cloudflare-and-servicenow-also-join-jensen-rally/?.tsrc=rss"
+    },
+    {
+      "source": "Yahoo Finance (INTC)",
+      "ticker_tag": "INTC",
+      "sentiment": "Neutral",
+      "title": "Intel Corporation to Participate in Upcoming Investor Conferences",
+      "url": "https://finance.yahoo.com/technology/articles/intel-corporation-participate-upcoming-investor-213000154.html?.tsrc=rss"
+    },
+    {
+      "source": "Yahoo Finance (META)",
+      "ticker_tag": "META",
       "sentiment": "Bearish",
-      "title": "Iran says three tankers hit mines in Hormuz despite U.S. escort, as Treasury widens sanctions",
-      "url": "https://www.cnbc.com/2026/11/24/iran-trump-hormuz-crude-.html"
+      "title": "AMD Stock Dips Overnight After Nvidia-Triggered Rally: AMD Registers 337M Shares For Resale Tied To OpenAI, Meta Warrants",
+      "url": "https://stocktwits.com/news-articles/markets/equity/amd-stock-dips-overnight-after-nvidia-triggered-rally-amd-registers-337-m-shares-for-resale-tied-to-open-ai-meta-warrants/cNbru6MR9jU?.tsrc=rss"
+    },
+    {
+      "source": "Yahoo Finance (AAPL)",
+      "ticker_tag": "AAPL",
+      "sentiment": "Bearish",
+      "title": "Apple's five-device plan creates an iPhone buying dilemma",
+      "url": "https://www.thestreet.com/technology/apples-five-device-plan-creates-an-iphone-buying-dilemma?.tsrc=rss"
     }
-  ]
+  ],
+  "model_used": "gemini-2.5-flash"
 }
