@@ -11,12 +11,14 @@
     h1 { margin:0; font-size:1.5rem; color:#f8fafc; }
     .meta { color:#94a3b8; font-size:0.9rem; margin-top:4px; }
     .banner { background:#111827; border:1px solid #1e293b; border-left:4px solid #3b82f6; padding:16px; border-radius:8px; margin-bottom:24px; }
-    .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(310px, 1fr)); gap:16px; margin-bottom:28px; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:16px; margin-bottom:28px; }
     .card { background:#111827; border:1px solid #1e293b; border-radius:10px; padding:16px; }
-    .card-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+    .card-top { display:flex; justify-content:space-between; align-items:flex-start; gap:8px; margin-bottom:10px; }
     .ticker { font-size:1.2rem; font-weight:700; color:#38bdf8; margin-right:8px; }
     .company { color:#94a3b8; font-size:0.85rem; }
-    .badge { padding:4px 10px; border-radius:999px; font-size:0.78rem; font-weight:600; }
+    .subtags { margin-top:4px; display:flex; flex-wrap:wrap; gap:6px; }
+    .pill { background:#1e293b; color:#94a3b8; font-size:0.72rem; padding:2px 7px; border-radius:4px; }
+    .badge { padding:4px 10px; border-radius:999px; font-size:0.78rem; font-weight:600; white-space:nowrap; }
     .metrics { display:flex; flex-wrap:wrap; gap:12px; font-size:0.82rem; color:#cbd5e1; background:#0f172a; padding:8px 10px; border-radius:6px; margin-bottom:10px; }
     p { font-size:0.88rem; line-height:1.45; margin:6px 0; }
     .risk { color:#fca5a5; }
@@ -36,75 +38,87 @@
     <header>
       <div>
         <h1>AlphaScrape AI — Automated Market Intelligence</h1>
-        <div class="meta">Session: <strong>Overnight / Extended Wire</strong> &bull; Updated: <strong>2026-11-21 23:53 EST</strong></div>
+        <div class="meta">Session: <strong>Overnight / Extended Wire</strong> &bull; Updated: <strong>2026-11-23 20:54 EST</strong></div>
       </div>
       <div>
-        <strong>Mood:</strong> Risk-Off Bearish (-52/100)
+        <strong>Mood:</strong> Bullish (+82/100)
       </div>
     </header>
     <div class="banner">
-      <strong>Executive Synthesis:</strong> US equity markets are experiencing severe tech capitulation, marking the worst weekly pullback for megacap tech since 2020. Semiconductor heavyweights NVDA, AVGO, and MU suffered double-digit daily declines amid rising skepticism over massive AI capital expenditures and macro rotation into defensive non-tech sectors. Despite heavy regular-session liquidation, selective institutional buying (Tepper, Wood) and minor post-market price stabilization suggest an impending tactical relief bounce.
+      <strong>Executive Synthesis:</strong> The broader US market experienced a historic tech-led surge following Nvidia&#x27;s unanimous reinstatement of Jensen Huang as CEO, igniting a massive relief rally across artificial intelligence hardware, software, and semiconductor supply chains. The Nasdaq and S&amp;P 500 recorded their strongest single-session gains in over a year, lifting both megacap tech core watchlist names and oversold high-beta market movers. While macro sentiment is overwhelmingly risk-on, investors should remain attentive to emerging Congressional scrutiny over tech governance and selective capital raises in biotechs like Kymera.
     </div>
-    <h2>Actionable Watchlist Signals</h2>
+    <h2>Actionable Watchlist &amp; Market Mover Signals</h2>
     <div class="grid">
         <div class="card">
           <div class="card-top">
             <div>
               <span class="ticker">NVDA</span>
               <span class="company">NVIDIA Corporation</span>
-            </div>
-            <span class="badge" style="background:#3b82f622; color:#3b82f6; border:1px solid #3b82f655;">
-              Tactical Swing Buy
-            </span>
-          </div>
-          <div class="metrics">
-            <span><strong>Price:</strong> $130.01 (+3.6% post-market, -10.9% reg)</span>
-            <span><strong>Sentiment:</strong> -20/100</span>
-            <span><strong>Confidence:</strong> 78%</span>
-          </div>
-          <p><strong>Catalyst:</strong> Stock trades at ~15x earnings after deep multi-week drawdown; 13F filings show fresh accumulation from David Tepper and Cathie Wood.</p>
-          <p><strong>Action Plan:</strong> Scale in via partial tranches near $125-$130 range; restrict position size to 3% max pending broader tech market stabilization.</p>
-          <p class="risk"><strong>Key Risk:</strong> Hyperscaler AI capex deceleration and ongoing semiconductor sector rotation.</p>
-        </div>
-        
-        <div class="card">
-          <div class="card-top">
-            <div>
-              <span class="ticker">AVGO</span>
-              <span class="company">Broadcom Inc.</span>
-            </div>
-            <span class="badge" style="background:#f59e0b22; color:#f59e0b; border:1px solid #f59e0b55;">
-              Watchlist / Hold
-            </span>
-          </div>
-          <div class="metrics">
-            <span><strong>Price:</strong> $311.51 (+2.3% post-market, -10.1% reg)</span>
-            <span><strong>Sentiment:</strong> -30/100</span>
-            <span><strong>Confidence:</strong> 72%</span>
-          </div>
-          <p><strong>Catalyst:</strong> Sharply oversold ahead of Dec. 9 earnings release despite long-term tailwinds in custom AI ASICs and networking hardware.</p>
-          <p><strong>Action Plan:</strong> Monitor technical support levels around $300 before opening a pre-earnings swing position.</p>
-          <p class="risk"><strong>Key Risk:</strong> Broader AI infrastructure derisking and high institutional supply pressure.</p>
-        </div>
-        
-        <div class="card">
-          <div class="card-top">
-            <div>
-              <span class="ticker">META</span>
-              <span class="company">Meta Platforms, Inc.</span>
+              <div class="subtags">
+                <span class="pill">Core Watchlist</span>
+                <span class="pill">Technology</span>
+              </div>
             </div>
             <span class="badge" style="background:#10b98122; color:#10b981; border:1px solid #10b98155;">
               Strong Buy / Accumulate
             </span>
           </div>
           <div class="metrics">
-            <span><strong>Price:</strong> $567.50 (+1.2% post-market, -4.8% reg)</span>
-            <span><strong>Sentiment:</strong> +10/100</span>
-            <span><strong>Confidence:</strong> 81%</span>
+            <span><strong>Price:</strong> $165.05 (+32.9% post: $166.79)</span>
+            <span><strong>Sentiment:</strong> +95/100</span>
+            <span><strong>Confidence:</strong> 92%</span>
           </div>
-          <p><strong>Catalyst:</strong> Core digital ad revenue remains resilient (+26% growth), providing cash flow downside buffer despite heavy $145B AI capex spend.</p>
-          <p><strong>Action Plan:</strong> Accumulate on pullbacks near range support; hold for long-term ad-tech monetization efficiency.</p>
-          <p class="risk"><strong>Key Risk:</strong> Free cash flow compression resulting from aggressive AI infrastructure buildouts.</p>
+          <p><strong>Catalyst:</strong> Board unanimously reinstates Jensen Huang as CEO following White House assurances, resolving leadership uncertainty.</p>
+          <p><strong>Action Plan:</strong> Accumulate on shallow pullbacks near $160-$162; size up core position given restored institutional confidence in AI roadmaps.</p>
+          <p class="risk"><strong>Key Risk:</strong> Bipartisan Congressional pushback regarding national security clearance and supply chain oversight.</p>
+        </div>
+        
+        <div class="card">
+          <div class="card-top">
+            <div>
+              <span class="ticker">MU</span>
+              <span class="company">Micron Technology, Inc.</span>
+              <div class="subtags">
+                <span class="pill">Core Watchlist</span>
+                <span class="pill">Technology</span>
+              </div>
+            </div>
+            <span class="badge" style="background:#10b98122; color:#10b981; border:1px solid #10b98155;">
+              Strong Buy / Accumulate
+            </span>
+          </div>
+          <div class="metrics">
+            <span><strong>Price:</strong> $707.70 (+18.9% post: $706.99)</span>
+            <span><strong>Sentiment:</strong> +88/100</span>
+            <span><strong>Confidence:</strong> 89%</span>
+          </div>
+          <p><strong>Catalyst:</strong> Rebound in AI spending outlook and tight high-bandwidth memory (HBM) DRAM supply through 2028 confirmed by Wall Street.</p>
+          <p><strong>Action Plan:</strong> Initiate core accumulation; HBM pricing power provides multi-quarter earnings tailwind.</p>
+          <p class="risk"><strong>Key Risk:</strong> Cyclical downturn in broader consumer memory markets.</p>
+        </div>
+        
+        <div class="card">
+          <div class="card-top">
+            <div>
+              <span class="ticker">KYMR</span>
+              <span class="company">Kymera Therapeutics, Inc.</span>
+              <div class="subtags">
+                <span class="pill">Market Mover</span>
+                <span class="pill">Broader Market</span>
+              </div>
+            </div>
+            <span class="badge" style="background:#3b82f622; color:#3b82f6; border:1px solid #3b82f655;">
+              Tactical Swing Buy
+            </span>
+          </div>
+          <div class="metrics">
+            <span><strong>Price:</strong> $150.37 (+30.4% post: $154.49)</span>
+            <span><strong>Sentiment:</strong> +75/100</span>
+            <span><strong>Confidence:</strong> 78%</span>
+          </div>
+          <p><strong>Catalyst:</strong> Positive 16-week Phase 2b BROADEN2 trial data for oral KT-621 rivaling Dupixent efficacy; follow-on public offering launched.</p>
+          <p><strong>Action Plan:</strong> Wait for secondary offering price digest, then enter swing positions near $145-$150 zone.</p>
+          <p class="risk"><strong>Key Risk:</strong> Dilution from announced public offering and clinical trial safety risks in Phase 3.</p>
         </div>
         
         <div class="card">
@@ -112,59 +126,207 @@
             <div>
               <span class="ticker">PLTR</span>
               <span class="company">Palantir Technologies Inc.</span>
+              <div class="subtags">
+                <span class="pill">Core Watchlist</span>
+                <span class="pill">Technology</span>
+              </div>
+            </div>
+            <span class="badge" style="background:#10b98122; color:#10b981; border:1px solid #10b98155;">
+              Strong Buy / Accumulate
+            </span>
+          </div>
+          <div class="metrics">
+            <span><strong>Price:</strong> $159.36 (+11.5% post: $159.99)</span>
+            <span><strong>Sentiment:</strong> +85/100</span>
+            <span><strong>Confidence:</strong> 86%</span>
+          </div>
+          <p><strong>Catalyst:</strong> Enterprise AI software sector rally led by 158% Rule-of-40 performance and strong 2026 guidance.</p>
+          <p><strong>Action Plan:</strong> Dollar-cost average into positions; target long-term enterprise AI adoption expansion.</p>
+          <p class="risk"><strong>Key Risk:</strong> Elevated valuation multiples and insider share sales.</p>
+        </div>
+        
+        <div class="card">
+          <div class="card-top">
+            <div>
+              <span class="ticker">ALAB</span>
+              <span class="company">Astera Labs, Inc.</span>
+              <div class="subtags">
+                <span class="pill">Market Mover</span>
+                <span class="pill">Broader Market</span>
+              </div>
+            </div>
+            <span class="badge" style="background:#3b82f622; color:#3b82f6; border:1px solid #3b82f655;">
+              Tactical Swing Buy
+            </span>
+          </div>
+          <div class="metrics">
+            <span><strong>Price:</strong> $222.12 (+23.2% post: $224.04)</span>
+            <span><strong>Sentiment:</strong> +80/100</span>
+            <span><strong>Confidence:</strong> 82%</span>
+          </div>
+          <p><strong>Catalyst:</strong> Technical turnaround from oversold 60% drawdown as high-speed data center connectivity demand re-accelerates.</p>
+          <p><strong>Action Plan:</strong> Swing buy on breakout confirmation above $220 with tight stop-loss at $205.</p>
+          <p class="risk"><strong>Key Risk:</strong> High volatility due to customer concentration in tier-1 hyper-scalers.</p>
+        </div>
+        
+        <div class="card">
+          <div class="card-top">
+            <div>
+              <span class="ticker">CRDO</span>
+              <span class="company">Credo Technology Group Holding</span>
+              <div class="subtags">
+                <span class="pill">Market Mover</span>
+                <span class="pill">Broader Market</span>
+              </div>
+            </div>
+            <span class="badge" style="background:#3b82f622; color:#3b82f6; border:1px solid #3b82f655;">
+              Tactical Swing Buy
+            </span>
+          </div>
+          <div class="metrics">
+            <span><strong>Price:</strong> $122.46 (+22.6% post: $123.50)</span>
+            <span><strong>Sentiment:</strong> +78/100</span>
+            <span><strong>Confidence:</strong> 80%</span>
+          </div>
+          <p><strong>Catalyst:</strong> Analyst upgrades highlighting oversold momentum, operational acceleration, and high sensitivity to AI rack connectivity demand.</p>
+          <p><strong>Action Plan:</strong> Scale into tactical swing positions targeting upside toward $140 level.</p>
+          <p class="risk"><strong>Key Risk:</strong> Execution risks in meeting aggressive second-half revenue expectations.</p>
+        </div>
+        
+        <div class="card">
+          <div class="card-top">
+            <div>
+              <span class="ticker">TSLA</span>
+              <span class="company">Tesla, Inc.</span>
+              <div class="subtags">
+                <span class="pill">Core Watchlist</span>
+                <span class="pill">Consumer Cyclical</span>
+              </div>
+            </div>
+            <span class="badge" style="background:#3b82f622; color:#3b82f6; border:1px solid #3b82f655;">
+              Tactical Swing Buy
+            </span>
+          </div>
+          <div class="metrics">
+            <span><strong>Price:</strong> $385.46 (+12.2% post: $388.15)</span>
+            <span><strong>Sentiment:</strong> +82/100</span>
+            <span><strong>Confidence:</strong> 81%</span>
+          </div>
+          <p><strong>Catalyst:</strong> Imminent wide release of Full Self-Driving v15 with Tesla Reality View interface alongside broader AI infrastructure bounce.</p>
+          <p><strong>Action Plan:</strong> Buy tactical dips above $375 key support; capture momentum ahead of FSD v15 rollout.</p>
+          <p class="risk"><strong>Key Risk:</strong> Regulatory scrutiny on autonomous software rollout and EV margin pressure.</p>
+        </div>
+        
+        <div class="card">
+          <div class="card-top">
+            <div>
+              <span class="ticker">SNDK</span>
+              <span class="company">Sandisk Corporation</span>
+              <div class="subtags">
+                <span class="pill">Market Mover</span>
+                <span class="pill">Broader Market</span>
+              </div>
+            </div>
+            <span class="badge" style="background:#3b82f622; color:#3b82f6; border:1px solid #3b82f655;">
+              Tactical Swing Buy
+            </span>
+          </div>
+          <div class="metrics">
+            <span><strong>Price:</strong> $87.71 (+10.7% post: $88.73)</span>
+            <span><strong>Sentiment:</strong> +74/100</span>
+            <span><strong>Confidence:</strong> 76%</span>
+          </div>
+          <p><strong>Catalyst:</strong> Citi reiterates overdone selloff in NAND/DRAM memory; tight supply dynamics expected to persist.</p>
+          <p><strong>Action Plan:</strong> Initiate initial position targeting retest of recent resistance at $95.</p>
+          <p class="risk"><strong>Key Risk:</strong> NAND pricing vulnerability and supply chain cost inflation.</p>
+        </div>
+        
+        <div class="card">
+          <div class="card-top">
+            <div>
+              <span class="ticker">IREN</span>
+              <span class="company">IREN LIMITED</span>
+              <div class="subtags">
+                <span class="pill">Market Mover</span>
+                <span class="pill">Broader Market</span>
+              </div>
             </div>
             <span class="badge" style="background:#ef444422; color:#ef4444; border:1px solid #ef444455;">
               Trim / Avoid
             </span>
           </div>
           <div class="metrics">
-            <span><strong>Price:</strong> $145.58 (+1.5% post-market, -5.3% reg)</span>
-            <span><strong>Sentiment:</strong> -45/100</span>
+            <span><strong>Price:</strong> $14.64 (+23.9% post: $15.00)</span>
+            <span><strong>Sentiment:</strong> -15/100</span>
             <span><strong>Confidence:</strong> 75%</span>
           </div>
-          <p><strong>Catalyst:</strong> Stock down 25% over the past month compounded by SEC filings showing CEO Alex Karp plans to sell $100M in shares.</p>
-          <p><strong>Action Plan:</strong> Trim exposure into post-market relief rallies to lock in gains and reduce high-multiple growth risk.</p>
-          <p class="risk"><strong>Key Risk:</strong> Valuation multiple compression and potential federal/defense budget delays.</p>
+          <p><strong>Catalyst:</strong> Relief bounce offset by reports of server suppliers demanding up to 45% price increases on contracted AI deals and high debt load.</p>
+          <p><strong>Action Plan:</strong> Use relief rally to trim speculative holdings and lock in profits.</p>
+          <p class="risk"><strong>Key Risk:</strong> Neocloud default concerns and severe margin compression from hardware cost spikes.</p>
+        </div>
+        
+        <div class="card">
+          <div class="card-top">
+            <div>
+              <span class="ticker">INTC</span>
+              <span class="company">Intel Corporation</span>
+              <div class="subtags">
+                <span class="pill">Core Watchlist</span>
+                <span class="pill">Technology</span>
+              </div>
+            </div>
+            <span class="badge" style="background:#f59e0b22; color:#f59e0b; border:1px solid #f59e0b55;">
+              Watchlist / Hold
+            </span>
+          </div>
+          <div class="metrics">
+            <span><strong>Price:</strong> $59.66 (+15.0% post: $58.95)</span>
+            <span><strong>Sentiment:</strong> +50/100</span>
+            <span><strong>Confidence:</strong> 70%</span>
+          </div>
+          <p><strong>Catalyst:</strong> Participating in major enterprise AI partnerships (Microsoft Azure EMIB) and sector relief surge.</p>
+          <p><strong>Action Plan:</strong> Hold existing positions; wait for sustained foundry yield validation before allocating new capital.</p>
+          <p class="risk"><strong>Key Risk:</strong> Market share loss in server CPUs and capital-intensive foundry execution.</p>
         </div>
         </div>
     <h2>Scraped Wire Headlines</h2>
     <ul class="wire">
         <li>
-          <span class="tag">MACRO</span>
-          <span class="sent">[Bearish]</span>
-          <a href="https://www.cnbc.com/2026/11/21/anthropic-ipo-tech-selloff.html" target="_blank" rel="noopener">Anthropic’s record IPO collides with tech’s worst week on Wall Street since 2020</a>
+          <span class="tag">NVDA</span>
+          <span class="sent">[Bullish]</span>
+          <a href="https://www.cnbc.com/2026/11/23/trump-nvidia-jensen-huang.html" target="_blank" rel="noopener">Trump sealed deal for Nvidia to rehire Jensen Huang as CEO</a>
           <small>— CNBC Top News</small>
         </li>
         
         <li>
-          <span class="tag">NVDA</span>
+          <span class="tag">MACRO</span>
           <span class="sent">[Bullish]</span>
-          <a href="https://www.fool.com/investing/2026/11/21/billionaire-david-tepper-just-made-a-massive-ai-chip-rotation-will-it-pay-off/?.tsrc=rss" target="_blank" rel="noopener">Billionaire David Tepper Just Made a Massive AI Chip Rotation — Will It Pay Off?</a>
-          <small>— Yahoo Finance (NVDA)</small>
+          <a href="https://www.marketwatch.com/story/u-s-stocks-see-best-day-in-more-than-a-year-as-return-of-jensen-huang-revives-ai-enthusiasm-c3b9d274" target="_blank" rel="noopener">U.S. stocks see best day in more than a year, as return of Jensen Huang revives AI enthusiasm</a>
+          <small>— MarketWatch Top Stories</small>
         </li>
         
         <li>
-          <span class="tag">NVDA</span>
+          <span class="tag">MU</span>
           <span class="sent">[Bullish]</span>
-          <a href="https247wallst.com/investing/2026/11/21/nvidia-stock-has-crashed-48-and-now-trades-at-15-times-earnings-its-cheapest-in-more-than-a-decade-and-cheaper-than-microsoft-and-broadcom/?.tsrc=rss" target="_blank" rel="noopener">Nvidia Stock Has Crashed 48% and Now Trades at 15 Times Earnings, Its Cheapest in More Than a Decade</a>
-          <small>— Yahoo Finance (AVGO)</small>
+          <a href="https://finance.yahoo.com/m/3f1f89c7-5433-3bc0-990f-eab9250e8983/micron-stock-jumps-19%25.-why.html" target="_blank" rel="noopener">Micron Stock Jumps 19%. Why the Rally Has Legs.</a>
+          <small>— Yahoo Finance (MU)</small>
         </li>
         
         <li>
-          <span class="tag">PLTR</span>
+          <span class="tag">KYMR</span>
+          <span class="sent">[Bullish]</span>
+          <a href="https://finance.yahoo.com/m/84f792e3-a784-3351-95fc-6f6dc1ec2cef/kymera-surges-30%25-plus-as-it.html" target="_blank" rel="noopener">Kymera Surges 30%-Plus As It Takes On $18 Billion Blockbuster Dupixent</a>
+          <small>— Yahoo Finance (KYMR)</small>
+        </li>
+        
+        <li>
+          <span class="tag">IREN</span>
           <span class="sent">[Bearish]</span>
-          <a href="https://247wallst.com/investing/2026/11/21/alex-karp-wants-to-sell-100-million-of-palantir-stock-as-it-slides/?.tsrc=rss" target="_blank" rel="noopener">Alex Karp Wants to Sell $100 Million of Palantir Stock as It Slides</a>
-          <small>— Yahoo Finance (PLTR)</small>
-        </li>
-        
-        <li>
-          <span class="tag">META</span>
-          <span class="sent">[Bullish]</span>
-          <a href="https://www.tikr.com/blog/if-the-ai-trade-blows-up-metas-saving-grace-is-that-its-social-media-business-still-generates-a-ton-of-cash?ref=yahoofinance&amp;tlnk=yf-261121-c9qw4982&amp;.tsrc=rss" target="_blank" rel="noopener">If the AI Trade Blows Up, Meta’s Saving Grace Is That Its Social Media Business Still &#x27;Generates a Ton of Cash&#x27;</a>
-          <small>— Yahoo Finance (META)</small>
+          <a href="https://www.tikr.com/blog/dell-wants-up-to-45-more-on-signed-ai-deals-iren-has-a-big-problem" target="_blank" rel="noopener">Dell Wants Up to 45% More on Signed AI Deals. IREN Has a Big Problem</a>
+          <small>— Yahoo Finance (IREN)</small>
         </li>
         </ul>
-    <footer>Generated automatically via GitHub Actions &amp; Gemini 2.5 Flash. For informational research only, not financial advice.</footer>
+    <footer>Generated automatically via GitHub Actions &amp; Gemini 3.6 Flash. For informational research only, not financial advice.</footer>
   </div>
 </body>
 </html>
