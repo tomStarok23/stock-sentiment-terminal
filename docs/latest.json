@@ -1,212 +1,295 @@
 {
-  "session": "Post-Market (16:00-20:00 ET)",
-  "updated_et": "2026-11-24 18:39 EST",
-  "market_mood": "Neutral / Mixed",
+  "session": "Overnight / Extended Wire",
+  "updated_et": "2026-11-24 23:11 EST",
+  "api_error": "404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.0-flash is no longer available. Please update your code to use models/gemini-3.8-flash for the latest features and improvements. We recommend you to use the Interactions API (https://aistudio.google.com/docs/get-started).', 'status': 'NOT_FOUND'}}",
+  "model_used": "Fallback (Raw Feed)",
+  "market_mood": "Feed Active (AI Pending)",
   "overall_sentiment_score": 0,
-  "executive_summary": "The post-market session reflects a mixed sentiment, with significant profit-taking observed in several prominent technology and AI-related stocks like Broadcom and Micron. Conversely, select retail and defense sector names demonstrated strong individual performance. The AI sector remains a key focus, presenting both opportunities (Dell's AI-driven sales, Meta's AI growth) and cautionary tales (Anthropic falling below IPO price), while potential M&A catalysts like a Tesla-SpaceX merger are generating interest.",
+  "executive_summary": "Live stock quotes and RSS headlines were scraped successfully, but Gemini AI returned an error (see red diagnostic box above).",
   "recommendations": [
     {
-      "ticker": "MU",
-      "company": "Micron Technology, Inc.",
-      "sector": "Technology",
+      "ticker": "AMZN",
+      "company": "Amazon.com, Inc.",
+      "sector": "EQUITY",
       "source_group": "Core Watchlist",
-      "action": "Trim / Avoid",
-      "sentiment_score": -80,
-      "confidence": 90,
-      "price_snapshot": "$629.79 (-11.6%)",
-      "catalyst": "Significant price drop, 'selling on Micron' recommendation from analysts, and news of a 2,000% increase in CEO security budget.",
-      "strategy": "Consider reducing exposure or avoiding new positions given the strong negative sentiment and price action.",
-      "risk": "Further downside if broader semiconductor/memory demand weakens or profit-taking continues."
-    },
-    {
-      "ticker": "AVGO",
-      "company": "Broadcom Inc.",
-      "sector": "Technology",
-      "source_group": "Core Watchlist",
-      "action": "Trim / Avoid",
-      "sentiment_score": -75,
-      "confidence": 85,
-      "price_snapshot": "$301.08 (-11.86%)",
-      "catalyst": "Significant price drop, 'Google TPU Order Report Clouds AI Outlook' suggesting potential headwinds in AI infrastructure demand.",
-      "strategy": "Reduce exposure or avoid new positions as negative sentiment around AI outlook may persist.",
-      "risk": "Continued negative sentiment around AI infrastructure spending, competitive pressures."
-    },
-    {
-      "ticker": "ANT",
-      "company": "Anthropic, PBC",
-      "sector": "Technology",
-      "source_group": "Market Mover",
-      "action": "Trim / Avoid",
-      "sentiment_score": -90,
-      "confidence": 95,
-      "price_snapshot": "$81.905 (-6.54%)",
-      "catalyst": "Stock broke below its IPO price for the first time, indicating significant loss of investor confidence.",
-      "strategy": "Avoid new positions and consider exiting existing ones due to strong bearish signal.",
-      "risk": "Further loss of investor confidence and increased scrutiny on valuation for private AI companies."
+      "action": "Watchlist / Hold",
+      "sentiment_score": 0,
+      "confidence": 0,
+      "price_snapshot": "$252.29 (-2.17%)",
+      "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
+      "strategy": "Check API status banner above.",
+      "risk": "AI scoring skipped on this run."
     },
     {
       "ticker": "META",
       "company": "Meta Platforms, Inc.",
-      "sector": "Technology",
+      "sector": "EQUITY",
       "source_group": "Core Watchlist",
-      "action": "Tactical Swing Buy",
-      "sentiment_score": 60,
-      "confidence": 75,
+      "action": "Watchlist / Hold",
+      "sentiment_score": 0,
+      "confidence": 0,
       "price_snapshot": "$589.82 (-4.69%)",
-      "catalyst": "Significant dip on a day with positive analyst commentary ('Could Meta Actually Climb 30%?', 'Backed by Strong Cash Flow and AI Growth') and new product launch (Muse agent).",
-      "strategy": "Consider initiating a tactical long position on this dip, targeting a rebound driven by underlying AI growth and analyst optimism.",
-      "risk": "Broader tech sector weakness, regulatory scrutiny, competition in AI."
+      "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
+      "strategy": "Check API status banner above.",
+      "risk": "AI scoring skipped on this run."
     },
     {
-      "ticker": "TSLA",
-      "company": "Tesla, Inc.",
-      "sector": "Automotive",
+      "ticker": "MU",
+      "company": "Micron Technology, Inc.",
+      "sector": "EQUITY",
       "source_group": "Core Watchlist",
-      "action": "Accumulate",
-      "sentiment_score": 70,
-      "confidence": 80,
-      "price_snapshot": "$384.68 (+1.2%)",
-      "catalyst": "Positive momentum and headlines suggesting a potential SpaceX-Tesla deal announcement by early 2027, with RBC noting shareholder acceptance without a large premium.",
-      "strategy": "Build a position, anticipating positive news flow and potential synergies from a SpaceX merger.",
-      "risk": "Deal uncertainty, execution risk, Elon Musk's influence, competitive EV market."
-    },
-    {
-      "ticker": "PLTR",
-      "company": "Palantir Technologies Inc.",
-      "sector": "Technology",
-      "source_group": "Core Watchlist",
-      "action": "Tactical Swing Buy",
-      "sentiment_score": 65,
-      "confidence": 70,
-      "price_snapshot": "$161.18 (+2.95%)",
-      "catalyst": "Positive momentum amidst broader tech weakness, with headlines suggesting Wall Street may not be ready for its next moves and a 'Better Buy for 2027' comparison.",
-      "strategy": "Consider a tactical long position, leveraging its AI growth potential and relative strength.",
-      "risk": "High valuation, government contract dependency, competition in AI/data analytics."
-    },
-    {
-      "ticker": "AMTM",
-      "company": "Amentum Holdings, Inc.",
-      "sector": "Industrials",
-      "source_group": "Market Mover",
       "action": "Watchlist / Hold",
-      "sentiment_score": 50,
-      "confidence": 60,
-      "price_snapshot": "$24.80 (+20.1%)",
-      "catalyst": "Strong day gainer, indicating significant investor interest in the defense/government services sector.",
-      "strategy": "Monitor for sustained momentum; existing holders may consider holding, new positions require careful entry.",
-      "risk": "Profit-taking after a large single-day gain, lack of specific news catalyst for sustained momentum."
-    },
-    {
-      "ticker": "ANF",
-      "company": "Abercrombie & Fitch Company",
-      "sector": "Consumer Discretionary",
-      "source_group": "Market Mover",
-      "action": "Watchlist / Hold",
-      "sentiment_score": 50,
-      "confidence": 60,
-      "price_snapshot": "$168.10 (+19.69%)",
-      "catalyst": "Strong day gainer, reflecting positive sentiment in the retail sector.",
-      "strategy": "Monitor for sustained momentum; existing holders may consider holding, new positions require careful entry.",
-      "risk": "Profit-taking after a large single-day gain, general retail sector headwinds, consumer spending shifts."
-    },
-    {
-      "ticker": "GOOGL",
-      "company": "Alphabet Inc.",
-      "sector": "Technology",
-      "source_group": "Core Watchlist",
-      "action": "Accumulate",
-      "sentiment_score": 55,
-      "confidence": 70,
-      "price_snapshot": "$279.05 (-0.41%)",
-      "catalyst": "Relatively stable performance amidst broader tech weakness, with news of strong institutional backing (Himalaya Capital holding 45% of its portfolio in Alphabet).",
-      "strategy": "Build a position, leveraging its strong market position, AI investments, and institutional confidence.",
-      "risk": "Regulatory pressures, competition in AI and advertising, broader market downturn."
+      "sentiment_score": 0,
+      "confidence": 0,
+      "price_snapshot": "$629.79 (-11.60%)",
+      "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
+      "strategy": "Check API status banner above.",
+      "risk": "AI scoring skipped on this run."
     },
     {
       "ticker": "NVDA",
       "company": "NVIDIA Corporation",
-      "sector": "Technology",
+      "sector": "EQUITY",
       "source_group": "Core Watchlist",
       "action": "Watchlist / Hold",
-      "sentiment_score": 40,
-      "confidence": 65,
+      "sentiment_score": 0,
+      "confidence": 0,
       "price_snapshot": "$155.38 (-0.05%)",
-      "catalyst": "Slight dip after giving back gains, indicating profit-taking, but underlying AI thesis remains strong. CEO Jensen Huang's comments on no succession plan suggest stability.",
-      "strategy": "Monitor for entry points after profit-taking subsides; existing holders may consider holding for long-term AI growth.",
-      "risk": "Further profit-taking after significant run-up, increased competition, potential slowdown in AI spending."
+      "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
+      "strategy": "Check API status banner above.",
+      "risk": "AI scoring skipped on this run."
+    },
+    {
+      "ticker": "GOOGL",
+      "company": "Alphabet Inc.",
+      "sector": "EQUITY",
+      "source_group": "Core Watchlist",
+      "action": "Watchlist / Hold",
+      "sentiment_score": 0,
+      "confidence": 0,
+      "price_snapshot": "$279.05 (-0.41%)",
+      "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
+      "strategy": "Check API status banner above.",
+      "risk": "AI scoring skipped on this run."
+    },
+    {
+      "ticker": "AVGO",
+      "company": "Broadcom Inc.",
+      "sector": "EQUITY",
+      "source_group": "Core Watchlist",
+      "action": "Watchlist / Hold",
+      "sentiment_score": 0,
+      "confidence": 0,
+      "price_snapshot": "$301.08 (-11.86%)",
+      "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
+      "strategy": "Check API status banner above.",
+      "risk": "AI scoring skipped on this run."
+    },
+    {
+      "ticker": "INTC",
+      "company": "Intel Corporation",
+      "sector": "EQUITY",
+      "source_group": "Core Watchlist",
+      "action": "Watchlist / Hold",
+      "sentiment_score": 0,
+      "confidence": 0,
+      "price_snapshot": "$54.80 (-0.67%)",
+      "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
+      "strategy": "Check API status banner above.",
+      "risk": "AI scoring skipped on this run."
+    },
+    {
+      "ticker": "AAPL",
+      "company": "Apple Inc.",
+      "sector": "EQUITY",
+      "source_group": "Core Watchlist",
+      "action": "Watchlist / Hold",
+      "sentiment_score": 0,
+      "confidence": 0,
+      "price_snapshot": "$354.07 (+0.61%)",
+      "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
+      "strategy": "Check API status banner above.",
+      "risk": "AI scoring skipped on this run."
+    },
+    {
+      "ticker": "PLTR",
+      "company": "Palantir Technologies Inc.",
+      "sector": "EQUITY",
+      "source_group": "Core Watchlist",
+      "action": "Watchlist / Hold",
+      "sentiment_score": 0,
+      "confidence": 0,
+      "price_snapshot": "$161.18 (+2.95%)",
+      "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
+      "strategy": "Check API status banner above.",
+      "risk": "AI scoring skipped on this run."
+    },
+    {
+      "ticker": "TSLA",
+      "company": "Tesla, Inc.",
+      "sector": "EQUITY",
+      "source_group": "Core Watchlist",
+      "action": "Watchlist / Hold",
+      "sentiment_score": 0,
+      "confidence": 0,
+      "price_snapshot": "$384.68 (+1.20%)",
+      "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
+      "strategy": "Check API status banner above.",
+      "risk": "AI scoring skipped on this run."
+    },
+    {
+      "ticker": "VUAA.L",
+      "company": "VANGUARD FUNDS PLC VANGUARD S&P",
+      "sector": "ETF",
+      "source_group": "Core Watchlist",
+      "action": "Watchlist / Hold",
+      "sentiment_score": 0,
+      "confidence": 0,
+      "price_snapshot": "$138.72 (-2.20%)",
+      "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
+      "strategy": "Check API status banner above.",
+      "risk": "AI scoring skipped on this run."
+    },
+    {
+      "ticker": "AMTM",
+      "company": "Amentum Holdings, Inc.",
+      "sector": "Broader Market",
+      "source_group": "Market Mover: Day Gainer",
+      "action": "Watchlist / Hold",
+      "sentiment_score": 0,
+      "confidence": 0,
+      "price_snapshot": "$24.59 (+20.10%)",
+      "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
+      "strategy": "Check API status banner above.",
+      "risk": "AI scoring skipped on this run."
     }
   ],
   "top_headlines": [
     {
       "source": "MarketWatch Top Stories",
-      "ticker_tag": "DELL",
-      "sentiment": "Bullish",
+      "ticker_tag": "WIRE",
+      "sentiment": "Neutral",
+      "title": "I\u2019m in my 70s and buying a new BMW X1. Should I put my only son on the title?",
+      "url": "https://www.marketwatch.com/story/im-in-my-70s-and-buying-a-new-bmw-x1-should-i-put-my-only-son-on-the-title-25731040?mod=mw_rss_topstories"
+    },
+    {
+      "source": "MarketWatch Top Stories",
+      "ticker_tag": "WIRE",
+      "sentiment": "Neutral",
       "title": "Dell\u2019s stock rises as the AI boom helps sales more than double",
       "url": "https://www.marketwatch.com/story/dells-stock-rises-as-the-ai-boom-helps-sales-more-than-double-cfb8cf65?mod=mw_rss_topstories"
     },
     {
       "source": "MarketWatch Top Stories",
-      "ticker_tag": "MU",
-      "sentiment": "Bearish",
+      "ticker_tag": "WIRE",
+      "sentiment": "Neutral",
+      "title": "My husband secretly sends his ex-wife $1,500 a month after she lost her job. We have $2.4 million saved. Has he lied by omission?",
+      "url": "https://www.marketwatch.com/story/my-husband-secretly-sends-his-ex-wife-1-500-a-month-after-she-lost-her-job-we-have-2-4-million-saved-has-he-lied-by-omission-ede1972a?mod=mw_rss_topstories"
+    },
+    {
+      "source": "MarketWatch Top Stories",
+      "ticker_tag": "WIRE",
+      "sentiment": "Neutral",
       "title": "Micron boosted CEO Sanjay Mehrotra\u2019s security budget by 2,000%, new filing shows",
       "url": "https://www.marketwatch.com/story/micron-boosted-ceo-sanjay-mehrotras-security-budget-by-2-000-new-filing-shows-d6202acc?mod=mw_rss_topstories"
     },
     {
       "source": "MarketWatch Top Stories",
-      "ticker_tag": "ANT",
-      "sentiment": "Bearish",
-      "title": "Anthropic\u2019s stock just broke below its IPO price for the first time",
-      "url": "https://www.marketwatch.com/story/anthropics-stock-just-broke-below-its-ipo-price-for-the-first-time-5dc82668?mod=mw_rss_topstories"
+      "ticker_tag": "WIRE",
+      "sentiment": "Neutral",
+      "title": "12 days of sardines and Croc charms: Are Advent calendars getting out of control?",
+      "url": "https://www.marketwatch.com/story/12-days-of-sardines-and-croc-charms-are-advent-calendars-getting-out-of-control-81f24548?mod=mw_rss_topstories"
     },
     {
-      "source": "Yahoo Finance (MU)",
-      "ticker_tag": "MU",
-      "sentiment": "Bearish",
-      "title": "3 AI Investment Stocks We\u2019re Buying Today And Why We\u2019re Selling On Micron",
-      "url": "https://247wallst.com/videos/3-ai-investment-stocks-were-buying-today-and-why-were-selling-on-micron/?.tsrc=rss"
+      "source": "Yahoo Finance (NVDA)",
+      "ticker_tag": "WIRE",
+      "sentiment": "Neutral",
+      "title": "Asian stocks mostly decline as AI shares fall following a retreat on Wall Street",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/asian-stocks-mostly-decline-ai-040526833.html?.tsrc=rss"
     },
     {
-      "source": "Yahoo Finance (META)",
-      "ticker_tag": "META",
-      "sentiment": "Bullish",
-      "title": "David Abrams\u2019 Meta Platforms, Inc. (META) Bet Is Backed by Strong Cash Flow and AI Growth",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/david-abrams-meta-platforms-inc-190633349.html?.tsrc=rss"
+      "source": "Yahoo Finance (NVDA)",
+      "ticker_tag": "WIRE",
+      "sentiment": "Neutral",
+      "title": "Dow Jones Futures Fall; Trump Says 'Not Too Late' For U.S. To Take Nvidia Stake",
+      "url": "https://finance.yahoo.com/m/d96603c1-fe7f-3bf3-8158-0728b464d469/dow-jones-futures-fall%3B-trump.html?.tsrc=rss"
+    },
+    {
+      "source": "Yahoo Finance (NVDA)",
+      "ticker_tag": "WIRE",
+      "sentiment": "Neutral",
+      "title": "Another Wall Street analyst revamps stock market outlook as volatility surges",
+      "url": "https://www.thestreet.com/investing/another-wall-street-analyst-revamps-stock-market-outlook-as-volatility-surges?.tsrc=rss"
     },
     {
       "source": "Yahoo Finance (AVGO)",
-      "ticker_tag": "AVGO",
-      "sentiment": "Bearish",
+      "ticker_tag": "WIRE",
+      "sentiment": "Neutral",
+      "title": "Stocks give back gains as Anthropic dips below IPO price",
+      "url": "https://finance.yahoo.com/video/stocks-give-back-gains-as-anthropic-dips-below-ipo-price-154408548.html?.tsrc=rss"
+    },
+    {
+      "source": "Yahoo Finance (AVGO)",
+      "ticker_tag": "WIRE",
+      "sentiment": "Neutral",
+      "title": "Broadcom Stock Could Have 70% Upside, Analysts Say. What AVGO\u2019s Valuation Reveals.",
+      "url": "https://www.barchart.com/story/news/8991255/broadcom-stock-could-have-70-upside-analysts-say-what-avgos-valuation-reveals?.tsrc=rss"
+    },
+    {
+      "source": "Yahoo Finance (AVGO)",
+      "ticker_tag": "WIRE",
+      "sentiment": "Neutral",
       "title": "Broadcom Stocks Fall 3.98% as Google TPU Order Report Clouds AI Outlook",
       "url": "https://finance.yahoo.com/markets/stocks/articles/broadcom-stocks-fall-3-98-165405396.html?.tsrc=rss"
     },
     {
-      "source": "Yahoo Finance (GOOGL)",
-      "ticker_tag": "GOOGL",
-      "sentiment": "Bullish",
-      "title": "Billionaire Charlie Munger\u2019s Protege Li Lu: Himalaya Capital Has 45% of Its $3.78 Billion Portfolio in Alphabet",
-      "url": "https://247wallst.com/investing/2026/11/24/billionaire-charlie-mungers-protege-li-lu-himalaya-capital-has-45-of-its-3-78-billion-portfolio-in-alphabet/?.tsrc=rss"
+      "source": "CNBC Top News",
+      "ticker_tag": "WIRE",
+      "sentiment": "Neutral",
+      "title": "Jensen Huang tells staff that Nvidia doesn't need a succession plan",
+      "url": "https://www.cnbc.com/2026/11/24/jensen-huang-nvidia-employee-meeting.html"
     },
     {
       "source": "CNBC Top News",
-      "ticker_tag": "INSMED",
-      "sentiment": "Bullish",
-      "title": "Drugmaker Insmed shares rally 14% after Sanofi agrees to buy it in pharma\u2019s biggest deal in three years",
-      "url": "https://www.cnbc.com/2026/11/24/insmed-sanofi-deal-stock-pharma.html"
+      "ticker_tag": "WIRE",
+      "sentiment": "Neutral",
+      "title": "Houthi attack on Saudi Arabian sovereign wealth fund PIF's tower injures 11",
+      "url": "https://www.cnbc.com/2026/11/25/us-iran-war-trump-hormuz-houthi-saudi-pif-tower.html"
     },
     {
-      "source": "Yahoo Finance (TSLA)",
-      "ticker_tag": "TSLA",
-      "sentiment": "Bullish",
-      "title": "RBC Expects SpaceX-Tesla Deal Announcement By Early 2027 \u2014 Notes TSLA Shareholders May Accept Combination Without Large Premium",
-      "url": "https://stocktwits.com/news-articles/markets/equity/rbc-expects-space-x-tesla-deal-announcement-by-early-2027-notes-tsla-shareholders-may-accept-combination-without-large-premium/cNbsNbYR9k6?.tsrc=rss"
+      "source": "CNBC Top News",
+      "ticker_tag": "WIRE",
+      "sentiment": "Neutral",
+      "title": "\u2018Ready for any storm\u2019: UAE minister optimistic on economy as IMF lifts forecast",
+      "url": "https://www.cnbc.com/2026/11/25/uae-iran-war-economy-oil.html"
     },
     {
-      "source": "Yahoo Finance (PLTR)",
-      "ticker_tag": "PLTR",
-      "sentiment": "Bullish",
-      "title": "Wall Street May Not Be Ready for What\u2019s Coming Next for These 3 AI Stocks",
-      "url": "https://247wallst.com/investing/2026/11/24/wall-street-may-not-be-ready-for-whats-coming-next-for-these-3-ai-stocks/?.tsrc=rss"
+      "source": "CNBC Top News",
+      "ticker_tag": "WIRE",
+      "sentiment": "Neutral",
+      "title": "Stock futures slip as traders await key inflation report, assess tech sell-off: Live updates",
+      "url": "https://www.cnbc.com/2026/11/24/stock-market-today-live-updates-.html"
+    },
+    {
+      "source": "CNBC Top News",
+      "ticker_tag": "WIRE",
+      "sentiment": "Neutral",
+      "title": "SoftBank drops 15% as Wall Street AI sell-off ripples across Asian tech names",
+      "url": "https://www.cnbc.com/2026/11/25/tech-stocks-softbank-group-advantest-sk-hynix-samsung.html"
+    },
+    {
+      "source": "CNBC Investing",
+      "ticker_tag": "WIRE",
+      "sentiment": "Neutral",
+      "title": "AI debt markets shudder as Nvidia's top 'banker' returns",
+      "url": "https://www.cnbc.com/2026/11/24/nvidia-jensen-huang-ai-credit-markets.html"
+    },
+    {
+      "source": "CNBC Investing",
+      "ticker_tag": "WIRE",
+      "sentiment": "Neutral",
+      "title": "Wednesday's big stock stories: What\u2019s likely to move the market in the next trading session",
+      "url": "https://www.cnbc.com/2026/11/24/wednesday-big-stock-stories-whats-likely-to-move-the-market.html"
     }
-  ],
-  "model_used": "gemini-2.5-flash"
+  ]
 }
