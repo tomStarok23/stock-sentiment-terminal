@@ -1,77 +1,12 @@
 {
-  "session": "Overnight / Extended Wire",
-  "updated_et": "2026-11-24 23:11 EST",
+  "session": "Open Market (09:30-16:00 ET)",
+  "updated_et": "2026-11-25 14:14 EST",
   "api_error": "404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.0-flash is no longer available. Please update your code to use models/gemini-3.8-flash for the latest features and improvements. We recommend you to use the Interactions API (https://aistudio.google.com/docs/get-started).', 'status': 'NOT_FOUND'}}",
   "model_used": "Fallback (Raw Feed)",
   "market_mood": "Feed Active (AI Pending)",
   "overall_sentiment_score": 0,
   "executive_summary": "Live stock quotes and RSS headlines were scraped successfully, but Gemini AI returned an error (see red diagnostic box above).",
   "recommendations": [
-    {
-      "ticker": "AMZN",
-      "company": "Amazon.com, Inc.",
-      "sector": "EQUITY",
-      "source_group": "Core Watchlist",
-      "action": "Watchlist / Hold",
-      "sentiment_score": 0,
-      "confidence": 0,
-      "price_snapshot": "$252.29 (-2.17%)",
-      "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
-      "strategy": "Check API status banner above.",
-      "risk": "AI scoring skipped on this run."
-    },
-    {
-      "ticker": "META",
-      "company": "Meta Platforms, Inc.",
-      "sector": "EQUITY",
-      "source_group": "Core Watchlist",
-      "action": "Watchlist / Hold",
-      "sentiment_score": 0,
-      "confidence": 0,
-      "price_snapshot": "$589.82 (-4.69%)",
-      "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
-      "strategy": "Check API status banner above.",
-      "risk": "AI scoring skipped on this run."
-    },
-    {
-      "ticker": "MU",
-      "company": "Micron Technology, Inc.",
-      "sector": "EQUITY",
-      "source_group": "Core Watchlist",
-      "action": "Watchlist / Hold",
-      "sentiment_score": 0,
-      "confidence": 0,
-      "price_snapshot": "$629.79 (-11.60%)",
-      "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
-      "strategy": "Check API status banner above.",
-      "risk": "AI scoring skipped on this run."
-    },
-    {
-      "ticker": "NVDA",
-      "company": "NVIDIA Corporation",
-      "sector": "EQUITY",
-      "source_group": "Core Watchlist",
-      "action": "Watchlist / Hold",
-      "sentiment_score": 0,
-      "confidence": 0,
-      "price_snapshot": "$155.38 (-0.05%)",
-      "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
-      "strategy": "Check API status banner above.",
-      "risk": "AI scoring skipped on this run."
-    },
-    {
-      "ticker": "GOOGL",
-      "company": "Alphabet Inc.",
-      "sector": "EQUITY",
-      "source_group": "Core Watchlist",
-      "action": "Watchlist / Hold",
-      "sentiment_score": 0,
-      "confidence": 0,
-      "price_snapshot": "$279.05 (-0.41%)",
-      "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
-      "strategy": "Check API status banner above.",
-      "risk": "AI scoring skipped on this run."
-    },
     {
       "ticker": "AVGO",
       "company": "Broadcom Inc.",
@@ -80,20 +15,7 @@
       "action": "Watchlist / Hold",
       "sentiment_score": 0,
       "confidence": 0,
-      "price_snapshot": "$301.08 (-11.86%)",
-      "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
-      "strategy": "Check API status banner above.",
-      "risk": "AI scoring skipped on this run."
-    },
-    {
-      "ticker": "INTC",
-      "company": "Intel Corporation",
-      "sector": "EQUITY",
-      "source_group": "Core Watchlist",
-      "action": "Watchlist / Hold",
-      "sentiment_score": 0,
-      "confidence": 0,
-      "price_snapshot": "$54.80 (-0.67%)",
+      "price_snapshot": "$296.68 (-16.20%)",
       "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
       "strategy": "Check API status banner above.",
       "risk": "AI scoring skipped on this run."
@@ -106,7 +28,85 @@
       "action": "Watchlist / Hold",
       "sentiment_score": 0,
       "confidence": 0,
-      "price_snapshot": "$354.07 (+0.61%)",
+      "price_snapshot": "$354.56 (+0.60%)",
+      "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
+      "strategy": "Check API status banner above.",
+      "risk": "AI scoring skipped on this run."
+    },
+    {
+      "ticker": "INTC",
+      "company": "Intel Corporation",
+      "sector": "EQUITY",
+      "source_group": "Core Watchlist",
+      "action": "Watchlist / Hold",
+      "sentiment_score": 0,
+      "confidence": 0,
+      "price_snapshot": "$53.80 (-1.60%)",
+      "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
+      "strategy": "Check API status banner above.",
+      "risk": "AI scoring skipped on this run."
+    },
+    {
+      "ticker": "META",
+      "company": "Meta Platforms, Inc.",
+      "sector": "EQUITY",
+      "source_group": "Core Watchlist",
+      "action": "Watchlist / Hold",
+      "sentiment_score": 0,
+      "confidence": 0,
+      "price_snapshot": "$603.91 (-2.02%)",
+      "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
+      "strategy": "Check API status banner above.",
+      "risk": "AI scoring skipped on this run."
+    },
+    {
+      "ticker": "GOOGL",
+      "company": "Alphabet Inc.",
+      "sector": "EQUITY",
+      "source_group": "Core Watchlist",
+      "action": "Watchlist / Hold",
+      "sentiment_score": 0,
+      "confidence": 0,
+      "price_snapshot": "$272.03 (-3.69%)",
+      "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
+      "strategy": "Check API status banner above.",
+      "risk": "AI scoring skipped on this run."
+    },
+    {
+      "ticker": "NVDA",
+      "company": "NVIDIA Corporation",
+      "sector": "EQUITY",
+      "source_group": "Core Watchlist",
+      "action": "Watchlist / Hold",
+      "sentiment_score": 0,
+      "confidence": 0,
+      "price_snapshot": "$147.38 (-2.37%)",
+      "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
+      "strategy": "Check API status banner above.",
+      "risk": "AI scoring skipped on this run."
+    },
+    {
+      "ticker": "AMZN",
+      "company": "Amazon.com, Inc.",
+      "sector": "EQUITY",
+      "source_group": "Core Watchlist",
+      "action": "Watchlist / Hold",
+      "sentiment_score": 0,
+      "confidence": 0,
+      "price_snapshot": "$245.52 (-8.30%)",
+      "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
+      "strategy": "Check API status banner above.",
+      "risk": "AI scoring skipped on this run."
+    },
+    {
+      "ticker": "MU",
+      "company": "Micron Technology, Inc.",
+      "sector": "EQUITY",
+      "source_group": "Core Watchlist",
+      "action": "Watchlist / Hold",
+      "sentiment_score": 0,
+      "confidence": 0,
+      "price_snapshot": "$593.09 (-15.91%)",
       "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
       "strategy": "Check API status banner above.",
       "risk": "AI scoring skipped on this run."
@@ -119,20 +119,7 @@
       "action": "Watchlist / Hold",
       "sentiment_score": 0,
       "confidence": 0,
-      "price_snapshot": "$161.18 (+2.95%)",
-      "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
-      "strategy": "Check API status banner above.",
-      "risk": "AI scoring skipped on this run."
-    },
-    {
-      "ticker": "TSLA",
-      "company": "Tesla, Inc.",
-      "sector": "EQUITY",
-      "source_group": "Core Watchlist",
-      "action": "Watchlist / Hold",
-      "sentiment_score": 0,
-      "confidence": 0,
-      "price_snapshot": "$384.68 (+1.20%)",
+      "price_snapshot": "$163.85 (+4.58%)",
       "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
       "strategy": "Check API status banner above.",
       "risk": "AI scoring skipped on this run."
@@ -145,20 +132,33 @@
       "action": "Watchlist / Hold",
       "sentiment_score": 0,
       "confidence": 0,
-      "price_snapshot": "$138.72 (-2.20%)",
+      "price_snapshot": "$135.68 (-4.15%)",
       "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
       "strategy": "Check API status banner above.",
       "risk": "AI scoring skipped on this run."
     },
     {
-      "ticker": "AMTM",
-      "company": "Amentum Holdings, Inc.",
+      "ticker": "TSLA",
+      "company": "Tesla, Inc.",
+      "sector": "EQUITY",
+      "source_group": "Core Watchlist",
+      "action": "Watchlist / Hold",
+      "sentiment_score": 0,
+      "confidence": 0,
+      "price_snapshot": "$381.20 (-0.66%)",
+      "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
+      "strategy": "Check API status banner above.",
+      "risk": "AI scoring skipped on this run."
+    },
+    {
+      "ticker": "LBTYB",
+      "company": "Liberty Global Ltd.",
       "sector": "Broader Market",
       "source_group": "Market Mover: Day Gainer",
       "action": "Watchlist / Hold",
       "sentiment_score": 0,
       "confidence": 0,
-      "price_snapshot": "$24.59 (+20.10%)",
+      "price_snapshot": "$12.84 (+17.04%)",
       "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
       "strategy": "Check API status banner above.",
       "risk": "AI scoring skipped on this run."
@@ -169,127 +169,127 @@
       "source": "MarketWatch Top Stories",
       "ticker_tag": "WIRE",
       "sentiment": "Neutral",
-      "title": "I\u2019m in my 70s and buying a new BMW X1. Should I put my only son on the title?",
-      "url": "https://www.marketwatch.com/story/im-in-my-70s-and-buying-a-new-bmw-x1-should-i-put-my-only-son-on-the-title-25731040?mod=mw_rss_topstories"
+      "title": "Grocery stores have \u2018staggering deals\u2019 for Thanksgiving \u2014 but don\u2019t get used to these lower prices",
+      "url": "https://www.marketwatch.com/story/grocery-stores-have-staggering-deals-for-thanksgiving-but-dont-get-used-to-these-lower-prices-just-yet-7adfc7f5?mod=mw_rss_topstories"
     },
     {
       "source": "MarketWatch Top Stories",
       "ticker_tag": "WIRE",
       "sentiment": "Neutral",
-      "title": "Dell\u2019s stock rises as the AI boom helps sales more than double",
-      "url": "https://www.marketwatch.com/story/dells-stock-rises-as-the-ai-boom-helps-sales-more-than-double-cfb8cf65?mod=mw_rss_topstories"
+      "title": "We are living in perilous times if Nvidia\u2019s Jensen Huang dictates your 401(k) balance",
+      "url": "https://www.marketwatch.com/story/we-are-living-in-perilous-times-if-nvidias-jensen-huang-dictates-your-401-k-balance-e0942d1e?mod=mw_rss_topstories"
     },
     {
       "source": "MarketWatch Top Stories",
       "ticker_tag": "WIRE",
       "sentiment": "Neutral",
-      "title": "My husband secretly sends his ex-wife $1,500 a month after she lost her job. We have $2.4 million saved. Has he lied by omission?",
-      "url": "https://www.marketwatch.com/story/my-husband-secretly-sends-his-ex-wife-1-500-a-month-after-she-lost-her-job-we-have-2-4-million-saved-has-he-lied-by-omission-ede1972a?mod=mw_rss_topstories"
+      "title": "Why this stock-market selloff is probably going to get worse before it gets better",
+      "url": "https://www.marketwatch.com/story/why-this-stock-market-selloff-is-probably-going-to-get-worse-before-it-gets-better-fce63a89?mod=mw_rss_topstories"
     },
     {
       "source": "MarketWatch Top Stories",
       "ticker_tag": "WIRE",
       "sentiment": "Neutral",
-      "title": "Micron boosted CEO Sanjay Mehrotra\u2019s security budget by 2,000%, new filing shows",
-      "url": "https://www.marketwatch.com/story/micron-boosted-ceo-sanjay-mehrotras-security-budget-by-2-000-new-filing-shows-d6202acc?mod=mw_rss_topstories"
+      "title": "Inflation gets worse. Now the Fed has no choice but to raise U.S. interest rates.",
+      "url": "https://www.marketwatch.com/story/inflation-gets-worse-now-the-fed-no-choice-but-to-raise-u-s-interest-rates-8b0c2c1f?mod=mw_rss_topstories"
     },
     {
       "source": "MarketWatch Top Stories",
       "ticker_tag": "WIRE",
       "sentiment": "Neutral",
-      "title": "12 days of sardines and Croc charms: Are Advent calendars getting out of control?",
-      "url": "https://www.marketwatch.com/story/12-days-of-sardines-and-croc-charms-are-advent-calendars-getting-out-of-control-81f24548?mod=mw_rss_topstories"
-    },
-    {
-      "source": "Yahoo Finance (NVDA)",
-      "ticker_tag": "WIRE",
-      "sentiment": "Neutral",
-      "title": "Asian stocks mostly decline as AI shares fall following a retreat on Wall Street",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/asian-stocks-mostly-decline-ai-040526833.html?.tsrc=rss"
-    },
-    {
-      "source": "Yahoo Finance (NVDA)",
-      "ticker_tag": "WIRE",
-      "sentiment": "Neutral",
-      "title": "Dow Jones Futures Fall; Trump Says 'Not Too Late' For U.S. To Take Nvidia Stake",
-      "url": "https://finance.yahoo.com/m/d96603c1-fe7f-3bf3-8158-0728b464d469/dow-jones-futures-fall%3B-trump.html?.tsrc=rss"
-    },
-    {
-      "source": "Yahoo Finance (NVDA)",
-      "ticker_tag": "WIRE",
-      "sentiment": "Neutral",
-      "title": "Another Wall Street analyst revamps stock market outlook as volatility surges",
-      "url": "https://www.thestreet.com/investing/another-wall-street-analyst-revamps-stock-market-outlook-as-volatility-surges?.tsrc=rss"
-    },
-    {
-      "source": "Yahoo Finance (AVGO)",
-      "ticker_tag": "WIRE",
-      "sentiment": "Neutral",
-      "title": "Stocks give back gains as Anthropic dips below IPO price",
-      "url": "https://finance.yahoo.com/video/stocks-give-back-gains-as-anthropic-dips-below-ipo-price-154408548.html?.tsrc=rss"
-    },
-    {
-      "source": "Yahoo Finance (AVGO)",
-      "ticker_tag": "WIRE",
-      "sentiment": "Neutral",
-      "title": "Broadcom Stock Could Have 70% Upside, Analysts Say. What AVGO\u2019s Valuation Reveals.",
-      "url": "https://www.barchart.com/story/news/8991255/broadcom-stock-could-have-70-upside-analysts-say-what-avgos-valuation-reveals?.tsrc=rss"
-    },
-    {
-      "source": "Yahoo Finance (AVGO)",
-      "ticker_tag": "WIRE",
-      "sentiment": "Neutral",
-      "title": "Broadcom Stocks Fall 3.98% as Google TPU Order Report Clouds AI Outlook",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/broadcom-stocks-fall-3-98-165405396.html?.tsrc=rss"
+      "title": "HP\u2019s stock is a standout gainer in the tech rout, as an earnings beat still matters",
+      "url": "https://www.marketwatch.com/story/hps-stock-is-a-standout-gainer-in-the-tech-rout-as-an-earnings-beat-still-matters-8f6c76ad?mod=mw_rss_topstories"
     },
     {
       "source": "CNBC Top News",
       "ticker_tag": "WIRE",
       "sentiment": "Neutral",
-      "title": "Jensen Huang tells staff that Nvidia doesn't need a succession plan",
-      "url": "https://www.cnbc.com/2026/11/24/jensen-huang-nvidia-employee-meeting.html"
+      "title": "Nvidia leads tech sell-off as Huang comeback rally fizzles and AI concerns return",
+      "url": "https://www.cnbc.com/2026/11/25/nvidia-ai-stock-tech-selloff.html"
     },
     {
       "source": "CNBC Top News",
       "ticker_tag": "WIRE",
       "sentiment": "Neutral",
-      "title": "Houthi attack on Saudi Arabian sovereign wealth fund PIF's tower injures 11",
-      "url": "https://www.cnbc.com/2026/11/25/us-iran-war-trump-hormuz-houthi-saudi-pif-tower.html"
+      "title": "U.S. proposes new tariffs on 14 trading partners, including China and the EU",
+      "url": "https://www.cnbc.com/2026/11/25/us-tariffs-trump-section-301.html"
     },
     {
       "source": "CNBC Top News",
       "ticker_tag": "WIRE",
       "sentiment": "Neutral",
-      "title": "\u2018Ready for any storm\u2019: UAE minister optimistic on economy as IMF lifts forecast",
-      "url": "https://www.cnbc.com/2026/11/25/uae-iran-war-economy-oil.html"
-    },
-    {
-      "source": "CNBC Top News",
-      "ticker_tag": "WIRE",
-      "sentiment": "Neutral",
-      "title": "Stock futures slip as traders await key inflation report, assess tech sell-off: Live updates",
+      "title": "Dow turns positive on the day as Wall Street attempts to recover from sell-off: Live updates",
       "url": "https://www.cnbc.com/2026/11/24/stock-market-today-live-updates-.html"
     },
     {
       "source": "CNBC Top News",
       "ticker_tag": "WIRE",
       "sentiment": "Neutral",
-      "title": "SoftBank drops 15% as Wall Street AI sell-off ripples across Asian tech names",
-      "url": "https://www.cnbc.com/2026/11/25/tech-stocks-softbank-group-advantest-sk-hynix-samsung.html"
+      "title": "Fed\u2019s preferred inflation gauge accelerated to 3.8% in October, raising the 2027 stakes for the central bank",
+      "url": "https://www.cnbc.com/2026/11/25/pce-inflation-report-october-2026.html"
     },
     {
-      "source": "CNBC Investing",
+      "source": "CNBC Top News",
       "ticker_tag": "WIRE",
       "sentiment": "Neutral",
-      "title": "AI debt markets shudder as Nvidia's top 'banker' returns",
-      "url": "https://www.cnbc.com/2026/11/24/nvidia-jensen-huang-ai-credit-markets.html"
+      "title": "Gold falls to more than one-year low after data shows U.S. inflation rose further",
+      "url": "https://www.cnbc.com/2026/11/25/gold-metals-federal-reserve-inflation.html"
     },
     {
-      "source": "CNBC Investing",
+      "source": "Yahoo Finance (MU)",
       "ticker_tag": "WIRE",
       "sentiment": "Neutral",
-      "title": "Wednesday's big stock stories: What\u2019s likely to move the market in the next trading session",
-      "url": "https://www.cnbc.com/2026/11/24/wednesday-big-stock-stories-whats-likely-to-move-the-market.html"
+      "title": "Micron Stock and Other Memory Plays Will Bear the Brunt of This AI Pain",
+      "url": "https://finance.yahoo.com/m/c60b7c01-7f3d-3700-ad68-951e994a6d38/micron-stock-and-other-memory.html?.tsrc=rss"
+    },
+    {
+      "source": "Yahoo Finance (MU)",
+      "ticker_tag": "WIRE",
+      "sentiment": "Neutral",
+      "title": "106% Upside for Micron? Citi Thinks So, and Here\u2019s How",
+      "url": "https://www.tikr.com/blog/106-upside-for-micron-citi-thinks-so-and-heres-how?ref=yahoofinance&tlnk=yf-261125-x4xrrvc6&.tsrc=rss"
+    },
+    {
+      "source": "Yahoo Finance (MU)",
+      "ticker_tag": "WIRE",
+      "sentiment": "Neutral",
+      "title": "Why Micron Technology Stock is Plunging Today",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/why-micron-technology-stock-plunging-171705917.html?.tsrc=rss"
+    },
+    {
+      "source": "Yahoo Finance (AVGO)",
+      "ticker_tag": "WIRE",
+      "sentiment": "Neutral",
+      "title": "This Is Why I Wouldn\u2019t Ignore This Stock Heading Into 2027",
+      "url": "https://247wallst.com/investing/2026/11/25/this-is-why-i-wouldnt-ignore-this-stock-heading-into-2027/?.tsrc=rss"
+    },
+    {
+      "source": "Yahoo Finance (AVGO)",
+      "ticker_tag": "WIRE",
+      "sentiment": "Neutral",
+      "title": "AI Chip Stocks Extend Brutal Selloff as Nvidia, AMD and Broadcom Tumble Again",
+      "url": "https://finance.yahoo.com/technology/ai/articles/ai-chip-stocks-extend-brutal-170236621.html?.tsrc=rss"
+    },
+    {
+      "source": "Yahoo Finance (AVGO)",
+      "ticker_tag": "WIRE",
+      "sentiment": "Neutral",
+      "title": "104% Upside for Broadcom? Bernstein Thinks So, and Here\u2019s How",
+      "url": "https://www.tikr.com/blog/104-upside-for-broadcom-bernstein-thinks-so-and-heres-how?ref=yahoofinance&tlnk=yf-261125-w78gc9qw&.tsrc=rss"
+    },
+    {
+      "source": "Yahoo Finance (NVDA)",
+      "ticker_tag": "WIRE",
+      "sentiment": "Neutral",
+      "title": "Why Nvidia's 'Jensen put' failed to stop the AI trade meltdown",
+      "url": "https://finance.yahoo.com/markets/article/why-nvidias-jensen-put-did-little-to-ease-the-ai-trade-meltdown-185334279.html?.tsrc=rss"
+    },
+    {
+      "source": "Yahoo Finance (NVDA)",
+      "ticker_tag": "WIRE",
+      "sentiment": "Neutral",
+      "title": "Nvidia Chip Sellers Reportedly Scramble For New Buyers As US Tightens China Export Loopholes",
+      "url": "https://stocktwits.com/news-articles/markets/equity/nvidia-chip-sellers-reportedly-scramble-for-new-buyers-as-us-tightens-china-export-loopholes/cNbHoZSR9mv?.tsrc=rss"
     }
   ]
 }
