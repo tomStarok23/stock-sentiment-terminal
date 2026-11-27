@@ -13,7 +13,6 @@ from bs4 import BeautifulSoup
 from google import genai
 from google.genai import types
 
-# Hard 10-second network timeout so no library can ever hang a GitHub Actions runner
 socket.setdefaulttimeout(10)
 
 # 1. Core stocks & ETFs (always scanned)
@@ -29,12 +28,14 @@ MARKET_RSS_FEEDS = [
     ("MarketWatch Top Stories", "https://feeds.content.dowjones.io/public/rss/mw_topstories"),
 ]
 
-# 3. Valid public Google AI Studio model IDs
 GEMINI_MODELS = [
     "gemini-2.5-flash",
     "gemini-2.5-flash-lite",
     "gemini-2.0-flash",
 ]
+
+HISTORY_FILE = "docs/history.json"
+MAX_HISTORY_RUNS = 15  # 3 scans/day x 5 trading days = 1 full trading week
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/128.0.0.0 Safari/537.36"
@@ -45,6 +46,43 @@ def clean_num(val):
     if isinstance(val, float) and (math.isnan(val) or math.isinf(val)):
         return None
     return val
+
+
+def calculate_rsi(closes: list[float], period: int = 14) -> float | None:
+    """Computes Wilder's 14-day Relative Strength Index from daily closes."""
+    if len(closes) < period + 1:
+        return None
+    deltas = [closes[i] - closes[i - 1] for i in range(1, len(closes))]
+    gains = [max(d, 0.0) for d in deltas]
+    losses = [abs(min(d, 0.0)) for d in deltas]
+
+    avg_gain = sum(gains[:period]) / period
+    avg_loss = sum(losses[:period]) / period
+
+    for i in range(period, len(deltas)):
+        avg_gain = (avg_gain * (period - 1) + gains[i]) / period
+        avg_loss = (avg_loss * (period - 1) + losses[i]) / period
+
+    if avg_loss == 0:
+        return 100.0
+    rs = avg_gain / avg_loss
+    return round(100.0 - (100.0 / (1.0 + rs)), 1)
+
+
+def classify_trend(price: float | None, sma_20: float | None, sma_50: float | None) -> str:
+    if not price:
+        return "Trend Unavailable"
+    if sma_20 and sma_50:
+        if price > sma_20 and price > sma_50:
+            return "Strong Uptrend (>20D & >50D SMA)"
+        if price > sma_50 and price <= sma_20:
+            return "Pullback in Uptrend (<20D, >50D SMA)"
+        if price < sma_50 and price >= sma_20:
+            return "Early Rebound (>20D, <50D SMA)"
+        return "Downtrend (<20D & <50D SMA)"
+    if sma_20:
+        return "Above 20D SMA" if price >= sma_20 else "Below 20D SMA"
+    return "Insufficient History"
 
 
 def detect_session() -> tuple[str, str]:
@@ -59,6 +97,68 @@ def detect_session() -> tuple[str, str]:
     else:
         session = "Overnight / Extended Wire"
     return session, now_et.strftime("%Y-%m-%d %H:%M %Z")
+
+
+def load_history() -> list[dict]:
+    if not os.path.exists(HISTORY_FILE):
+        return []
+    try:
+        with open(HISTORY_FILE, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            return data if isinstance(data, list) else []
+    except Exception as exc:
+        print(f"[WARN] Could not read {HISTORY_FILE}: {exc}", flush=True)
+        return []
+
+
+def save_history(history: list[dict], session: str, timestamp_et: str, analysis: dict) -> list[dict]:
+    snapshot = {
+        "session": session,
+        "updated_et": timestamp_et,
+        "market_mood": analysis.get("market_mood"),
+        "overall_sentiment_score": analysis.get("overall_sentiment_score"),
+        "signals": {
+            r.get("ticker"): {
+                "action": r.get("action"),
+                "sentiment_score": r.get("sentiment_score"),
+                "catalyst": (r.get("catalyst") or "")[:140],
+            }
+            for r in analysis.get("recommendations", [])
+            if r.get("ticker")
+        },
+    }
+    updated = (history + [snapshot])[-MAX_HISTORY_RUNS:]
+    with open(HISTORY_FILE, "w", encoding="utf-8") as f:
+        json.dump(updated, f, indent=2)
+    return updated
+
+
+def build_trajectory_summary(history: list[dict]) -> dict:
+    """Compresses up to 15 prior runs into low-token per-ticker score trails plus 2 detailed recent sessions."""
+    if not history:
+        return {"runs_recorded": 0, "macro_trail": [], "ticker_trails": {}, "recent_detailed_sessions": []}
+
+    macro_trail = [
+        f"{h.get('updated_et', '')} [{h.get('session', '').split(' ')[0]}]: {h.get('overall_sentiment_score', 0):+d} ({h.get('market_mood', '')})"
+        for h in history
+    ]
+
+    ticker_trails: dict[str, list[str]] = {}
+    for h in history:
+        short_sess = (h.get("session") or "").split(" ")[0]
+        for ticker, sig in (h.get("signals") or {}).items():
+            score = sig.get("sentiment_score", 0)
+            act = sig.get("action", "Hold").split("/")[0].strip()
+            ticker_trails.setdefault(ticker, []).append(f"{short_sess}:{score:+d}({act})")
+
+    compact_trails = {t: " -> ".join(trail[-MAX_HISTORY_RUNS:]) for t, trail in ticker_trails.items()}
+
+    return {
+        "runs_recorded": len(history),
+        "macro_trail": macro_trail,
+        "ticker_trails": compact_trails,
+        "recent_detailed_sessions": history[-2:],
+    }
 
 
 def fetch_rss_items(url: str, source_name: str, limit: int = 5) -> list[dict]:
@@ -79,10 +179,10 @@ def fetch_rss_items(url: str, source_name: str, limit: int = 5) -> list[dict]:
     return items
 
 
-def fetch_ticker_quote(ticker: str) -> dict | None:
-    """Fetches Pre/Open/Post-Market prices directly from Yahoo Finance chart JSON."""
+def fetch_ticker_quote(ticker: str, source_group: str = "Core Watchlist", sector_hint: str | None = None) -> dict | None:
+    """Fetches Pre/Open/Post-Market prices plus 20D SMA, 50D SMA, and RSI(14) from 4-month daily chart JSON."""
     for host in ("query1.finance.yahoo.com", "query2.finance.yahoo.com"):
-        url = f"https://{host}/v8/finance/chart/{ticker}?range=5d&interval=1d&includePrePost=true"
+        url = f"https://{host}/v8/finance/chart/{ticker}?range=4mo&interval=1d&includePrePost=true"
         try:
             resp = requests.get(url, headers=HEADERS, timeout=8)
             resp.raise_for_status()
@@ -100,16 +200,41 @@ def fetch_ticker_quote(ticker: str) -> dict | None:
             if active_price and prev_close:
                 pct_change = round(((active_price - prev_close) / prev_close) * 100, 2)
 
+            raw_closes = ((result.get("indicators", {}).get("quote") or [{}])[0]).get("close") or []
+            closes = [float(c) for c in raw_closes if isinstance(c, (int, float)) and not math.isnan(c)]
+
+            sma_20 = round(sum(closes[-20:]) / 20, 2) if len(closes) >= 20 else None
+            sma_50 = round(sum(closes[-50:]) / 50, 2) if len(closes) >= 50 else None
+            rsi_14 = calculate_rsi(closes, 14)
+            change_5d_pct = (
+                round(((closes[-1] - closes[-6]) / closes[-6]) * 100, 2)
+                if len(closes) >= 6 and closes[-6]
+                else None
+            )
+
+            rsi_zone = "Neutral"
+            if rsi_14 is not None:
+                if rsi_14 >= 70:
+                    rsi_zone = "Overbought (>=70)"
+                elif rsi_14 <= 30:
+                    rsi_zone = "Oversold (<=30)"
+
             return {
                 "ticker": ticker,
                 "name": meta.get("shortName") or meta.get("longName") or ticker,
-                "sector": meta.get("instrumentType") or "Core Watchlist",
-                "source_group": "Core Watchlist",
+                "sector": sector_hint or meta.get("instrumentType") or "Equity",
+                "source_group": source_group,
                 "regular_price": reg_price,
                 "pre_market_price": pre_price,
                 "post_market_price": post_price,
                 "prev_close": prev_close,
                 "active_change_pct": pct_change,
+                "change_5d_pct": change_5d_pct,
+                "sma_20": sma_20,
+                "sma_50": sma_50,
+                "rsi_14": rsi_14,
+                "rsi_zone": rsi_zone,
+                "trend_regime": classify_trend(active_price, sma_20, sma_50),
             }
         except Exception:
             continue
@@ -160,9 +285,8 @@ def collect_market_intelligence(core_tickers: list[str]) -> tuple[list[dict], li
     headlines = []
     seen_tickers = {t.upper() for t in core_tickers}
 
-    # Fetch all core quotes and RSS feeds in parallel (~3 seconds total)
     with ThreadPoolExecutor(max_workers=8) as pool:
-        quote_futures = {pool.submit(fetch_ticker_quote, t): t for t in core_tickers}
+        quote_futures = {pool.submit(fetch_ticker_quote, t, "Core Watchlist"): t for t in core_tickers}
         rss_futures = [
             pool.submit(fetch_rss_items, url, name, 5)
             for name, url in MARKET_RSS_FEEDS
@@ -179,36 +303,47 @@ def collect_market_intelligence(core_tickers: list[str]) -> tuple[list[dict], li
         for fut in as_completed(rss_futures):
             headlines.extend(fut.result())
 
-    # Discover top movers across all sectors and fetch their headlines in parallel
     movers = discover_market_movers(limit_per_screen=5)
     extra_movers = []
     for mover in movers:
         sym = mover["ticker"].upper()
         if sym not in seen_tickers:
             seen_tickers.add(sym)
-            quotes.append(mover)
-            extra_movers.append(sym)
+            extra_movers.append(mover)
         if len(extra_movers) >= 8:
             break
 
     if extra_movers:
-        with ThreadPoolExecutor(max_workers=6) as pool:
-            mover_rss = [
+        with ThreadPoolExecutor(max_workers=8) as pool:
+            mover_quote_futs = {
+                pool.submit(fetch_ticker_quote, m["ticker"], m["source_group"], m["sector"]): m
+                for m in extra_movers
+            }
+            mover_rss_futs = [
                 pool.submit(
                     fetch_rss_items,
-                    f"https://feeds.finance.yahoo.com/rss/2.0/headline?s={sym}&region=US&lang=en-US",
-                    f"Yahoo Finance ({sym})",
+                    f"https://feeds.finance.yahoo.com/rss/2.0/headline?s={m['ticker']}&region=US&lang=en-US",
+                    f"Yahoo Finance ({m['ticker']})",
                     2,
                 )
-                for sym in extra_movers
+                for m in extra_movers
             ]
-            for fut in as_completed(mover_rss):
+            for fut, fallback_mover in mover_quote_futs.items():
+                enriched = fut.result()
+                quotes.append(enriched if enriched else fallback_mover)
+            for fut in as_completed(mover_rss_futs):
                 headlines.extend(fut.result())
 
     return quotes, headlines
 
 
-def analyze_with_gemini(session: str, timestamp_et: str, quotes: list[dict], headlines: list[dict]) -> dict:
+def analyze_with_gemini(
+    session: str,
+    timestamp_et: str,
+    quotes: list[dict],
+    headlines: list[dict],
+    history: list[dict],
+) -> dict:
     api_key = (os.getenv("GEMINI_API_KEY") or "").strip()
     if not api_key:
         raise ValueError("GEMINI_API_KEY secret is empty or missing in GitHub repository settings.")
@@ -223,15 +358,29 @@ def analyze_with_gemini(session: str, timestamp_et: str, quotes: list[dict], hea
         for h in headlines[:45]
     ]
 
+    trajectory_context = build_trajectory_summary(history)
+
     prompt = f"""
-You are a senior quantitative equity analyst. Analyze these live stock quotes and headlines for US market session: {session} ({timestamp_et}).
+You are a senior quantitative equity analyst. Analyze live stock quotes, multi-week technical structure (20D SMA, 50D SMA, RSI-14), 5-day sentiment trajectory, and headlines for US market session: {session} ({timestamp_et}).
 Rank 8 to 10 actionable setups across BOTH Core Watchlist and Market Movers.
+
+DECISION FRAMEWORK & ANTI-FLIP-FLOP RULES:
+1. MULTI-DAY TRAJECTORY (5-DAY / 15-RUN MEMORY): Review TRAJECTORY_HISTORY below. Distinguish between steady multi-day accumulation/erosion vs. single-session noise. Keep the previous rating unless a material fundamental catalyst, earnings surprise, or >2.5% move breaking the 20D/50D SMA trend occurs.
+2. TECHNICAL GUARDRAILS (20D SMA, 50D SMA & RSI-14):
+   - Do NOT issue "Strong Buy / Accumulate" on stocks trading below BOTH 20D and 50D SMA unless a major bullish earnings reversal just occurred.
+   - If RSI(14) >= 72 ("Overbought"), avoid chasing with "Strong Buy"—prefer "Tactical Swing Buy" (on pullback) or "Watchlist / Hold" and note overbought risk.
+   - If RSI(14) <= 32 ("Oversold") above 50D SMA with stabilizing sentiment, flag the mean-reversion setup.
+3. SESSION WEIGHTING:
+   - Pre-Market (04:00-09:30 ET) has thin liquidity: treat small gaps without hard catalysts as preliminary.
+   - Open Market (09:30-16:00 ET) tests whether early gaps hold institutional volume.
+   - Post-Market (16:00-20:00 ET) reflects the official daily close + after-hours earnings: treat as the highest-conviction anchor.
+4. TRANSPARENCY: Populate "prev_action", "sentiment_trail" (concise progression from ticker_trails or "First scan"), "technical_badge" (e.g. "Above 20D & 50D SMA | RSI 58"), and "change_reason".
 
 Return ONLY valid JSON matching this schema:
 {{
   "market_mood": "Bullish | Cautiously Bullish | Neutral / Mixed | Risk-Off Bearish",
   "overall_sentiment_score": <integer -100 to 100>,
-  "executive_summary": "<2-3 sentence synthesis of macro and sector drivers>",
+  "executive_summary": "<2-3 sentence synthesis of macro drivers, 5-day sentiment direction, and technical posture>",
   "recommendations": [
     {{
       "ticker": "<TICKER>",
@@ -239,12 +388,16 @@ Return ONLY valid JSON matching this schema:
       "sector": "<Sector>",
       "source_group": "Core Watchlist | Market Mover",
       "action": "Strong Buy / Accumulate | Tactical Swing Buy | Watchlist / Hold | Trim / Avoid",
+      "prev_action": "<Prior session action or 'New'>",
+      "sentiment_trail": "<e.g. +20 -> +45 -> +62 (5-day rising) or 'Initial baseline'>",
+      "technical_badge": "<e.g. >20D & >50D SMA | RSI 61.4>",
+      "change_reason": "<1 short sentence explaining continuity or why rating shifted>",
       "sentiment_score": <integer -100 to 100>,
       "confidence": <integer 1 to 100>,
       "price_snapshot": "<e.g. $142.50 (+2.4%)>",
       "catalyst": "<Specific catalyst from headlines>",
-      "strategy": "<Concrete entry/position note>",
-      "risk": "<Primary downside risk>"
+      "strategy": "<Concrete entry/position note respecting SMA & RSI levels>",
+      "risk": "<Primary downside or technical risk>"
     }}
   ],
   "top_headlines": [
@@ -258,7 +411,10 @@ Return ONLY valid JSON matching this schema:
   ]
 }}
 
-QUOTES:
+TRAJECTORY_HISTORY (up to 15 prior runs / 5 trading days):
+{json.dumps(trajectory_context)}
+
+QUOTES & TECHNICALS:
 {json.dumps(quotes)}
 
 HEADLINES:
@@ -276,7 +432,7 @@ HEADLINES:
                     contents=prompt,
                     config=types.GenerateContentConfig(
                         response_mime_type="application/json",
-                        temperature=0.2,
+                        temperature=0.15,
                     ),
                 )
                 response = future.result(timeout=30)
@@ -297,7 +453,6 @@ HEADLINES:
 
 
 def build_fallback_analysis(error_msg: str, quotes: list[dict], headlines: list[dict]) -> dict:
-    """Publishes raw scraped quotes & headlines with diagnostic info if Gemini API errors."""
     recs = []
     for q in quotes[:12]:
         price = q.get("pre_market_price") or q.get("post_market_price") or q.get("regular_price")
@@ -305,16 +460,22 @@ def build_fallback_analysis(error_msg: str, quotes: list[dict], headlines: list[
         snap = f"${price:.2f}" if isinstance(price, (int, float)) else "N/A"
         if isinstance(chg, (int, float)):
             snap += f" ({chg:+.2f}%)"
+        rsi = q.get("rsi_14")
+        tech = f"{q.get('trend_regime', 'N/A')} | RSI {rsi if rsi is not None else 'N/A'}"
         recs.append({
             "ticker": q.get("ticker", ""),
             "company": q.get("name", ""),
             "sector": q.get("sector", "Market"),
             "source_group": q.get("source_group", "Watchlist"),
             "action": "Watchlist / Hold",
+            "prev_action": "N/A",
+            "sentiment_trail": "Fallback view",
+            "technical_badge": tech,
+            "change_reason": "Fallback raw quote view",
             "sentiment_score": 0,
             "confidence": 0,
             "price_snapshot": snap,
-            "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
+            "catalyst": "Live market quote & technicals collected; awaiting Gemini AI scoring.",
             "strategy": "Check API status banner above.",
             "risk": "AI scoring skipped on this run.",
         })
@@ -335,7 +496,7 @@ def build_fallback_analysis(error_msg: str, quotes: list[dict], headlines: list[
         "model_used": "Fallback (Raw Feed)",
         "market_mood": "Feed Active (AI Pending)",
         "overall_sentiment_score": 0,
-        "executive_summary": "Live stock quotes and RSS headlines were scraped successfully, but Gemini AI returned an error (see red diagnostic box above).",
+        "executive_summary": "Live stock quotes, SMAs, RSI, and RSS headlines were collected, but Gemini AI returned an error.",
         "recommendations": recs,
         "top_headlines": top_news,
     }
@@ -352,7 +513,7 @@ def badge_color(action: str) -> str:
     return "#f59e0b"
 
 
-def render_html(session: str, timestamp_et: str, data: dict) -> str:
+def render_html(session: str, timestamp_et: str, data: dict, history: list[dict]) -> str:
     error_banner = ""
     if data.get("api_error"):
         error_banner = f"""
@@ -361,12 +522,37 @@ def render_html(session: str, timestamp_et: str, data: dict) -> str:
         </div>
         """
 
+    macro_strip = ""
+    if history:
+        recent_pills = []
+        for h in history[-6:]:
+            sess_short = (h.get("session") or "").split(" ")[0]
+            sc = h.get("overall_sentiment_score", 0)
+            recent_pills.append(f"<span class='hist-pill'>{html.escape(sess_short)} {sc:+d}</span>")
+        macro_strip = f"<div class='macro-strip'><strong>5-Day Macro Trajectory ({len(history)}/{MAX_HISTORY_RUNS} runs):</strong> {' '.join(recent_pills)}</div>"
+
     recs_html = ""
     for rec in data.get("recommendations", []):
         color = badge_color(rec.get("action", ""))
         score = rec.get("sentiment_score", 0)
         source_group = rec.get("source_group", "Watchlist")
         sector = rec.get("sector", "")
+        prev_action = rec.get("prev_action", "New")
+        change_reason = rec.get("change_reason", "")
+        tech_badge = rec.get("technical_badge", "")
+        sent_trail = rec.get("sentiment_trail", "")
+
+        tech_line = (
+            f"<div class='tech-bar'><strong>Technicals:</strong> {html.escape(tech_badge)}</div>"
+            if tech_badge
+            else ""
+        )
+        delta_line = (
+            f"<div class='delta'><strong>5D Trail:</strong> {html.escape(sent_trail)} &bull; <strong>Prev ({html.escape(prev_action)}):</strong> {html.escape(change_reason)}</div>"
+            if (change_reason or sent_trail)
+            else ""
+        )
+
         recs_html += f"""
         <div class="card">
           <div class="card-top">
@@ -387,6 +573,8 @@ def render_html(session: str, timestamp_et: str, data: dict) -> str:
             <span><strong>Sentiment:</strong> {score:+d}/100</span>
             <span><strong>Confidence:</strong> {rec.get('confidence', 0)}%</span>
           </div>
+          {tech_line}
+          {delta_line}
           <p><strong>Catalyst:</strong> {html.escape(rec.get('catalyst', ''))}</p>
           <p><strong>Action Plan:</strong> {html.escape(rec.get('strategy', ''))}</p>
           <p class="risk"><strong>Key Risk:</strong> {html.escape(rec.get('risk', ''))}</p>
@@ -421,6 +609,8 @@ def render_html(session: str, timestamp_et: str, data: dict) -> str:
     .meta {{ color:#94a3b8; font-size:0.9rem; margin-top:4px; }}
     .err-banner {{ background:#450a0a; border:1px solid #ef4444; color:#fecaca; padding:14px 16px; border-radius:8px; margin-bottom:18px; font-size:0.88rem; word-break:break-word; }}
     .banner {{ background:#111827; border:1px solid #1e293b; border-left:4px solid #3b82f6; padding:16px; border-radius:8px; margin-bottom:24px; }}
+    .macro-strip {{ margin-top:10px; display:flex; flex-wrap:wrap; align-items:center; gap:6px; font-size:0.8rem; color:#94a3b8; }}
+    .hist-pill {{ background:#1e293b; color:#e2e8f0; padding:2px 8px; border-radius:999px; font-size:0.75rem; }}
     .grid {{ display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:16px; margin-bottom:28px; }}
     .card {{ background:#111827; border:1px solid #1e293b; border-radius:10px; padding:16px; }}
     .card-top {{ display:flex; justify-content:space-between; align-items:flex-start; gap:8px; margin-bottom:10px; }}
@@ -429,76 +619,10 @@ def render_html(session: str, timestamp_et: str, data: dict) -> str:
     .subtags {{ margin-top:4px; display:flex; flex-wrap:wrap; gap:6px; }}
     .pill {{ background:#1e293b; color:#94a3b8; font-size:0.72rem; padding:2px 7px; border-radius:4px; }}
     .badge {{ padding:4px 10px; border-radius:999px; font-size:0.78rem; font-weight:600; white-space:nowrap; }}
-    .metrics {{ display:flex; flex-wrap:wrap; gap:12px; font-size:0.82rem; color:#cbd5e1; background:#0f172a; padding:8px 10px; border-radius:6px; margin-bottom:10px; }}
+    .metrics {{ display:flex; flex-wrap:wrap; gap:12px; font-size:0.82rem; color:#cbd5e1; background:#0f172a; padding:8px 10px; border-radius:6px; margin-bottom:8px; }}
+    .tech-bar {{ font-size:0.79rem; color:#a7f3d0; background:#064e3b66; border:1px solid #065f46; padding:5px 9px; border-radius:6px; margin-bottom:6px; }}
+    .delta {{ font-size:0.79rem; color:#93c5fd; background:#172554; border:1px solid #1e3a8a; padding:6px 9px; border-radius:6px; margin-bottom:8px; }}
     p {{ font-size:0.88rem; line-height:1.45; margin:6px 0; }}
     .risk {{ color:#fca5a5; }}
     ul.wire {{ list-style:none; padding:0; background:#111827; border:1px solid #1e293b; border-radius:10px; }}
-    ul.wire li {{ padding:12px 16px; border-bottom:1px solid #1e293b; font-size:0.88rem; }}
-    ul.wire li:last-child {{ border-bottom:none; }}
-    .tag {{ background:#1e293b; color:#38bdf8; padding:2px 6px; border-radius:4px; font-size:0.75rem; font-weight:600; margin-right:6px; }}
-    .sent {{ color:#94a3b8; font-size:0.8rem; margin-right:6px; }}
-    a {{ color:#e2e8f0; text-decoration:none; }}
-    a:hover {{ text-decoration:underline; color:#38bdf8; }}
-    small {{ color:#64748b; }}
-    footer {{ text-align:center; color:#64748b; font-size:0.78rem; margin-top:24px; }}
-  </style>
-</head>
-<body>
-  <div class="wrap">
-    <header>
-      <div>
-        <h1>AlphaScrape AI — Automated Market Intelligence</h1>
-        <div class="meta">Session: <strong>{html.escape(session)}</strong> &bull; Updated: <strong>{html.escape(timestamp_et)}</strong></div>
-      </div>
-      <div>
-        <strong>Mood:</strong> {html.escape(data.get('market_mood', 'Neutral'))} ({data.get('overall_sentiment_score', 0):+d}/100)
-      </div>
-    </header>
-    {error_banner}
-    <div class="banner">
-      <strong>Executive Synthesis:</strong> {html.escape(data.get('executive_summary', ''))}
-    </div>
-    <h2>Actionable Watchlist &amp; Market Mover Signals</h2>
-    <div class="grid">{recs_html}</div>
-    <h2>Scraped Wire Headlines</h2>
-    <ul class="wire">{news_html}</ul>
-    <footer>Generated automatically via GitHub Actions &amp; {model_label}. For informational research only, not financial advice.</footer>
-  </div>
-</body>
-</html>"""
-
-
-def main() -> None:
-    session, timestamp_et = detect_session()
-    print(f"Running {session} scan at {timestamp_et}...", flush=True)
-    quotes, headlines = collect_market_intelligence(CORE_WATCHLIST)
-    print(f"Collected {len(quotes)} quotes and {len(headlines)} headlines.", flush=True)
-
-    try:
-        analysis = analyze_with_gemini(session, timestamp_et, quotes, headlines)
-    except Exception as exc:
-        print(f"[ERROR] Gemini analysis failed: {exc}", flush=True)
-        analysis = build_fallback_analysis(str(exc), quotes, headlines)
-
-    os.makedirs("docs", exist_ok=True)
-    with open("docs/index.html", "w", encoding="utf-8") as f:
-        f.write(render_html(session, timestamp_et, analysis))
-    with open("docs/latest.json", "w", encoding="utf-8") as f:
-        json.dump({"session": session, "updated_et": timestamp_et, **analysis}, f, indent=2)
-
-    summary_path = os.getenv("GITHUB_STEP_SUMMARY")
-    if summary_path:
-        with open(summary_path, "a", encoding="utf-8") as sf:
-            sf.write(f"## {session} ({timestamp_et})\n\n")
-            if analysis.get("api_error"):
-                sf.write(f"> **Gemini API Diagnostic:** `{analysis['api_error']}`\n\n")
-            sf.write(f"**Market Mood:** {analysis.get('market_mood')} ({analysis.get('overall_sentiment_score')}/100)\n\n")
-            sf.write(f"{analysis.get('executive_summary')}\n\n")
-            for r in analysis.get("recommendations", []):
-                sf.write(f"- **{r.get('ticker')}** [{r.get('source_group')}] — `{r.get('action')}` (Sentiment {r.get('sentiment_score')}/100): {r.get('catalyst')}\n")
-
-    print("Dashboard successfully written to docs/index.html", flush=True)
-
-
-if __name__ == "__main__":
-    main()
+    ul.wire li {{ padding:1
