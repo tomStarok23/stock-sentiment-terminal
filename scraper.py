@@ -1,39 +1,41 @@
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from datetime import datetime
 import html
 import json
 import math
 import os
 import socket
 import xml.etree.ElementTree as ET
-from datetime import datetime
 from zoneinfo import ZoneInfo
 
-import requests
 from bs4 import BeautifulSoup
 from google import genai
 from google.genai import types
+import requests
 
 socket.setdefaulttimeout(10)
 
 CORE_WATCHLIST = [
     "NVDA", "AVGO", "MU", "INTC", "GOOGL",
-    "META", "AAPL", "AMZN", "TSLA", "PLTR", "VUAA.L"
+    "META", "AAPL", "AMZN", "TSLA", "PLTR", "VUAA.L",
 ]
 
 MARKET_RSS_FEEDS = [
-    ("CNBC Top News", "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=100003114"),
-    ("CNBC Investing", "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=15839069"),
-    ("MarketWatch Top Stories", "https://feeds.content.dowjones.io/public/rss/mw_topstories"),
+    ("CNBC Top", "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=100003114"),
+    ("CNBC Invest", "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=15839069"),
+    ("MarketWatch", "https://feeds.content.dowjones.io/public/rss/mw_topstories"),
 ]
 
 GEMINI_MODELS = ["gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-2.0-flash"]
 HISTORY_FILE = "docs/history.json"
 MAX_HISTORY_RUNS = 15
-HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/128.0.0.0 Safari/537.36"}
+HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
 
 
 def clean_num(val):
-    return None if isinstance(val, float) and (math.isnan(val) or math.isinf(val)) else val
+    if isinstance(val, float) and (math.isnan(val) or math.isinf(val)):
+        return None
+    return val
 
 
 def calculate_rsi(closes: list[float], period: int = 14) -> float | None:
@@ -49,37 +51,37 @@ def calculate_rsi(closes: list[float], period: int = 14) -> float | None:
         avg_loss = (avg_loss * (period - 1) + losses[i]) / period
     if avg_loss == 0:
         return 100.0
-    return round(100.0 - (100.0 / (1.0 + (avg_gain / avg_loss))), 1)
+    return round(100.0 - (100.0 / (1.0 + avg_gain / avg_loss)), 1)
 
 
 def classify_trend(price: float | None, sma_20: float | None, sma_50: float | None) -> str:
     if not price:
-        return "Trend Unavailable"
+        return "N/A"
     if sma_20 and sma_50:
         if price > sma_20 and price > sma_50:
-            return "Strong Uptrend (>20D & >50D SMA)"
+            return "Uptrend (>20D & >50D SMA)"
         if price > sma_50:
-            return "Pullback in Uptrend (<20D, >50D SMA)"
+            return "Pullback (<20D, >50D SMA)"
         if price >= sma_20:
-            return "Early Rebound (>20D, <50D SMA)"
+            return "Rebound (>20D, <50D SMA)"
         return "Downtrend (<20D & <50D SMA)"
     if sma_20:
         return "Above 20D SMA" if price >= sma_20 else "Below 20D SMA"
-    return "Insufficient History"
+    return "Short History"
 
 
 def detect_session() -> tuple[str, str]:
     now_et = datetime.now(ZoneInfo("America/New_York"))
     mins = now_et.hour * 60 + now_et.minute
     if 240 <= mins < 570:
-        session = "Pre-Market (04:00-09:30 ET)"
+        sess = "Pre-Market (04:00-09:30 ET)"
     elif 570 <= mins < 960:
-        session = "Open Market (09:30-16:00 ET)"
+        sess = "Open Market (09:30-16:00 ET)"
     elif 960 <= mins < 1200:
-        session = "Post-Market (16:00-20:00 ET)"
+        sess = "Post-Market (16:00-20:00 ET)"
     else:
-        session = "Overnight / Extended Wire"
-    return session, now_et.strftime("%Y-%m-%d %H:%M %Z")
+        sess = "Overnight / Extended Wire"
+    return sess, now_et.strftime("%Y-%m-%d %H:%M %Z")
 
 
 def load_history() -> list[dict]:
@@ -93,23 +95,23 @@ def load_history() -> list[dict]:
         return []
 
 
-def save_history(history: list[dict], session: str, timestamp_et: str, analysis: dict) -> list[dict]:
-    snapshot = {
+def save_history(history: list[dict], session: str, ts_et: str, analysis: dict) -> list[dict]:
+    snap = {
         "session": session,
-        "updated_et": timestamp_et,
+        "updated_et": ts_et,
         "market_mood": analysis.get("market_mood"),
         "overall_sentiment_score": analysis.get("overall_sentiment_score"),
         "signals": {
             r["ticker"]: {
                 "action": r.get("action"),
                 "sentiment_score": r.get("sentiment_score"),
-                "catalyst": (r.get("catalyst") or "")[:140],
+                "catalyst": (r.get("catalyst") or "")[:120],
             }
             for r in analysis.get("recommendations", [])
             if r.get("ticker")
         },
     }
-    updated = (history + [snapshot])[-MAX_HISTORY_RUNS:]
+    updated = (history + [snap])[-MAX_HISTORY_RUNS:]
     with open(HISTORY_FILE, "w", encoding="utf-8") as f:
         json.dump(updated, f, indent=2)
     return updated
@@ -117,22 +119,23 @@ def save_history(history: list[dict], session: str, timestamp_et: str, analysis:
 
 def build_trajectory_summary(history: list[dict]) -> dict:
     if not history:
-        return {"runs_recorded": 0, "macro_trail": [], "ticker_trails": {}, "recent_detailed_sessions": []}
-    macro_trail = [
-        f"{h.get('updated_et', '')} [{h.get('session', '').split(' ')[0]}]: {h.get('overall_sentiment_score', 0):+d} ({h.get('market_mood', '')})"
+        return {"runs": 0, "macro": [], "trails": {}, "recent": []}
+    macro = [
+        f"{h.get('updated_et', '')} [{h.get('session', '').split(' ')[0]}]: "
+        f"{h.get('overall_sentiment_score', 0):+d}"
         for h in history
     ]
     trails: dict[str, list[str]] = {}
     for h in history:
-        sess = (h.get("session") or "").split(" ")[0]
-        for ticker, sig in (h.get("signals") or {}).items():
+        s = (h.get("session") or "").split(" ")[0]
+        for tk, sig in (h.get("signals") or {}).items():
             act = (sig.get("action") or "Hold").split("/")[0].strip()
-            trails.setdefault(ticker, []).append(f"{sess}:{sig.get('sentiment_score', 0):+d}({act})")
+            trails.setdefault(tk, []).append(f"{s}:{sig.get('sentiment_score', 0):+d}({act})")
     return {
-        "runs_recorded": len(history),
-        "macro_trail": macro_trail,
-        "ticker_trails": {t: " -> ".join(v[-MAX_HISTORY_RUNS:]) for t, v in trails.items()},
-        "recent_detailed_sessions": history[-2:],
+        "runs": len(history),
+        "macro": macro,
+        "trails": {k: " -> ".join(v[-MAX_HISTORY_RUNS:]) for k, v in trails.items()},
+        "recent": history[-2:],
     }
 
 
@@ -145,7 +148,8 @@ def fetch_rss_items(url: str, source_name: str, limit: int = 5) -> list[dict]:
         for item in root.findall(".//item")[:limit]:
             title = (item.findtext("title") or "").strip()
             link = (item.findtext("link") or "").strip()
-            desc = BeautifulSoup(item.findtext("description") or "", "html.parser").get_text(" ", strip=True)[:180]
+            raw_desc = item.findtext("description") or ""
+            desc = BeautifulSoup(raw_desc, "html.parser").get_text(" ", strip=True)[:160]
             if title:
                 items.append({"source": source_name, "title": title, "summary": desc, "url": link})
     except Exception as exc:
@@ -153,7 +157,9 @@ def fetch_rss_items(url: str, source_name: str, limit: int = 5) -> list[dict]:
     return items
 
 
-def fetch_ticker_quote(ticker: str, source_group: str = "Core Watchlist", sector_hint: str | None = None) -> dict | None:
+def fetch_ticker_quote(
+    ticker: str, source_group: str = "Core Watchlist", sector_hint: str | None = None
+) -> dict | None:
     for host in ("query1.finance.yahoo.com", "query2.finance.yahoo.com"):
         url = f"https://{host}/v8/finance/chart/{ticker}?range=4mo&interval=1d&includePrePost=true"
         try:
@@ -175,8 +181,11 @@ def fetch_ticker_quote(ticker: str, source_group: str = "Core Watchlist", sector
             sma_20 = round(sum(closes[-20:]) / 20, 2) if len(closes) >= 20 else None
             sma_50 = round(sum(closes[-50:]) / 50, 2) if len(closes) >= 50 else None
             rsi_14 = calculate_rsi(closes, 14)
-            chg_5d = round(((closes[-1] - closes[-6]) / closes[-6]) * 100, 2) if len(closes) >= 6 and closes[-6] else None
-
+            chg_5d = (
+                round(((closes[-1] - closes[-6]) / closes[-6]) * 100, 2)
+                if len(closes) >= 6 and closes[-6]
+                else None
+            )
             return {
                 "ticker": ticker,
                 "name": meta.get("shortName") or meta.get("longName") or ticker,
@@ -200,8 +209,12 @@ def fetch_ticker_quote(ticker: str, source_group: str = "Core Watchlist", sector
 
 def discover_market_movers(limit_per_screen: int = 5) -> list[dict]:
     discovered: dict[str, dict] = {}
-    for label, key in [("Market Mover: Day Gainer", "day_gainers"), ("Market Mover: Most Active", "most_actives")]:
-        url = f"https://query1.finance.yahoo.com/v1/finance/screener/predefined/saved?formatted=false&scrIds={key}&count={limit_per_screen}"
+    screens = [("Market Mover: Day Gainer", "day_gainers"), ("Market Mover: Most Active", "most_actives")]
+    for label, key in screens:
+        url = (
+            "https://query1.finance.yahoo.com/v1/finance/screener/predefined/saved"
+            f"?formatted=false&scrIds={key}&count={limit_per_screen}"
+        )
         try:
             resp = requests.get(url, headers=HEADERS, timeout=8)
             resp.raise_for_status()
@@ -234,7 +247,8 @@ def collect_market_intelligence(core_tickers: list[str]) -> tuple[list[dict], li
         q_futs = [pool.submit(fetch_ticker_quote, t, "Core Watchlist") for t in core_tickers]
         r_futs = [pool.submit(fetch_rss_items, u, n, 5) for n, u in MARKET_RSS_FEEDS]
         for t in core_tickers:
-            r_futs.append(pool.submit(fetch_rss_items, f"https://feeds.finance.yahoo.com/rss/2.0/headline?s={t}&region=US&lang=en-US", f"Yahoo ({t})", 3))
+            rss_url = f"https://feeds.finance.yahoo.com/rss/2.0/headline?s={t}&region=US&lang=en-US"
+            r_futs.append(pool.submit(fetch_rss_items, rss_url, f"Yahoo ({t})", 3))
         for f in as_completed(q_futs):
             if f.result():
                 quotes.append(f.result())
@@ -244,8 +258,19 @@ def collect_market_intelligence(core_tickers: list[str]) -> tuple[list[dict], li
     extra = [m for m in discover_market_movers(5) if m["ticker"].upper() not in seen][:8]
     if extra:
         with ThreadPoolExecutor(max_workers=8) as pool:
-            mq_futs = {pool.submit(fetch_ticker_quote, m["ticker"], m["source_group"], m["sector"]): m for m in extra}
-            mr_futs = [pool.submit(fetch_rss_items, f"https://feeds.finance.yahoo.com/rss/2.0/headline?s={m['ticker']}&region=US&lang=en-US", f"Yahoo ({m['ticker']})", 2) for m in extra]
+            mq_futs = {
+                pool.submit(fetch_ticker_quote, m["ticker"], m["source_group"], m["sector"]): m
+                for m in extra
+            }
+            mr_futs = [
+                pool.submit(
+                    fetch_rss_items,
+                    f"https://feeds.finance.yahoo.com/rss/2.0/headline?s={m['ticker']}&region=US&lang=en-US",
+                    f"Yahoo ({m['ticker']})",
+                    2,
+                )
+                for m in extra
+            ]
             for f, fb in mq_futs.items():
                 quotes.append(f.result() or fb)
             for f in as_completed(mr_futs):
@@ -254,7 +279,9 @@ def collect_market_intelligence(core_tickers: list[str]) -> tuple[list[dict], li
     return quotes, headlines
 
 
-def analyze_with_gemini(session: str, timestamp_et: str, quotes: list[dict], headlines: list[dict], history: list[dict]) -> dict:
+def analyze_with_gemini(
+    session: str, timestamp_et: str, quotes: list[dict], headlines: list[dict], history: list[dict]
+) -> dict:
     api_key = (os.getenv("GEMINI_API_KEY") or "").strip()
     if not api_key:
         raise ValueError("GEMINI_API_KEY secret is missing.")
@@ -340,55 +367,144 @@ def badge_color(action: str) -> str:
     return "#f59e0b"
 
 
+CSS_STYLES = """
+body { font-family: system-ui, -apple-system, sans-serif; background: #0b0f19; color: #e2e8f0; margin: 0; padding: 18px; }
+.wrap { max-width: 1100px; margin: 0 auto; }
+header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; padding-bottom: 14px; margin-bottom: 18px; }
+h1 { margin: 0; font-size: 1.4rem; }
+.meta, .co, small { color: #94a3b8; font-size: 0.85rem; }
+.err { background: #450a0a; border: 1px solid #ef4444; color: #fecaca; padding: 12px; border-radius: 8px; margin-bottom: 16px; }
+.ban { background: #111827; border: 1px solid #1e293b; border-left: 4px solid #3b82f6; padding: 14px; border-radius: 8px; margin-bottom: 20px; }
+.strip { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 0.8rem; color: #94a3b8; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 14px; margin-bottom: 24px; }
+.card { background: #111827; border: 1px solid #1e293b; border-radius: 10px; padding: 14px; }
+.top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 8px; }
+.tk { font-size: 1.15rem; font-weight: 700; color: #38bdf8; }
+.tags { display: flex; gap: 5px; margin-top: 4px; }
+.pill, .tag { background: #1e293b; color: #93c5fd; font-size: 0.72rem; padding: 2px 7px; border-radius: 4px; }
+.bdg { padding: 3px 9px; border-radius: 999px; font-size: 0.76rem; font-weight: 600; white-space: nowrap; }
+.met { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; background: #0f172a; padding: 7px 9px; border-radius: 6px; margin-bottom: 6px; }
+.tech { font-size: 0.78rem; color: #a7f3d0; background: #064e3b66; border: 1px solid #065f46; padding: 5px 8px; border-radius: 6px; margin-bottom: 5px; }
+.dlt { font-size: 0.78rem; color: #93c5fd; background: #172554; border: 1px solid #1e3a8a; padding: 5px 8px; border-radius: 6px; margin-bottom: 7px; }
+p { font-size: 0.86rem; line-height: 1.4; margin: 5px 0; }
+.rsk { color: #fca5a5; }
+ul { list-style: none; padding: 0; background: #111827; border: 1px solid #1e293b; border-radius: 10px; }
+li { padding: 11px 14px; border-bottom: 1px solid #1e293b; font-size: 0.86rem; }
+li:last-child { border-bottom: none; }
+a { color: #e2e8f0; text-decoration: none; }
+a:hover { text-decoration: underline; color: #38bdf8; }
+footer { text-align: center; color: #64748b; font-size: 0.76rem; margin-top: 20px; }
+"""
+
+
+def render_card(r: dict) -> str:
+    c = badge_color(r.get("action", ""))
+    tk = html.escape(r.get("ticker", ""))
+    co = html.escape(r.get("company", ""))
+    grp = html.escape(r.get("source_group", "Watchlist"))
+    sec = html.escape(r.get("sector", ""))
+    act = html.escape(r.get("action", "Hold"))
+    snap = html.escape(r.get("price_snapshot", "N/A"))
+    tech = html.escape(r.get("technical_badge", ""))
+    trail = html.escape(r.get("sentiment_trail", ""))
+    prev = html.escape(r.get("prev_action", "New"))
+    reason = html.escape(r.get("change_reason", ""))
+    cat = html.escape(r.get("catalyst", ""))
+    strat = html.escape(r.get("strategy", ""))
+    risk = html.escape(r.get("risk", ""))
+
+    return (
+        f"<div class='card'><div class='top'><div><span class='tk'>{tk}</span> "
+        f"<span class='co'>{co}</span><div class='tags'>"
+        f"<span class='pill'>{grp}</span><span class='pill'>{sec}</span></div></div>"
+        f"<span class='bdg' style='background:{c}22;color:{c};border:1px solid {c}55'>{act}</span></div>"
+        f"<div class='met'><span><b>Price:</b> {snap}</span>"
+        f"<span><b>Sent:</b> {r.get('sentiment_score', 0):+d}</span>"
+        f"<span><b>Conf:</b> {r.get('confidence', 0)}%</span></div>"
+        f"<div class='tech'><b>Tech:</b> {tech}</div>"
+        f"<div class='dlt'><b>5D Trail:</b> {trail} &bull; <b>Prev ({prev}):</b> {reason}</div>"
+        f"<p><b>Catalyst:</b> {cat}</p><p><b>Plan:</b> {strat}</p>"
+        f"<p class='rsk'><b>Risk:</b> {risk}</p></div>"
+    )
+
+
 def render_html(session: str, timestamp_et: str, data: dict, history: list[dict]) -> str:
-    err_html = f"<div class='err'><strong>API Diagnostic:</strong> {html.escape(data['api_error'])}</div>" if data.get("api_error") else ""
+    err_html = ""
+    if data.get("api_error"):
+        err_html = f"<div class='err'><strong>API Diagnostic:</strong> {html.escape(data['api_error'])}</div>"
+
     pills = "".join(
-        f"<span class='pill'>{html.escape((h.get('session') or '').split(' ')[0])} {h.get('overall_sentiment_score', 0):+d}</span>"
+        f"<span class='pill'>{html.escape((h.get('session') or '').split(' ')[0])} "
+        f"{h.get('overall_sentiment_score', 0):+d}</span>"
         for h in history[-6:]
     )
-    macro_strip = f"<div class='strip'><strong>5D Trajectory ({len(history)}/{MAX_HISTORY_RUNS}):</strong> {pills}</div>" if pills else ""
+    macro_strip = ""
+    if pills:
+        macro_strip = f"<div class='strip'><strong>5D Trajectory ({len(history)}/{MAX_HISTORY_RUNS}):</strong> {pills}</div>"
 
-    cards = []
-    for r in data.get("recommendations", []):
-        c = badge_color(r.get("action", ""))
-        cards.append(
-            f"<div class='card'><div class='top'><div><span class='tk'>{html.escape(r.get('ticker',''))}</span> "
-            f"<span class='co'>{html.escape(r.get('company',''))}</span><div class='tags'>"
-            f"<span class='pill'>{html.escape(r.get('source_group','Watchlist'))}</span>"
-            f"<span class='pill'>{html.escape(r.get('sector',''))}</span></div></div>"
-            f"<span class='bdg' style='background:{c}22;color:{c};border:1px solid {c}55'>{html.escape(r.get('action','Hold'))}</span></div>"
-            f"<div class='met'><span><b>Price:</b> {html.escape(r.get('price_snapshot','N/A'))}</span>"
-            f"<span><b>Sent:</b> {r.get('sentiment_score',0):+d}</span><span><b>Conf:</b> {r.get('confidence',0)}%</span></div>"
-            f"<div class='tech'><b>Tech:</b> {html.escape(r.get('technical_badge',''))}</div>"
-            f"<div class='dlt'><b>5D Trail:</b> {html.escape(r.get('sentiment_trail',''))} &bull; <b>Prev ({html.escape(r.get('prev_action','New'))}):</b> {html.escape(r.get('change_reason',''))}</div>"
-            f"<p><b>Catalyst:</b> {html.escape(r.get('catalyst',''))}</p>"
-            f"<p><b>Plan:</b> {html.escape(r.get('strategy',''))}</p>"
-            f"<p class='rsk'><b>Risk:</b> {html.escape(r.get('risk',''))}</p></div>"
-        )
-
-    news = "".join(
-        f"<li><span class='tag'>{html.escape(i.get('ticker_tag','MACRO'))}</span> "
-        f"<span class='co'>[{html.escape(i.get('sentiment','Neutral'))}]</span> "
-        f"<a href='{html.escape(i.get('url') or '#')}' target='_blank' rel='noopener'>{html.escape(i.get('title',''))}</a> "
-        f"<small>— {html.escape(i.get('source',''))}</small></li>"
+    cards_html = "".join(render_card(r) for r in data.get("recommendations", []))
+    news_html = "".join(
+        f"<li><span class='tag'>{html.escape(i.get('ticker_tag', 'MACRO'))}</span> "
+        f"<span class='co'>[{html.escape(i.get('sentiment', 'Neutral'))}]</span> "
+        f"<a href='{html.escape(i.get('url') or '#')}' target='_blank' rel='noopener'>"
+        f"{html.escape(i.get('title', ''))}</a> "
+        f"<small>— {html.escape(i.get('source', ''))}</small></li>"
         for i in data.get("top_headlines", [])[:18]
     )
 
-    css = (
-        "body{font-family:system-ui,-apple-system,sans-serif;background:#0b0f19;color:#e2e8f0;margin:0;padding:18px}"
-        ".wrap{max-width:1100px;margin:0 auto}header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;border-bottom:1px solid #1e293b;padding-bottom:14px;margin-bottom:18px}"
-        "h1{margin:0;font-size:1.4rem}.meta,.co,small{color:#94a3b8;font-size:.85rem}"
-        ".err{background:#450a0a;border:1px solid #ef4444;color:#fecaca;padding:12px;border-radius:8px;margin-bottom:16px}"
-        ".ban{background:#111827;border:1px solid #1e293b;border-left:4px solid #3b82f6;padding:14px;border-radius:8px;margin-bottom:20px}"
-        ".strip{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:.8rem;color:#94a3b8}"
-        ".grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:14px;margin-bottom:24px}"
-        ".card{background:#111827;border:1px solid #1e293b;border-radius:10px;padding:14px}"
-        ".top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px}"
-        ".tk{font-size:1.15rem;font-weight:700;color:#38bdf8}.tags{display:flex;gap:5px;margin-top:4px}"
-        ".pill,.tag{background:#1e293b;color:#93c5fd;font-size:.72rem;padding:2px 7px;border-radius:4px}"
-        ".bdg{padding:3px 9px;border-radius:999px;font-size:.76rem;font-weight:600;white-space:nowrap}"
-        ".met{display:flex;flex-wrap:wrap;gap:10px;font-size:.8rem;background:#0f172a;padding:7px 9px;border-radius:6px;margin-bottom:6px}"
-        ".tech{font-size:.78rem;color:#a7f3d0;background:#064e3b66;border:1px solid #065f46;padding:5px 8px;border-radius:6px;margin-bottom:5px}"
-        ".dlt{font-size:.78rem;color:#93c5fd;background:#172554;border:1px solid #1e3a8a;padding:5px 8px;border-radius:6px;margin-bottom:7px}"
-        "p{font-size:.86rem;line-height:1.4;margin:5px 0}.rsk{color:#fca5a5}"
-        "ul{list-style:none;padding:0;background:#111827;border:1px solid #1e293b
+    mood = html.escape(data.get("market_mood", "Neutral"))
+    score = data.get("overall_sentiment_score", 0)
+    summary = html.escape(data.get("executive_summary", ""))
+    model_used = html.escape(data.get("model_used", "Gemini AI"))
+
+    return (
+        "<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'/>"
+        "<meta name='viewport' content='width=device-width,initial-scale=1'/>"
+        f"<title>AlphaScrape AI</title><style>{CSS_STYLES}</style></head><body>"
+        "<div class='wrap'><header><div>"
+        "<h1>AlphaScrape AI — Automated Market Intelligence</h1>"
+        f"<div class='meta'>Session: <b>{html.escape(session)}</b> &bull; Updated: <b>{html.escape(timestamp_et)}</b></div>"
+        f"</div><div><b>Mood:</b> {mood} ({score:+d}/100)</div></header>"
+        f"{err_html}<div class='ban'><b>Executive Synthesis:</b> {summary}{macro_strip}</div>"
+        f"<h2>Actionable Watchlist &amp; Market Mover Signals</h2><div class='grid'>{cards_html}</div>"
+        f"<h2>Scraped Wire Headlines</h2><ul>{news_html}</ul>"
+        f"<footer>Auto-generated via GitHub Actions &amp; {model_used}. Not financial advice.</footer>"
+        "</div></body></html>"
+    )
+
+
+def main() -> None:
+    session, timestamp_et = detect_session()
+    print(f"Running {session} scan at {timestamp_et}...", flush=True)
+    history = load_history()
+    quotes, headlines = collect_market_intelligence(CORE_WATCHLIST)
+    print(f"Collected {len(quotes)} quotes & {len(headlines)} headlines ({len(history)} prior runs).", flush=True)
+
+    try:
+        analysis = analyze_with_gemini(session, timestamp_et, quotes, headlines, history)
+    except Exception as exc:
+        print(f"[ERROR] Gemini failed: {exc}", flush=True)
+        analysis = {
+            "api_error": str(exc),
+            "model_used": "Fallback",
+            "market_mood": "Feed Active",
+            "overall_sentiment_score": 0,
+            "executive_summary": "Live market data collected; see API diagnostic above.",
+            "recommendations": [],
+            "top_headlines": [
+                {"source": h["source"], "ticker_tag": "WIRE", "sentiment": "Neutral", "title": h["title"], "url": h["url"]}
+                for h in headlines[:15]
+            ],
+        }
+
+    os.makedirs("docs", exist_ok=True)
+    updated_history = save_history(history, session, timestamp_et, analysis) if not analysis.get("api_error") else history
+    with open("docs/index.html", "w", encoding="utf-8") as f:
+        f.write(render_html(session, timestamp_et, analysis, updated_history))
+    with open("docs/latest.json", "w", encoding="utf-8") as f:
+        json.dump({"session": session, "updated_et": timestamp_et, **analysis}, f, indent=2)
+    print("Dashboard written to docs/index.html", flush=True)
+
+
+if __name__ == "__main__":
+    main()
