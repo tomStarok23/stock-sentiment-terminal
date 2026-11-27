@@ -1,25 +1,12 @@
 {
-  "session": "Post-Market (16:00-20:00 ET)",
-  "updated_et": "2026-11-26 18:19 EST",
+  "session": "Overnight / Extended Wire",
+  "updated_et": "2026-11-26 22:39 EST",
   "api_error": "404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.0-flash is no longer available. Please update your code to use models/gemini-3.8-flash for the latest features and improvements. We recommend you to use the Interactions API (https://aistudio.google.com/docs/get-started).', 'status': 'NOT_FOUND'}}",
   "model_used": "Fallback (Raw Feed)",
   "market_mood": "Feed Active (AI Pending)",
   "overall_sentiment_score": 0,
   "executive_summary": "Live stock quotes and RSS headlines were scraped successfully, but Gemini AI returned an error (see red diagnostic box above).",
   "recommendations": [
-    {
-      "ticker": "AMZN",
-      "company": "Amazon.com, Inc.",
-      "sector": "EQUITY",
-      "source_group": "Core Watchlist",
-      "action": "Watchlist / Hold",
-      "sentiment_score": 0,
-      "confidence": 0,
-      "price_snapshot": "$244.43 (-8.71%)",
-      "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
-      "strategy": "Check API status banner above.",
-      "risk": "AI scoring skipped on this run."
-    },
     {
       "ticker": "GOOGL",
       "company": "Alphabet Inc.",
@@ -29,32 +16,6 @@
       "sentiment_score": 0,
       "confidence": 0,
       "price_snapshot": "$273.10 (-3.31%)",
-      "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
-      "strategy": "Check API status banner above.",
-      "risk": "AI scoring skipped on this run."
-    },
-    {
-      "ticker": "AVGO",
-      "company": "Broadcom Inc.",
-      "sector": "EQUITY",
-      "source_group": "Core Watchlist",
-      "action": "Watchlist / Hold",
-      "sentiment_score": 0,
-      "confidence": 0,
-      "price_snapshot": "$300.86 (-15.02%)",
-      "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
-      "strategy": "Check API status banner above.",
-      "risk": "AI scoring skipped on this run."
-    },
-    {
-      "ticker": "NVDA",
-      "company": "NVIDIA Corporation",
-      "sector": "EQUITY",
-      "source_group": "Core Watchlist",
-      "action": "Watchlist / Hold",
-      "sentiment_score": 0,
-      "confidence": 0,
-      "price_snapshot": "$149.30 (-1.10%)",
       "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
       "strategy": "Check API status banner above.",
       "risk": "AI scoring skipped on this run."
@@ -73,6 +34,45 @@
       "risk": "AI scoring skipped on this run."
     },
     {
+      "ticker": "AVGO",
+      "company": "Broadcom Inc.",
+      "sector": "EQUITY",
+      "source_group": "Core Watchlist",
+      "action": "Watchlist / Hold",
+      "sentiment_score": 0,
+      "confidence": 0,
+      "price_snapshot": "$300.86 (-15.02%)",
+      "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
+      "strategy": "Check API status banner above.",
+      "risk": "AI scoring skipped on this run."
+    },
+    {
+      "ticker": "AMZN",
+      "company": "Amazon.com, Inc.",
+      "sector": "EQUITY",
+      "source_group": "Core Watchlist",
+      "action": "Watchlist / Hold",
+      "sentiment_score": 0,
+      "confidence": 0,
+      "price_snapshot": "$244.43 (-8.71%)",
+      "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
+      "strategy": "Check API status banner above.",
+      "risk": "AI scoring skipped on this run."
+    },
+    {
+      "ticker": "NVDA",
+      "company": "NVIDIA Corporation",
+      "sector": "EQUITY",
+      "source_group": "Core Watchlist",
+      "action": "Watchlist / Hold",
+      "sentiment_score": 0,
+      "confidence": 0,
+      "price_snapshot": "$149.30 (-1.10%)",
+      "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
+      "strategy": "Check API status banner above.",
+      "risk": "AI scoring skipped on this run."
+    },
+    {
       "ticker": "MU",
       "company": "Micron Technology, Inc.",
       "sector": "EQUITY",
@@ -81,6 +81,19 @@
       "sentiment_score": 0,
       "confidence": 0,
       "price_snapshot": "$601.25 (-14.75%)",
+      "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
+      "strategy": "Check API status banner above.",
+      "risk": "AI scoring skipped on this run."
+    },
+    {
+      "ticker": "INTC",
+      "company": "Intel Corporation",
+      "sector": "EQUITY",
+      "source_group": "Core Watchlist",
+      "action": "Watchlist / Hold",
+      "sentiment_score": 0,
+      "confidence": 0,
+      "price_snapshot": "$54.47 (-0.37%)",
       "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
       "strategy": "Check API status banner above.",
       "risk": "AI scoring skipped on this run."
@@ -112,32 +125,6 @@
       "risk": "AI scoring skipped on this run."
     },
     {
-      "ticker": "PLTR",
-      "company": "Palantir Technologies Inc.",
-      "sector": "EQUITY",
-      "source_group": "Core Watchlist",
-      "action": "Watchlist / Hold",
-      "sentiment_score": 0,
-      "confidence": 0,
-      "price_snapshot": "$163.59 (+4.42%)",
-      "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
-      "strategy": "Check API status banner above.",
-      "risk": "AI scoring skipped on this run."
-    },
-    {
-      "ticker": "INTC",
-      "company": "Intel Corporation",
-      "sector": "EQUITY",
-      "source_group": "Core Watchlist",
-      "action": "Watchlist / Hold",
-      "sentiment_score": 0,
-      "confidence": 0,
-      "price_snapshot": "$54.47 (-0.37%)",
-      "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
-      "strategy": "Check API status banner above.",
-      "risk": "AI scoring skipped on this run."
-    },
-    {
       "ticker": "VUAA.L",
       "company": "VANGUARD FUNDS PLC VANGUARD S&P",
       "sector": "ETF",
@@ -146,6 +133,19 @@
       "sentiment_score": 0,
       "confidence": 0,
       "price_snapshot": "$140.08 (-1.03%)",
+      "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
+      "strategy": "Check API status banner above.",
+      "risk": "AI scoring skipped on this run."
+    },
+    {
+      "ticker": "PLTR",
+      "company": "Palantir Technologies Inc.",
+      "sector": "EQUITY",
+      "source_group": "Core Watchlist",
+      "action": "Watchlist / Hold",
+      "sentiment_score": 0,
+      "confidence": 0,
+      "price_snapshot": "$163.59 (+4.42%)",
       "catalyst": "Live market quote collected; awaiting Gemini AI scoring.",
       "strategy": "Check API status banner above.",
       "risk": "AI scoring skipped on this run."
@@ -166,74 +166,25 @@
   ],
   "top_headlines": [
     {
-      "source": "CNBC Top News",
+      "source": "MarketWatch Top Stories",
       "ticker_tag": "WIRE",
       "sentiment": "Neutral",
-      "title": "Trump demands probe into \u2018record setting error\u2019 after third-quarter GDP data gets massive revision higher",
-      "url": "https://www.cnbc.com/2026/11/26/trump-gdp-revision-investigation.html"
+      "title": "I hate that Jensen Huang is back at Nvidia, but I love what it\u2019s done for my 401(k). Am I a hypocrite?",
+      "url": "https://www.marketwatch.com/story/i-hate-that-jensen-huang-is-back-at-nvidia-but-i-love-what-its-done-for-my-401-k-am-i-a-hypocrite-f63c0303?mod=mw_rss_topstories"
     },
     {
-      "source": "CNBC Top News",
+      "source": "MarketWatch Top Stories",
       "ticker_tag": "WIRE",
       "sentiment": "Neutral",
-      "title": "Stock futures tick higher as Wall Street gets set to wrap up a volatile holiday week: Live updates",
-      "url": "https://www.cnbc.com/2026/11/26/stock-market-today-live-updates.html"
+      "title": "I\u2019ve been married for 58 years. It\u2019s \u2018our\u2019 money, not \u2018his\u2019 and \u2018hers.\u2019 Why do so many couples keep their finances separate?",
+      "url": "https://www.marketwatch.com/story/ive-been-married-for-58-years-its-our-money-not-his-and-hers-why-dont-others-feel-the-same-c5745889?mod=mw_rss_topstories"
     },
     {
-      "source": "CNBC Top News",
+      "source": "MarketWatch Top Stories",
       "ticker_tag": "WIRE",
       "sentiment": "Neutral",
-      "title": "Semiconductor chips are the new oil. Here's why",
-      "url": "https://www.cnbc.com/2026/11/26/semiconductor-chips-are-the-new-oil-heres-why.html"
-    },
-    {
-      "source": "CNBC Top News",
-      "ticker_tag": "WIRE",
-      "sentiment": "Neutral",
-      "title": "The Nobel-winning science turning \u2018water harvesting\u2019 into a commercial race",
-      "url": "https://www.cnbc.com/atmospheric-water-harvesting-nobel-prize-atoco-ahbstra/"
-    },
-    {
-      "source": "CNBC Top News",
-      "ticker_tag": "WIRE",
-      "sentiment": "Neutral",
-      "title": "Buyer beware? Nvidia's volatile swings expose risks of single-stock ETFs",
-      "url": "https://www.cnbc.com/2026/11/26/nvidias-volatile-swings-expose-risks-of-single-stock-etfs.html"
-    },
-    {
-      "source": "CNBC Investing",
-      "ticker_tag": "WIRE",
-      "sentiment": "Neutral",
-      "title": "Semiconductor chips are the new oil. Here's why",
-      "url": "https://www.cnbc.com/2026/11/26/semiconductor-chips-are-the-new-oil-heres-why.html"
-    },
-    {
-      "source": "CNBC Investing",
-      "ticker_tag": "WIRE",
-      "sentiment": "Neutral",
-      "title": "Nvidia's billion-dollar board bet: Who's protected as lawsuits mount?",
-      "url": "https://www.cnbc.com/2026/11/25/nvidias-billion-dollar-board-bet-whos-protected-as-lawsuits-mount.html"
-    },
-    {
-      "source": "CNBC Investing",
-      "ticker_tag": "WIRE",
-      "sentiment": "Neutral",
-      "title": "Anthropic teeters at $1 trillion market cap. Why it may stabilize from here",
-      "url": "https://www.cnbc.com/2026/11/25/anthropic-stock-ipo-analyst-outlook.html"
-    },
-    {
-      "source": "CNBC Investing",
-      "ticker_tag": "WIRE",
-      "sentiment": "Neutral",
-      "title": "This missile maker's stock has fallen on expected U.S. military spending cuts, but its backlog reduces the risk",
-      "url": "https://www.cnbc.com/2026/11/25/rtx-stock-valuation-defense-budget.html"
-    },
-    {
-      "source": "CNBC Investing",
-      "ticker_tag": "WIRE",
-      "sentiment": "Neutral",
-      "title": "A beer stock to toast this holiday season with nearly 30% potential upside",
-      "url": "https://www.cnbc.com/2026/11/25/a-beer-stock-to-toast-this-holiday-season-with-nearly-30percent-potential-upside.html"
+      "title": "We are living in perilous times if Nvidia CEO Jensen Huang dictates your 401(k) balance",
+      "url": "https://www.marketwatch.com/story/we-are-living-in-perilous-times-if-nvidias-jensen-huang-dictates-your-401-k-balance-e0942d1e?mod=mw_rss_topstories"
     },
     {
       "source": "MarketWatch Top Stories",
@@ -250,46 +201,95 @@
       "url": "https://www.marketwatch.com/story/were-in-our-50s-and-terrified-of-a-market-crash-should-we-put-400-000-of-our-1-million-retirement-savings-into-an-annuity-1943f240?mod=mw_rss_topstories"
     },
     {
-      "source": "MarketWatch Top Stories",
+      "source": "Yahoo Finance (NVDA)",
       "ticker_tag": "WIRE",
       "sentiment": "Neutral",
-      "title": "I hate that Jensen Huang is back at Nvidia, but I love what it\u2019s done for my 401(k). Am I a hypocrite?",
-      "url": "https://www.marketwatch.com/story/i-hate-that-jensen-huang-is-back-at-nvidia-but-i-love-what-its-done-for-my-401-k-am-i-a-hypocrite-f63c0303?mod=mw_rss_topstories"
+      "title": "Nvidia Is Down 35% From Its All-Time High, Tied for Its Biggest Drop Since the AI Boom Began. Is It a Buy?",
+      "url": "https://www.fool.com/investing/2026/11/26/nvidia-is-down-35-from-its-all-time-high-tied-for-its-biggest-drop-since-the-ai-boom-began-is-it-a-buy/?.tsrc=rss"
     },
     {
-      "source": "MarketWatch Top Stories",
+      "source": "Yahoo Finance (NVDA)",
       "ticker_tag": "WIRE",
       "sentiment": "Neutral",
-      "title": "A 66-year-old nurse is facing down retirement with just $500 saved. Who\u2019s to blame?",
-      "url": "https://www.marketwatch.com/story/a-66-year-old-nurse-faces-retirement-with-just-500-saved-whos-to-blame-4249a0fd?mod=mw_rss_topstories"
+      "title": "Stocks Are Plunging Right Now. Here's What History Says Investors Should Do.",
+      "url": "https://www.fool.com/investing/2026/11/26/stocks-are-plunging-right-now-heres-what-history-s/?.tsrc=rss"
     },
     {
-      "source": "MarketWatch Top Stories",
+      "source": "Yahoo Finance (NVDA)",
       "ticker_tag": "WIRE",
       "sentiment": "Neutral",
-      "title": "I\u2019ve been married for 58 years. It\u2019s \u2018our\u2019 money, not \u2018his\u2019 and \u2018hers.\u2019 Why do so many couples keep their finances separate?",
-      "url": "https://www.marketwatch.com/story/ive-been-married-for-58-years-its-our-money-not-his-and-hers-why-dont-others-feel-the-same-c5745889?mod=mw_rss_topstories"
+      "title": "Trump Says Huang Is Excited About His \u2018Second Term\u2019 at Nvidia",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/trump-says-huang-excited-second-003925008.html?.tsrc=rss"
+    },
+    {
+      "source": "Yahoo Finance (AVGO)",
+      "ticker_tag": "WIRE",
+      "sentiment": "Neutral",
+      "title": "Broadcom (AVGO) Could Be the Biggest Winner From the Shift to Custom AI Chips",
+      "url": "https://finance.yahoo.com/technology/ai/articles/broadcom-avgo-could-biggest-winner-031533044.html?.tsrc=rss"
+    },
+    {
+      "source": "Yahoo Finance (AVGO)",
+      "ticker_tag": "WIRE",
+      "sentiment": "Neutral",
+      "title": "Goldman Sachs resets Broadcom's 12-month price target before earnings",
+      "url": "https://www.thestreet.com/investing/stocks/avgo-broadcom-stock-goldman-sachs-resets-avgo-stock-12-month-price-target-before-earnings?.tsrc=rss"
+    },
+    {
+      "source": "Yahoo Finance (AVGO)",
+      "ticker_tag": "WIRE",
+      "sentiment": "Neutral",
+      "title": "Broadcom Stocks Edge Lower After Rebounding From an Intraday Low of $278",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/broadcom-stocks-edge-lower-rebounding-183041028.html?.tsrc=rss"
+    },
+    {
+      "source": "Yahoo Finance (INTC)",
+      "ticker_tag": "WIRE",
+      "sentiment": "Neutral",
+      "title": "Intel\u2019s (INTC) AI Opportunity Is Growing, But There\u2019s One Big Problem Holding It Back",
+      "url": "https://finance.yahoo.com/technology/ai/articles/intel-intc-ai-opportunity-growing-031416634.html?.tsrc=rss"
+    },
+    {
+      "source": "Yahoo Finance (INTC)",
+      "ticker_tag": "WIRE",
+      "sentiment": "Neutral",
+      "title": "Nvidia Cut Its Intel Stake and Bought More SpaceX. Cathie Wood Is Buying Too. Why SPCX Stock Faces a Big Test on December 8.",
+      "url": "https://www.barchart.com/story/news/9022928/nvidia-cut-its-intel-stake-and-bought-more-spacex-cathie-wood-is-buying-too-why-spcx-stock-faces-a-big-test-on-december-8?.tsrc=rss"
+    },
+    {
+      "source": "Yahoo Finance (INTC)",
+      "ticker_tag": "WIRE",
+      "sentiment": "Neutral",
+      "title": "Intel Stocks Slip After Erasing a 10.3% Plunge Below $50",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/intel-stocks-slip-erasing-10-184536612.html?.tsrc=rss"
+    },
+    {
+      "source": "Yahoo Finance (MU)",
+      "ticker_tag": "WIRE",
+      "sentiment": "Neutral",
+      "title": "Micron (MU) Has Secured $32 Billion in Customer Commitments. Here\u2019s Why That Matters",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/micron-mu-secured-32-billion-031249719.html?.tsrc=rss"
+    },
+    {
+      "source": "Yahoo Finance (MU)",
+      "ticker_tag": "WIRE",
+      "sentiment": "Neutral",
+      "title": "Not Nvidia. Not Micron. If I Could Buy and Hold Only 1 Artificial Intelligence (AI) Semiconductor Stock Through 2030, This Would Be It.",
+      "url": "https://www.fool.com/investing/2026/11/26/not-nvidia-not-micron-if-i-could-buy-and-hold-only-1-artificial-intelligence-ai-semiconductor-stock-through-2030-this-would-be-it/?.tsrc=rss"
+    },
+    {
+      "source": "Yahoo Finance (MU)",
+      "ticker_tag": "WIRE",
+      "sentiment": "Neutral",
+      "title": "Why It\u2019s Hard to Write Off Micron (MU) Even with a Memory Peak in Sight",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/why-hard-write-off-micron-210000375.html?.tsrc=rss"
     },
     {
       "source": "Yahoo Finance (GOOGL)",
       "ticker_tag": "WIRE",
       "sentiment": "Neutral",
-      "title": "Tesla's Self-Driving Expansion in Europe Faces a Crucial Test",
-      "url": "https://finance.yahoo.com/technology/ai/articles/teslas-self-driving-expansion-europe-134400727.html?.tsrc=rss"
-    },
-    {
-      "source": "Yahoo Finance (GOOGL)",
-      "ticker_tag": "WIRE",
-      "sentiment": "Neutral",
-      "title": "Jim Lebenthal Says This Is \u201ca Correction, Not Something Worse.\u201d Why He\u2019s Buying More Alphabet",
-      "url": "https://247wallst.com/investing/2026/11/26/jim-lebenthal-says-this-is-a-correction-not-something-worse-why-hes-buying-more-alphabet/?.tsrc=rss"
-    },
-    {
-      "source": "Yahoo Finance (GOOGL)",
-      "ticker_tag": "WIRE",
-      "sentiment": "Neutral",
-      "title": "Jensen Huang\u2019s Return Doesn\u2019t Make Nvidia Stock (NVDA) a Buy",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/jensen-huang-return-doesn-t-212200380.html?.tsrc=rss"
+      "title": "5 Best Quantum Computing Stocks To Buy for 2027",
+      "url": "https://finance.yahoo.com/technology/articles/5-best-quantum-computing-stocks-032149616.html?.tsrc=rss"
     }
   ]
 }
