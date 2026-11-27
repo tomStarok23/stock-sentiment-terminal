@@ -26,7 +26,7 @@ MARKET_RSS_FEEDS = [
     ("MarketWatch", "https://feeds.content.dowjones.io/public/rss/mw_topstories"),
 ]
 
-GEMINI_MODELS = ["gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-2.0-flash"]
+GEMINI_MODELS = ["gemini-3.8-flash", "gemini-3.5-flash-lite", "gemini-3.6-flash"]
 HISTORY_FILE = "docs/history.json"
 MAX_HISTORY_RUNS = 15
 HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
@@ -333,7 +333,7 @@ QUOTES: {json.dumps(quotes)}
 HEADLINES: {json.dumps(compact_news)}
 """
 
-    last_err = None
+    errors = []
     for model_name in GEMINI_MODELS:
         try:
             print(f"Requesting analysis from {model_name}...", flush=True)
@@ -342,8 +342,8 @@ HEADLINES: {json.dumps(compact_news)}
                     client.models.generate_content,
                     model=model_name,
                     contents=prompt,
-                    config=types.GenerateContentConfig(response_mime_type="application/json", temperature=0.15),
-                ).result(timeout=30)
+                    config=types.GenerateContentConfig(response_mime_type="application/json"),
+                ).result(timeout=45)
             text = (resp.text or "").strip()
             if text.startswith("```"):
                 text = text.split("\n", 1)[1].rsplit("```", 1)[0].strip()
@@ -351,9 +351,10 @@ HEADLINES: {json.dumps(compact_news)}
             data["model_used"] = model_name
             return data
         except Exception as exc:
-            print(f"[WARN] {model_name} failed: {exc}", flush=True)
-            last_err = exc
-    raise RuntimeError(str(last_err))
+            msg = f"{model_name}: {exc}"
+            print(f"[WARN] {msg}", flush=True)
+            errors.append(msg)
+    raise RuntimeError(" | ".join(errors))
 
 
 def badge_color(action: str) -> str:
