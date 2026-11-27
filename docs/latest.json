@@ -1,117 +1,200 @@
 {
   "session": "Overnight / Extended Wire",
-  "updated_et": "2026-11-27 00:29 EST",
-  "api_error": "404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.0-flash is no longer available. Please update your code to use models/gemini-3.8-flash for the latest features and improvements. We recommend you to use the Interactions API (https://aistudio.google.com/docs/get-started).', 'status': 'NOT_FOUND'}}",
-  "model_used": "Fallback",
-  "market_mood": "Feed Active",
-  "overall_sentiment_score": 0,
-  "executive_summary": "Live market data collected; see API diagnostic above.",
-  "recommendations": [],
+  "updated_et": "2026-11-27 00:36 EST",
+  "market_mood": "Neutral / Mixed",
+  "overall_sentiment_score": -18,
+  "executive_summary": "Broader equities face intense semiconductor and hardware sector volatility following severe structural re-ratings across core chipmakers like NVDA, MU, and AVGO. However, selective mega-cap strength in Apple and speculative momentum in Tesla and Palantir provide targeted tactical long opportunities. With key benchmark proxies testing multi-month lows, capital preservation and strict technical adherence remain paramount.",
+  "recommendations": [
+    {
+      "ticker": "AAPL",
+      "company": "Apple Inc.",
+      "sector": "EQUITY",
+      "source_group": "Core Watchlist",
+      "action": "Strong Buy / Accumulate",
+      "prev_action": "New",
+      "sentiment_trail": "Initial baseline",
+      "technical_badge": ">20D & >50D SMA | RSI 57.8",
+      "change_reason": "Clear technical leadership holding above both short and intermediate moving averages.",
+      "sentiment_score": 68,
+      "confidence": 85,
+      "price_snapshot": "$355.58 (+6.77%)",
+      "catalyst": "Enters generative AI agent race alongside strong Black Friday consumer demand.",
+      "strategy": "Accumulate on pullbacks toward the 20-day SMA ($348.67) with an eye toward multi-month highs.",
+      "risk": "Macro consumer spending deceleration or supply-chain margin pressures."
+    },
+    {
+      "ticker": "HPQ",
+      "company": "HP Inc.",
+      "sector": "Broader Market",
+      "source_group": "Market Mover",
+      "action": "Tactical Swing Buy",
+      "prev_action": "New",
+      "sentiment_trail": "Initial baseline",
+      "technical_badge": ">20D & >50D SMA | RSI 57.4",
+      "change_reason": "Strong breakout over 20D ($28.93) and 50D ($30.70) moving averages on heavy volume.",
+      "sentiment_score": 52,
+      "confidence": 75,
+      "price_snapshot": "$31.15 (+20.97%)",
+      "catalyst": "Post-earnings momentum and solid PC refresh cycle sentiment.",
+      "strategy": "Enter on intraday consolidation near $30.80-$31.00; stop-loss below 50D SMA at $30.50.",
+      "risk": "Fading follow-through after initial surge."
+    },
+    {
+      "ticker": "TSLA",
+      "company": "Tesla, Inc.",
+      "sector": "EQUITY",
+      "source_group": "Core Watchlist",
+      "action": "Tactical Swing Buy",
+      "prev_action": "New",
+      "sentiment_trail": "Initial baseline",
+      "technical_badge": "<20D & >50D SMA | RSI 50.4",
+      "change_reason": "Reclaimed key 50D SMA ($377.17) after sharp short-covering rebound.",
+      "sentiment_score": 45,
+      "confidence": 70,
+      "price_snapshot": "$380.14 (+21.44%)",
+      "catalyst": "Speculative merger and corporate restructuring headlines triggering massive short squeeze.",
+      "strategy": "Tactical swing targeting 20D SMA recapture at $382.15, maintaining tight stop at $368.00.",
+      "risk": "Execution headwinds in autonomous Robotaxi deployment relative to peers."
+    },
+    {
+      "ticker": "PLTR",
+      "company": "Palantir Technologies Inc.",
+      "sector": "EQUITY",
+      "source_group": "Core Watchlist",
+      "action": "Tactical Swing Buy",
+      "prev_action": "New",
+      "sentiment_trail": "Initial baseline",
+      "technical_badge": "<20D & <50D SMA | RSI 45.2",
+      "change_reason": "Aggressive insider buying and commercial contract ramp offset moving average drag.",
+      "sentiment_score": 38,
+      "confidence": 68,
+      "price_snapshot": "$163.59 (+33.09%)",
+      "catalyst": "Peter Thiel discloses $122M share buy alongside over 200 large enterprise deal closures.",
+      "strategy": "Trade the mean reversion toward the 20D SMA at $166.30; risk-managed entry.",
+      "risk": "High valuation multiples and persistent macro tech volatility."
+    },
+    {
+      "ticker": "AMZN",
+      "company": "Amazon.com, Inc.",
+      "sector": "EQUITY",
+      "source_group": "Core Watchlist",
+      "action": "Watchlist / Hold",
+      "prev_action": "New",
+      "sentiment_trail": "Initial baseline",
+      "technical_badge": "<20D & <50D SMA | RSI 42.0",
+      "change_reason": "Price remains below both 20D ($257.19) and 50D ($255.12) SMAs despite daily bounce.",
+      "sentiment_score": 10,
+      "confidence": 65,
+      "price_snapshot": "$244.43 (+5.31%)",
+      "catalyst": "Reported discussions with Meta over Muse AI agent integration amid satellite launch setbacks.",
+      "strategy": "Hold existing positions; wait for decisive push above $258 before adding new exposure.",
+      "risk": "AWS cloud margin compression and regulatory friction."
+    },
+    {
+      "ticker": "META",
+      "company": "Meta Platforms, Inc.",
+      "sector": "EQUITY",
+      "source_group": "Core Watchlist",
+      "action": "Watchlist / Hold",
+      "prev_action": "New",
+      "sentiment_trail": "Initial baseline",
+      "technical_badge": "<20D & <50D SMA | RSI 45.7",
+      "change_reason": "Subdued momentum trapped beneath the 20D ($615.27) and 50D ($672.42) moving averages.",
+      "sentiment_score": 8,
+      "confidence": 62,
+      "price_snapshot": "$609.89 (+2.47%)",
+      "catalyst": "Amazon partnership rumors on AI offset by overseas regulatory scrutiny in India.",
+      "strategy": "Monitor $615 resistance for confirmation of institutional re-accumulation.",
+      "risk": "Legal and regulatory challenges impacting international monetization."
+    },
+    {
+      "ticker": "AVGO",
+      "company": "Broadcom Inc.",
+      "sector": "EQUITY",
+      "source_group": "Core Watchlist",
+      "action": "Trim / Avoid",
+      "prev_action": "New",
+      "sentiment_trail": "Initial baseline",
+      "technical_badge": "<20D & <50D SMA | RSI 40.8",
+      "change_reason": "Severe technical breakdown below key supports following negative analyst reassessments.",
+      "sentiment_score": -42,
+      "confidence": 78,
+      "price_snapshot": "$300.86 (-21.22%)",
+      "catalyst": "Redburn downgrade and price target resets prior to earnings report.",
+      "strategy": "Trim on bounces towards $315; avoid entering new longs until basing pattern emerges.",
+      "risk": "Further downside pressure if hyperscaler custom ASIC spend decelerates."
+    },
+    {
+      "ticker": "NVDA",
+      "company": "NVIDIA Corporation",
+      "sector": "EQUITY",
+      "source_group": "Core Watchlist",
+      "action": "Trim / Avoid",
+      "prev_action": "New",
+      "sentiment_trail": "Initial baseline",
+      "technical_badge": "<20D & <50D SMA | RSI 37.5",
+      "change_reason": "Significant technical damage with price sinking 27% below its 20D ($172.48) and 50D ($203.65) SMAs.",
+      "sentiment_score": -65,
+      "confidence": 82,
+      "price_snapshot": "$149.30 (-27.82%)",
+      "catalyst": "Leadership reinstatement controversies, mounting board lawsuits, and international shipment scrutiny.",
+      "strategy": "Reduce equity exposure; wait for stabilization and clear support test around $140.",
+      "risk": "Heightened regulatory investigations and severe multiple compression."
+    },
+    {
+      "ticker": "MU",
+      "company": "Micron Technology, Inc.",
+      "sector": "EQUITY",
+      "source_group": "Core Watchlist",
+      "action": "Trim / Avoid",
+      "prev_action": "New",
+      "sentiment_trail": "Initial baseline",
+      "technical_badge": "<20D & <50D SMA | RSI 35.7",
+      "change_reason": "Intense distribution breaking past multi-month moving average floors.",
+      "sentiment_score": -58,
+      "confidence": 80,
+      "price_snapshot": "$601.25 (-34.71%)",
+      "catalyst": "Concerns over memory cycle peak despite reported long-term customer commitments.",
+      "strategy": "Step aside and avoid knife-catching until RSI forms bullish divergence.",
+      "risk": "DRAM/NAND cyclical contraction accelerating faster than expected."
+    }
+  ],
   "top_headlines": [
     {
-      "source": "MarketWatch",
-      "ticker_tag": "WIRE",
-      "sentiment": "Neutral",
-      "title": "Is the stock market open on Black Friday?",
-      "url": "https://www.marketwatch.com/story/is-the-stock-market-open-on-black-friday-0a735c45?mod=mw_rss_topstories"
+      "source": "Yahoo (AAPL)",
+      "ticker_tag": "AAPL",
+      "sentiment": "Bullish",
+      "title": "Apple Enters the AI Agent Race as It Takes on OpenAI, Anthropic, and Meta. What That Means for AAPL Stock.",
+      "url": "https://www.barchart.com/story/news/9022924/apple-enters-the-ai-agent-race-as-it-takes-on-openai-anthropic-and-meta-what-that-means-for-aapl-stock?.tsrc=rss"
     },
     {
-      "source": "MarketWatch",
-      "ticker_tag": "WIRE",
-      "sentiment": "Neutral",
-      "title": "I hate that Jensen Huang is back at Nvidia, but I love what it\u2019s done for my 401(k). Am I a hypocrite?",
-      "url": "https://www.marketwatch.com/story/i-hate-that-jensen-huang-is-back-at-nvidia-but-i-love-what-its-done-for-my-401-k-am-i-a-hypocrite-f63c0303?mod=mw_rss_topstories"
+      "source": "Yahoo (PLTR)",
+      "ticker_tag": "PLTR",
+      "sentiment": "Bullish",
+      "title": "Palantir Stocks Rise 1.5% After Peter Thiel Discloses a $122 Million Share Purchase",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/palantir-stocks-rise-1-5-183642789.html?.tsrc=rss"
     },
     {
-      "source": "MarketWatch",
-      "ticker_tag": "WIRE",
-      "sentiment": "Neutral",
-      "title": "I\u2019ve been married for 58 years. It\u2019s \u2018our\u2019 money, not \u2018his\u2019 and \u2018hers.\u2019 Why do so many couples keep their finances separate?",
-      "url": "https://www.marketwatch.com/story/ive-been-married-for-58-years-its-our-money-not-his-and-hers-why-dont-others-feel-the-same-c5745889?mod=mw_rss_topstories"
+      "source": "Yahoo (NVDA)",
+      "ticker_tag": "NVDA",
+      "sentiment": "Bearish",
+      "title": "Nvidia (NVDA) Stock Fair Value Falls After Analysts Reassess Leadership And Regulatory Risks",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/nvidia-nvda-stock-fair-value-042301514.html?.tsrc=rss"
     },
     {
-      "source": "MarketWatch",
-      "ticker_tag": "WIRE",
-      "sentiment": "Neutral",
-      "title": "We are living in perilous times if Nvidia CEO Jensen Huang dictates your 401(k) balance",
-      "url": "https://www.marketwatch.com/story/we-are-living-in-perilous-times-if-nvidias-jensen-huang-dictates-your-401-k-balance-e0942d1e?mod=mw_rss_topstories"
-    },
-    {
-      "source": "MarketWatch",
-      "ticker_tag": "WIRE",
-      "sentiment": "Neutral",
-      "title": "\u2018I\u2019ve been a stay-at-home mom\u2019: I\u2019m 50 and have a chronic illness. My husband lost his job. Should he raid his 401(k)?",
-      "url": "https://www.marketwatch.com/story/ive-been-a-stay-at-home-mom-im-50-and-have-a-chronic-illness-my-husband-lost-his-job-should-he-raid-his-401-k-63e59123?mod=mw_rss_topstories"
-    },
-    {
-      "source": "CNBC Invest",
-      "ticker_tag": "WIRE",
-      "sentiment": "Neutral",
-      "title": "Semiconductor chips are the new oil. Here's why",
-      "url": "https://www.cnbc.com/2026/11/26/semiconductor-chips-are-the-new-oil-heres-why.html"
-    },
-    {
-      "source": "CNBC Invest",
-      "ticker_tag": "WIRE",
-      "sentiment": "Neutral",
-      "title": "Nvidia's billion-dollar board bet: Who's protected as lawsuits mount?",
-      "url": "https://www.cnbc.com/2026/11/25/nvidias-billion-dollar-board-bet-whos-protected-as-lawsuits-mount.html"
-    },
-    {
-      "source": "CNBC Invest",
-      "ticker_tag": "WIRE",
-      "sentiment": "Neutral",
-      "title": "Anthropic teeters at $1 trillion market cap. Why it may stabilize from here",
-      "url": "https://www.cnbc.com/2026/11/25/anthropic-stock-ipo-analyst-outlook.html"
-    },
-    {
-      "source": "CNBC Invest",
-      "ticker_tag": "WIRE",
-      "sentiment": "Neutral",
-      "title": "This missile maker's stock has fallen on expected U.S. military spending cuts, but its backlog reduces the risk",
-      "url": "https://www.cnbc.com/2026/11/25/rtx-stock-valuation-defense-budget.html"
-    },
-    {
-      "source": "CNBC Invest",
-      "ticker_tag": "WIRE",
-      "sentiment": "Neutral",
-      "title": "A beer stock to toast this holiday season with nearly 30% potential upside",
-      "url": "https://www.cnbc.com/2026/11/25/a-beer-stock-to-toast-this-holiday-season-with-nearly-30percent-potential-upside.html"
+      "source": "Yahoo (AVGO)",
+      "ticker_tag": "AVGO",
+      "sentiment": "Bearish",
+      "title": "Why Redburn Downgraded Broadcom (AVGO) Despite Surging AI Revenue",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/why-redburn-downgraded-broadcom-avgo-035057918.html?.tsrc=rss"
     },
     {
       "source": "CNBC Top",
-      "ticker_tag": "WIRE",
+      "ticker_tag": "MACRO",
       "sentiment": "Neutral",
       "title": "Stock futures tick higher as Wall Street gets set to wrap up a volatile holiday week: Live updates",
       "url": "https://www.cnbc.com/2026/11/26/stock-market-today-live-updates.html"
-    },
-    {
-      "source": "CNBC Top",
-      "ticker_tag": "WIRE",
-      "sentiment": "Neutral",
-      "title": "Two Italians killed in Kuwait drone attack; Trump says Iran war ends \u2018whenever I want it\u2019",
-      "url": "https://www.cnbc.com/2026/11/27/us-iran-war-trump-hormuz-italian-killed-trump.html"
-    },
-    {
-      "source": "CNBC Top",
-      "ticker_tag": "WIRE",
-      "sentiment": "Neutral",
-      "title": "SpaceX shares jump on alternative trading platform after Musk says he will expand share donations",
-      "url": "https://www.cnbc.com/2026/11/27/spacex-shares-musk-donations.html"
-    },
-    {
-      "source": "CNBC Top",
-      "ticker_tag": "WIRE",
-      "sentiment": "Neutral",
-      "title": "Trump demands probe into \u2018record setting error\u2019 after third-quarter GDP data gets massive revision higher",
-      "url": "https://www.cnbc.com/2026/11/26/trump-gdp-revision-investigation.html"
-    },
-    {
-      "source": "CNBC Top",
-      "ticker_tag": "WIRE",
-      "sentiment": "Neutral",
-      "title": "The Nobel-winning science turning \u2018water harvesting\u2019 into a commercial race",
-      "url": "https://www.cnbc.com/atmospheric-water-harvesting-nobel-prize-atoco-ahbstra/"
     }
-  ]
+  ],
+  "model_used": "gemini-3.8-flash"
 }
